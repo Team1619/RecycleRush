@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -13,6 +15,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
  * directory.
  */
 public class Robot extends IterativeRobot {
+	
+	//create a singleton robot
 	private static Robot robot;
 	public Robot()
 	{
@@ -24,9 +28,9 @@ public class Robot extends IterativeRobot {
 	}
 	
 	
-	public static OI oi;
-
-    //Command autonomousCommand;
+	public OI oi;
+	
+	public Drivetrain drivetrain;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -35,7 +39,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         // instantiate the command used for the autonomous period
-        //autonomousCommand = new ExampleCommand();
+		
+    	drivetrain = new Drivetrain();
     }
 	
 	public void disabledPeriodic() {
@@ -43,8 +48,6 @@ public class Robot extends IterativeRobot {
 	}
 
     public void autonomousInit() {
-        // schedule the autonomous command (example)
-        //if (autonomousCommand != null) autonomousCommand.start();
     }
 
     /**
@@ -59,7 +62,6 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        //if (autonomousCommand != null) autonomousCommand.cancel();
     }
 
     /**
