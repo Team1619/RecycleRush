@@ -1,24 +1,32 @@
 package org.usfirst.frc.team1619.robot.commands;
 
+
+
+import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class DriveCommand extends Command {
+public class OpenBearClaw extends Command {
+	private BearClaw bearClaw;
 
-    public DriveCommand() {
+    public OpenBearClaw() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	bearClaw = Robot.getRobot().bearClaw;
+    	requires(bearClaw);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

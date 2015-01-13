@@ -12,6 +12,8 @@ public class RobotMap {
 	// public static int leftMoter2 = 
     // public static int rightMotor1 = 
     // public static int rightMoter2 = 
+	public static final int bearClawMotorID = 1;
+	public static final int conveyorMotorID = 2;
 	
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:

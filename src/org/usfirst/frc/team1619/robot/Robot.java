@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
@@ -25,6 +27,8 @@ public class Robot extends IterativeRobot {
 	
 	
 	public static OI oi;
+	
+	public BearClaw bearClaw;
 
     //Command autonomousCommand;
 
@@ -36,6 +40,8 @@ public class Robot extends IterativeRobot {
 		oi = new OI();
         // instantiate the command used for the autonomous period
         //autonomousCommand = new ExampleCommand();
+		bearClaw = new BearClaw();
+		
     }
 	
 	public void disabledPeriodic() {
