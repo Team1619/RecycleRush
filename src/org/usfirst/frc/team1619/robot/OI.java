@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -23,6 +25,10 @@ public class OI {
 		
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
+		
+		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
+		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
+		
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
