@@ -10,10 +10,10 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class OpenBearClaw extends Command {
+public class OpenBearClawCommand extends Command {
 	private BearClaw bearClaw;
 
-    public OpenBearClaw() {
+    public OpenBearClawCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	bearClaw = Robot.getRobot().bearClaw;
