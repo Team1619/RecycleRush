@@ -9,11 +9,11 @@ public class BearClaw extends Subsystem{
 	
 	// Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private TalonSRX bearClawMotor;
+	//private TalonSRX bearClawMotor;
 	
 	public BearClaw()
 	{
-		bearClawMotor = new TalonSRX(RobotMap.bearClawMotorID);
+		//bearClawMotor = new TalonSRX(RobotMap.bearClawMotorID);
 	}
 	
 	protected void initDefaultCommand() {
@@ -22,11 +22,11 @@ public class BearClaw extends Subsystem{
 	
 	public void move(double speed)
 	{
-		bearClawMotor.set(speed);
+		//bearClawMotor.set(speed);
 	}
 
 	public void stop()
 	{
-		bearClawMotor.stopMotor();
+		//bearClawMotor.stopMotor();
 	}
 }

@@ -2,10 +2,11 @@
 package org.usfirst.frc.team1619.robot;
 
 
-import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -30,9 +31,8 @@ public class Robot extends IterativeRobot {
 	}	
 
 	public OI oi;
-	
-	public Drivetrain drivetrain;
-	public BearClaw bearClaw;
+	public Drivetrain drivetrain = new Drivetrain();
+	public GyroSubsystem gyroSubsystem = new GyroSubsystem();
 
     /**
      * This function is run when the robot is first started up and should be
@@ -41,9 +41,6 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
 		oi = new OI();
         // instantiate the command used for the autonomous period
-
-		bearClaw = new BearClaw();
-    	drivetrain = new Drivetrain();
     }
 	
 	public void disabledPeriodic() {
@@ -60,12 +57,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
-    public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-    }
+    
 
     /**
      * This function is called when the disabled button is hit.
@@ -78,8 +70,23 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
+    Timer printTimer = new Timer();
+    public void teleopInit() {
+		// This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to 
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+    	printTimer.start();
+    }
+    
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        if(printTimer.get() > 0.1) {
+	        System.out.println("Heading: " + gyroSubsystem.getHeading());
+	        //System.out.println("TurnRate: " + gyroSubsystem.getTurnRate());
+	        printTimer.reset();
+        }
     }
     
     /**
