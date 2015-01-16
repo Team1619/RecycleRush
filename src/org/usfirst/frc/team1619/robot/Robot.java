@@ -2,11 +2,11 @@
 package org.usfirst.frc.team1619.robot;
 
 
+import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 
@@ -21,24 +21,28 @@ public class Robot extends IterativeRobot {
 	
 	//create a singleton robot
 	private static Robot robot;
-	public Robot()
-	{
+	public Robot() {
 		robot = this;
 	}
-	public static Robot getRobot()
-	{
+	static public Robot getRobot() {
 		return robot;
-	}	
+	}
 
 	public OI oi;
-	public Drivetrain drivetrain = new Drivetrain();
-	public GyroSubsystem gyroSubsystem = new GyroSubsystem();
+	
+	public Drivetrain drivetrain;
+	public BearClaw bearClaw;
+	public OpticalSensor opticalSensor;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+    	drivetrain = new Drivetrain();
+		//bearClaw = new BearClaw();
+		opticalSensor = new OpticalSensor();
+		
 		oi = new OI();
         // instantiate the command used for the autonomous period
     }
@@ -70,24 +74,18 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
-    Timer printTimer = new Timer();
-    public void teleopInit() {
+   public void teleopInit() {
 		// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
-    	printTimer.start();
+ 
     }
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
-        if(printTimer.get() > 0.1) {
-	        System.out.println("Heading: " + gyroSubsystem.getHeading());
-	        //System.out.println("TurnRate: " + gyroSubsystem.getTurnRate());
-	        printTimer.reset();
-        }
     }
+    
     
     /**
      * This function is called periodically during test mode

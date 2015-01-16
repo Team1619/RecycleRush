@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.robot.commands.*;
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -19,20 +19,18 @@ public class OI {
 	
 	private final JoystickButton kachigLeft;
 	private final JoystickButton kachigRight;
-	private final JoystickButton resetGyroButton;
+	//private final JoystickButton resetGyroButton;
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
-		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
+		//resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
-		
-		resetGyroButton.whenPressed(new ResetGyroCommand());
-		
+				
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
