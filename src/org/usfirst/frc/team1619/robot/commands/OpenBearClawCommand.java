@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-
-
 import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 
@@ -11,13 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class OpenBearClawCommand extends Command {
-	//private BearClaw bearClaw;
+	private BearClaw bearClaw;
 
     public OpenBearClawCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	//bearClaw = Robot.getRobot().bearClaw;
-    	//requires(bearClaw);
+    	bearClaw = Robot.getRobot().bearClaw;
+    	requires(bearClaw);
     }
 
     // Called just before this Command runs the first time

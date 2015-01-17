@@ -1,21 +1,21 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
+import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ResetGyroCommand extends Command {
+public class OpticalSensorCommand extends Command {
+
+	private OpticalSensor opticalSensor;
 	
-	private GyroSubsystem gyroSubsystem;
-	
-    public ResetGyroCommand() {
+    public OpticalSensorCommand() {
         // Use requires() here to declare subsystem dependencies
-    	//gyroSubsystem = Robot.getRobot().gyroSubsystem;
-    	gyroSubsystem  = null;
-    	requires(gyroSubsystem);
+    	opticalSensor = Robot.getRobot().opticalSensor;
+        requires(opticalSensor);
     }
 
     // Called just before this Command runs the first time
@@ -24,12 +24,13 @@ public class ResetGyroCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	gyroSubsystem.reset();
+    	opticalSensor.getState();
+    	//SmartDashboard.putBoolean("OpticalSensor", opticalSensor.getState());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
