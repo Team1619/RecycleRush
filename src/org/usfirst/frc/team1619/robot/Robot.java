@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 
+import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 
@@ -24,6 +25,7 @@ public class Robot extends IterativeRobot {
 	public Robot()
 	{
 		robot = this;
+		
 	}
 	public static Robot getRobot()
 	{
@@ -33,6 +35,7 @@ public class Robot extends IterativeRobot {
 	public OI oi;
 	public Drivetrain drivetrain = new Drivetrain();
 	public GyroSubsystem gyroSubsystem = new GyroSubsystem();
+	public Accelerometer accelerometer = new Accelerometer();
 
     /**
      * This function is run when the robot is first started up and should be
