@@ -10,8 +10,10 @@ import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,6 +42,7 @@ public class Robot extends IterativeRobot {
 	public MotorSystem motorSystem;
 	public SonarSystem sonarSystem;
 	public Accelerometer accelerometer;
+	public PowerDistributionPanel pdpCAN;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -53,9 +56,11 @@ public class Robot extends IterativeRobot {
 		motorSystem = new MotorSystem();
 		sonarSystem = new SonarSystem();
 		accelerometer = new Accelerometer();
+		pdpCAN = new PowerDistributionPanel();
 		
 		oi = new OI();
         // instantiate the command used for the autonomous period
+		// new OI needs to be called last
     }
 	
 	public void disabledPeriodic() {
@@ -90,11 +95,12 @@ public class Robot extends IterativeRobot {
         // teleop starts running. If you want the autonomous to 
         // continue until interrupted by another command, remove
         // this line or comment it out.
- 
     }
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        
+        SmartDashboard.putNumber("PDP", pdpCAN.getCurrent(0));
     }
     
     

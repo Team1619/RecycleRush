@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.subsystems;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.DriveCommand;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Talon;
@@ -13,12 +14,12 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drivetrain extends Subsystem {
 	private RobotDrive drive;	
-    private Talon leftMotor;
-    private Talon rightMotor;
+    private CANTalon leftMotor;
+    private CANTalon rightMotor;
 
     public Drivetrain() {
-    	leftMotor = new Talon(RobotMap.leftMotor);
-    	rightMotor = new Talon(RobotMap.rightMotor);
+    	leftMotor = new CANTalon(RobotMap.leftMotor);
+    	rightMotor = new CANTalon(RobotMap.rightMotor);
     	
     	drive = new RobotDrive(leftMotor, rightMotor);
     	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
