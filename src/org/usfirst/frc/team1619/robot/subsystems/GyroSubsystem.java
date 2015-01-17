@@ -30,7 +30,7 @@ public class GyroSubsystem extends Subsystem {
 	}
 	
 	public double getHeading() {
-		return gyro.getAngle();
+		return gyro.getAngle()%360;
 	}
 	
 	public double getTurnRate() {

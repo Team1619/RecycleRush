@@ -37,7 +37,7 @@ public class Drivetrain extends Subsystem {
     }
     
     public void drive(GenericHID inputDevice) {
-    	drive.arcadeDrive(inputDevice.getY(), inputDevice.getTwist() * 0.75);
+    	drive.arcadeDrive(inputDevice.getY(), inputDevice.getTwist());
     }
     
     public void drive(double moveX, double moveY) {
