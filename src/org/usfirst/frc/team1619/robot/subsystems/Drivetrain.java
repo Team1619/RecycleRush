@@ -6,7 +6,6 @@ import org.usfirst.frc.team1619.robot.commands.DriveCommand;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

@@ -26,7 +26,7 @@ public class SonarSystem extends Subsystem {
 	}
 
 	public double getRange() {
-		return rangeFinder.getVoltage()*distanceToVoltageRatio;
+		return rangeFinder.getValue()*distanceToVoltageRatio;
 	}
 
 }

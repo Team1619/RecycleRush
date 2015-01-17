@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
+import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,7 +15,7 @@ public class ResetGyroCommand extends Command {
     public ResetGyroCommand() {
         // Use requires() here to declare subsystem dependencies
     	//gyroSubsystem = Robot.getRobot().gyroSubsystem;
-    	gyroSubsystem  = null;
+    	gyroSubsystem  = Robot.getRobot().gyro;
     	requires(gyroSubsystem);
     }
 

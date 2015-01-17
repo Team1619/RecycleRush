@@ -5,6 +5,7 @@ import org.usfirst.frc.team1619.robot.commands.AccelerometerCommand;
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -35,7 +36,7 @@ public class Accelerometer extends Subsystem {
 		accelerationY = accelerometer.getY();
 		accelerationZ = accelerometer.getZ();
 		if(timer.get() >= last + 1) {
-			System.out.println(accelerationX + ", " + accelerationY + ", " + accelerationZ); 
+			SmartDashboard.putString("Accelerometer", "X - " + accelerationX + "\nY - " + accelerationY + "\nZ - " + accelerationZ);
 			last = timer.get();
 		}
 		

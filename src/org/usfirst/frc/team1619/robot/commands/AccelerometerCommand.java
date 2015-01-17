@@ -13,7 +13,6 @@ public class AccelerometerCommand extends Command {
 
     public AccelerometerCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	accelerometer = Robot.getRobot().accelerometer;
     	requires(accelerometer);
     }

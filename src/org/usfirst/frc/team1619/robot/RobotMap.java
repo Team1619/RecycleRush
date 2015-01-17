@@ -24,17 +24,15 @@ public class RobotMap {
 	public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 6;
-	
-	public static final int gyroID = 0;
-	
+		
 	public static final int OpticalSensorID = 1;
 	
 	public static final int motorSystemID = 2;
 	
 	public static final int sonarAnalogInputID = 0;
 	
-	public static final int gyroTempAnalogID = 1;//temperature - analog 1
-	public static final int gyroRateAnalogID = 2;//rate - analog 2
+	public static final int gyroTempAnalogID = 2;//temperature - analog 1
+	public static final int gyroRateAnalogID = 1;//rate - analog 2
 	
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:
