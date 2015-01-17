@@ -14,16 +14,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drivetrain extends Subsystem {
 	private RobotDrive drive;	
-    private CANTalon leftMotor;
-    private CANTalon rightMotor;
+    private CANTalon leftMotor1;
+    private CANTalon leftMotor2;
+    private CANTalon rightMotor1;
+    private CANTalon rightMotor2;
 
     public Drivetrain() {
-    	leftMotor = new CANTalon(RobotMap.leftMotor);
-    	rightMotor = new CANTalon(RobotMap.rightMotor);
+    	leftMotor1 = new CANTalon(RobotMap.leftDriveMotor1);
+    	leftMotor2 = new CANTalon(RobotMap.leftDriveMotor2);
+    	rightMotor1 = new CANTalon(RobotMap.rightDriveMotor1);
+    	rightMotor2 = new CANTalon(RobotMap.rightDriveMotor2);
     	
-    	drive = new RobotDrive(leftMotor, rightMotor);
-    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	drive = new RobotDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
     	drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
     }
     
     public void initDefaultCommand() {

@@ -100,7 +100,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         
-        SmartDashboard.putNumber("PDP", pdpCAN.getCurrent(0));
+        SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
     }
     
     

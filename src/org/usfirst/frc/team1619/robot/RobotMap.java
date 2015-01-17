@@ -7,35 +7,37 @@ package org.usfirst.frc.team1619.robot;
  * floating around.
  */
 public class RobotMap {
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
-
+	// For example to map the left and right motors, you could define the
+	// following variables to use with your drivetrain subsystem.
+	
 	public static final int bearClawMotorID = 1;
 	public static final int conveyorMotorID = 2;
-
-	public final static int leftMotor = 0;
-	public final static int rightMotor = 1;
-    
-    public static final int rightStickID = 0;
-    public static final int leftStickID = 1;
-    
-    public static final int kachigLeftButtonID = 4;
-    public static final int kachigRightButtonID = 3;
-    public static final int resetGyroButtonID = 6;
-
-    public static final int gyroID = 0;
-    
-    public static final int OpticalSensorID = 1;
-    
-    public static final int motorSystemID = 2;
-    
-    public static final int sonarAnalogInputID = 0;
-    
-    public static final int gyroTempAnalogID = 1;//temperature - analog 1
-    public static final int gyroRateAnalogID = 2;//rate - analog 2
-    
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static int rangefinderPort = 1;
-    // public static int rangefinderModule = 1;
+	
+	public final static int leftDriveMotor1 = 1;
+	public final static int leftDriveMotor2 = 4;
+	public final static int rightDriveMotor1 = 3;
+	public final static int rightDriveMotor2 = 5;
+	
+	public static final int rightStickID = 0;
+	public static final int leftStickID = 1;
+	
+	public static final int kachigLeftButtonID = 4;
+	public static final int kachigRightButtonID = 3;
+	public static final int resetGyroButtonID = 6;
+	
+	public static final int gyroID = 0;
+	
+	public static final int OpticalSensorID = 1;
+	
+	public static final int motorSystemID = 2;
+	
+	public static final int sonarAnalogInputID = 0;
+	
+	public static final int gyroTempAnalogID = 1;//temperature - analog 1
+	public static final int gyroRateAnalogID = 2;//rate - analog 2
+	
+	// If you are using multiple modules, make sure to define both the port
+	// number and the module. For example you with a rangefinder:
+	// public static int rangefinderPort = 1;
+	// public static int rangefinderModule = 1;
 }
