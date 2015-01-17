@@ -16,6 +16,10 @@ public class OI {
 	public Joystick getRightStick() {
 		return rightStick;
 	}
+	private final Joystick leftStick;
+	public Joystick getLeftStick() {
+		return leftStick;
+	}
 	
 	private final JoystickButton kachigLeft;
 	private final JoystickButton kachigRight;
@@ -23,6 +27,7 @@ public class OI {
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
+		leftStick = new Joystick(RobotMap.leftStickID);
 		
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);

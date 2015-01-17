@@ -27,6 +27,13 @@ public class RobotMap {
     
     public static final int OpticalSensorID = 1;
     
+    public static final int motorSystemID = 2;
+    
+    public static final int sonarAnalogInputID = 0;
+    
+    public static final int gyroTempAnalogID = 1;//temperature - analog 1
+    public static final int gyroRateAnalogID = 2;//rate - analog 2
+    
     // If you are using multiple modules, make sure to define both the port
     // number and the module. For example you with a rangefinder:
     // public static int rangefinderPort = 1;

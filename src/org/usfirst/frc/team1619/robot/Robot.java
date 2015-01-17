@@ -4,7 +4,9 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
+import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -33,15 +35,20 @@ public class Robot extends IterativeRobot {
 	public Drivetrain drivetrain;
 	public BearClaw bearClaw;
 	public OpticalSensor opticalSensor;
+	public MotorSystem motorSystem;
+	public SonarSystem sonarSystem;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
+    	
     	drivetrain = new Drivetrain();
 		//bearClaw = new BearClaw();
 		opticalSensor = new OpticalSensor();
+		motorSystem = new MotorSystem();
+		sonarSystem = new SonarSystem();
 		
 		oi = new OI();
         // instantiate the command used for the autonomous period
