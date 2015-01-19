@@ -14,12 +14,12 @@ public class Accelerometer extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	BuiltInAccelerometer accelerometer;
-	double accelerationX;
-	double accelerationY;
-	double accelerationZ;
-	Timer timer;
-	double last;
+	private BuiltInAccelerometer accelerometer;
+	private double accelerationX;
+	private double accelerationY;
+	private double accelerationZ;
+	private Timer timer;
+	private double last;
 	
 	public Accelerometer()
 	{

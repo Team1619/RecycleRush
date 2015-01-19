@@ -4,6 +4,7 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
+import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
@@ -45,6 +46,7 @@ public class Robot extends IterativeRobot {
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
 	public GyroSubsystem gyro;
+	public Camera camera;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -60,6 +62,7 @@ public class Robot extends IterativeRobot {
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
 		gyro = new GyroSubsystem();
+		camera = new Camera();
 		
 		oi = new OI();
         // instantiate the command used for the autonomous period
