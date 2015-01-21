@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.commands.ConveyorBackwardManualCommand;
+import org.usfirst.frc.team1619.robot.commands.ConveyorForwardManualCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 
@@ -25,6 +27,8 @@ public class OI {
 	private final JoystickButton kachigLeft;
 	private final JoystickButton kachigRight;
 	private final JoystickButton resetGyroButton;
+	private final JoystickButton conveyorForwardManualButton;
+	private final JoystickButton conveyorBackwardManualButton;
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -33,10 +37,16 @@ public class OI {
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
+		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
+		conveyorBackwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
+		
+		
 		
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
+		conveyorFowardManualButton.whenPressed(new ConveyorForwardManualCommand());
+		conveyorBackwardManualButton.whenPressed(new ConveyorBackwardManualCommand());
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
