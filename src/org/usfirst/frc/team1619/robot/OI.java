@@ -45,7 +45,7 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorFowardManualButton.whenPressed(new ConveyorForwardManualCommand());
+		conveyorForwardManualButton.whenPressed(new ConveyorForwardManualCommand());
 		conveyorBackwardManualButton.whenPressed(new ConveyorBackwardManualCommand());
 	}
     //// CREATING BUTTONS
