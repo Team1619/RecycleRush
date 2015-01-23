@@ -31,5 +31,9 @@ public class MotorSystem extends Subsystem {
     public void stop() {
     	motor.disable();
     }
+    
+    public int getPosition() {
+    	return motor.getEncPosition();
+    }
 }
 
