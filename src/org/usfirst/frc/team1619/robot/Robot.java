@@ -15,6 +15,7 @@ import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -50,6 +51,8 @@ public class Robot extends IterativeRobot {
 	public Camera camera;
 	public Smashboard smashboard;
 
+	private Lumberjack paul;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -66,7 +69,8 @@ public class Robot extends IterativeRobot {
 		gyro = new GyroSubsystem();
 		camera = new Camera();
 		smashboard = new Smashboard();
-		
+		String[] headers = {"a", "b", "c"};
+		paul = new Lumberjack("RobotMain.csv", headers);
 		oi = new OI();
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
@@ -93,22 +97,25 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	Lumberjack.changeLogs();
     }
 
     /**
      * This function is called periodically during operator control
      */
+    Timer timer = new Timer();
+    
    public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
+	   timer.start();
+	   
     }
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
+        if(timer.get() > 0.5) {
+        	paul.log(Double.toString(pdpCAN.getTemperature()));
+        	timer.reset();
+        }
         SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
     }
     
