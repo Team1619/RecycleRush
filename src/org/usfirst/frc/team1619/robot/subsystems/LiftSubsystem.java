@@ -15,9 +15,36 @@ public class LiftSubsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void moveUp()
-    {
-    	//code here
+    public void lowerToteElevator() {
+    	
+    }
+    
+    public void raiseToteElevator() {
+    	
+    }
+    
+    public void lowerBinElevator() {
+    	
+    }
+    
+    public void raiseBinElevator() {
+    	
+    }
+    
+    public void binTiltUp() {
+    	
+    }
+    
+    public void tiltBinDown() {
+    	
+    }
+    
+    public void binGripOpen() {
+    	
+    }
+    
+    public void binGripClose() {
+    	
     }
 }
 

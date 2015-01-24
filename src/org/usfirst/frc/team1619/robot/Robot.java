@@ -52,6 +52,7 @@ public class Robot extends IterativeRobot {
 	public Camera camera;
 	public Smashboard smashboard;
 	public LiftSubsystem liftSubsystem;
+	private Lumberjack lumberjack;
 	
 
     /**
@@ -72,6 +73,7 @@ public class Robot extends IterativeRobot {
 		smashboard = new Smashboard();
 		oi = new OI();
 		liftSubsystem = new LiftSubsystem();
+		lumberjack = new Lumberjack("Robot Log", "PDP Total Current");
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
     }
@@ -88,6 +90,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()));
     }
 
     
