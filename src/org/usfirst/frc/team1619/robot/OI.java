@@ -2,6 +2,8 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.ConveyorBackwardManualCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorForwardManualCommand;
+import org.usfirst.frc.team1619.robot.commands.GuardRailCloseCommand;
+import org.usfirst.frc.team1619.robot.commands.GuardRailOpenCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 
@@ -24,22 +26,38 @@ public class OI {
 		return leftStick;
 	}
 	
-	private final JoystickButton kachigLeft;
-	private final JoystickButton kachigRight;
+	private final JoystickButton kachigLeft, kachigRight;
 	private final JoystickButton resetGyroButton;
-	private final JoystickButton conveyorForwardManualButton;
-	private final JoystickButton conveyorBackwardManualButton;
+	private final JoystickButton conveyorForwardManualButton, conveyorBackwardManualButton;
+	private final JoystickButton guardrailCloseManualButton, guardrailOpenManualButton;
+	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
+	private final JoystickButton binElevatorUpManualButton, binElevatorDownManualButton;
+	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
+	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
+
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
 		
+		//Right stick
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
+		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
+		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
+		
+		//Left stick
 		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
 		conveyorBackwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
-		
+		guardrailCloseManualButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+		guardrailOpenManualButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
+		binElevatorUpManualButton = new JoystickButton(leftStick, RobotMap.binElevatorUpManualButtonID);
+		binElevatorDownManualButton = new JoystickButton(leftStick, RobotMap.binElevatorDownManualButtonID);
+		binTiltUpManualButton = new JoystickButton(leftStick, RobotMap.binTiltUpManualButtonID);
+		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
+		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
+		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
 		
 		
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
@@ -47,6 +65,9 @@ public class OI {
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		conveyorForwardManualButton.whenPressed(new ConveyorForwardManualCommand());
 		conveyorBackwardManualButton.whenPressed(new ConveyorBackwardManualCommand());
+		guardrailCloseManualButton.whenPressed(new GuardRailCloseCommand());
+		guardrailOpenManualButton.whenPressed(new GuardRailOpenCommand());
+
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
