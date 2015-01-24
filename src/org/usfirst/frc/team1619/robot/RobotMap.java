@@ -21,14 +21,25 @@ public class RobotMap {
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
 	
+	//Right stick
 	public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 6;
+	public static final int toteElevatorUpManualButtonID = 4;
+	public static final int toteElevatorDownManualButtonID = 3;
 	
+	//Left Stick
 	public static final int conveyorForwardManualButtonID = 4;
 	public static final int conveyorBackwardManualButtonID = 3;
 	public static final int guardrailCloseManualButtonID = 13;
 	public static final int guardrailOpenManualButtonID = 14;
+	public static final int binElevatorUpManualButtonID = 8;
+	public static final int binElevatorDownManualButtonID = 7;
+	public static final int binTiltUpManualButtonID = 9;
+	public static final int binTiltDownManualButtonID = 6;
+	public static final int binGripOpenManualButtonID = 10;
+	public static final int binGripCloseManualButtonID = 5;
+	
 	
 	public static final int OpticalSensorID = 1;
 	
