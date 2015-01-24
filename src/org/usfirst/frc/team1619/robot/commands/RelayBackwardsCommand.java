@@ -1,34 +1,23 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class GyroCommand extends Command {
+public class RelayBackwardsCommand extends Command {
 
-	private GyroSubsystem gyro;
-	
-    public GyroCommand() {
-    	
-    	gyro = Robot.getRobot().gyro;
+    public RelayBackwardsCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(gyro);
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("Gyro Direction", gyro.getHeading());
-    	SmartDashboard.putNumber("Gyro Temperature", gyro.getTemperature());
     }
 
     // Make this return true when this Command no longer needs to run execute()
