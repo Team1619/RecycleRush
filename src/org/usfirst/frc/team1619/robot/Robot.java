@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 
+import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
@@ -9,10 +10,12 @@ import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
+import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
 import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,7 +33,6 @@ public class Robot extends IterativeRobot {
 	private static Robot robot;
 	public Robot() {
 		robot = this;
-		
 	}
 	static public Robot getRobot() {
 		return robot;
@@ -47,6 +49,7 @@ public class Robot extends IterativeRobot {
 	public PowerDistributionPanel pdpCAN;
 	public GyroSubsystem gyro;
 	public Camera camera;
+	public Smashboard smashboard;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -63,7 +66,7 @@ public class Robot extends IterativeRobot {
 		pdpCAN = new PowerDistributionPanel();
 		gyro = new GyroSubsystem();
 		camera = new Camera();
-		
+		smashboard = new Smashboard();
 		oi = new OI();
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
@@ -90,22 +93,21 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-
+    	Lumberjack.changeLogs();
     }
 
     /**
      * This function is called periodically during operator control
      */
+    Timer timer = new Timer();
+    
    public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to 
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
+	   timer.start();
+	   
     }
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        
         SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
     }
     

@@ -6,6 +6,7 @@ import org.usfirst.frc.team1619.robot.commands.GuardRailCloseCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailOpenCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
+import org.usfirst.frc.team1619.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
