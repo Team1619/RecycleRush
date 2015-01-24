@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-
 import org.usfirst.frc.team1619.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,15 +7,14 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ConveyorBackwardManualCommand extends Command {
-	private Conveyor conveyor;
+public class BinGripCloseManualCommand extends Command {
+	private LiftSubsystem liftSubsystem;
 
-
-    public ConveyorBackwardManualCommand() {
+    public BinGripCloseManualCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	conveyor = Robot.getRobot().conveyor;
-    	requires(conveyor);
+    	liftSubsystem = Robot.getRobot().liftSubsystem;
+    	requires(liftSubsystem);
     }
 
     // Called just before this Command runs the first time

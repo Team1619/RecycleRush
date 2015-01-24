@@ -6,6 +6,7 @@ import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
@@ -52,6 +53,8 @@ public class Robot extends IterativeRobot {
 	public Camera camera;
 	public Smashboard smashboard;
 	public LiftSubsystem liftSubsystem;
+	public Conveyor conveyor;
+	
 	
 
     /**
@@ -72,6 +75,7 @@ public class Robot extends IterativeRobot {
 		smashboard = new Smashboard();
 		oi = new OI();
 		liftSubsystem = new LiftSubsystem();
+		conveyor = new Conveyor();
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
     }
