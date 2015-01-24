@@ -1,15 +1,21 @@
 package org.usfirst.frc.team1619.robot.commands;
 
+import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class ConveyorForwardManualCommand extends Command {
+	private Conveyor conveyor;
 
     public ConveyorForwardManualCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	conveyor= Robot.getRobot().conveyor;
+    	requires(conveyor);
     }
 
     // Called just before this Command runs the first time
