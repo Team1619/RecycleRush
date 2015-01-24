@@ -51,8 +51,6 @@ public class Robot extends IterativeRobot {
 	public Camera camera;
 	public Smashboard smashboard;
 
-	private Lumberjack paul;
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -69,8 +67,6 @@ public class Robot extends IterativeRobot {
 		gyro = new GyroSubsystem();
 		camera = new Camera();
 		smashboard = new Smashboard();
-		String[] headers = {"a", "b", "c"};
-		paul = new Lumberjack("RobotMain.csv", headers);
 		oi = new OI();
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
@@ -112,10 +108,6 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        if(timer.get() > 0.5) {
-        	paul.log(Double.toString(pdpCAN.getTemperature()));
-        	timer.reset();
-        }
         SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
     }
     

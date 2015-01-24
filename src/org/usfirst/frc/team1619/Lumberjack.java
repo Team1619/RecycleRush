@@ -12,6 +12,12 @@ import java.util.Date;
 //Use Lumberjacks for logging
 //Helpful comments by TimE wing
 
+//To get logs from a Lumberjack, first initialize it,
+//then call lumberjack.log("values") to push those
+//values to the log file
+//lumberjack.changeLog() will close the files and make
+//new ones.
+
 public class Lumberjack {
 	
 	private static final String logFolderPath = "/home/lvuser/log/";
@@ -24,7 +30,7 @@ public class Lumberjack {
 	private String logName;
 	private String[] headers;
 	
-	public Lumberjack(String logName, String[] headers) {
+	public Lumberjack(String logName, String ... headers) {
 		this.logName = new String(logName);
 		this.headers = new String[headers.length + 1];
 		this.headers[0] = "Timestamp";
@@ -53,7 +59,7 @@ public class Lumberjack {
 		}
 	}
 	
-	public static void cleanUp() {
+	private static void cleanUp() {
 		File logFolder = new File(logFolderPath);
 		File[] logPaths = logFolder.listFiles();
 		Arrays.sort(logPaths);
