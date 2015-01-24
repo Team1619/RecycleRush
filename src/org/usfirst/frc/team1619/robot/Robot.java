@@ -8,6 +8,7 @@ import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
@@ -50,6 +51,8 @@ public class Robot extends IterativeRobot {
 	public GyroSubsystem gyro;
 	public Camera camera;
 	public Smashboard smashboard;
+	public LiftSubsystem liftSubsystem;
+	
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,6 +71,7 @@ public class Robot extends IterativeRobot {
 		camera = new Camera();
 		smashboard = new Smashboard();
 		oi = new OI();
+		liftSubsystem = new LiftSubsystem();
         // instantiate the command used for the autonomous period
 		// new OI needs to be called last
     }
