@@ -27,8 +27,8 @@ public class RobotMap {
 	
 	public static final int conveyorForwardManualButtonID = 4;
 	public static final int conveyorBackwardManualButtonID = 3;
-	public static final int guardrailCloseManualButtonID = 5;
-	public static final int guardrailOpenManualButtonID = 6;
+	public static final int guardrailCloseManualButtonID = 13;
+	public static final int guardrailOpenManualButtonID = 14;
 	
 	public static final int OpticalSensorID = 1;
 	
