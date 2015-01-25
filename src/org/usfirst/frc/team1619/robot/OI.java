@@ -1,11 +1,19 @@
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.commands.BinElevatorDownManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinElevatorUpManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinGripCloseManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinGripOpenManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinTiltDownManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinTiltUpManualCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorBackwardManualCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorForwardManualCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailCloseCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailOpenCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
+import org.usfirst.frc.team1619.robot.commands.ToteElevatorDownManualCommand;
+import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
 import org.usfirst.frc.team1619.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -68,6 +76,16 @@ public class OI {
 		conveyorBackwardManualButton.whenPressed(new ConveyorBackwardManualCommand());
 		guardrailCloseManualButton.whenPressed(new GuardRailCloseCommand());
 		guardrailOpenManualButton.whenPressed(new GuardRailOpenCommand());
+		toteElevatorDownManualButton.whenPressed(new ToteElevatorDownManualCommand());
+		toteElevatorUpManualButton.whenPressed(new ToteElevatorUpManualCommand());
+		binElevatorUpManualButton.whenPressed(new BinElevatorUpManualCommand());
+		binElevatorDownManualButton.whenPressed(new BinElevatorDownManualCommand());
+		binTiltUpManualButton.whenPressed(new BinTiltUpManualCommand());
+		binTiltDownManualButton.whenPressed(new BinTiltDownManualCommand());
+		binGripOpenManualButton.whenPressed(new BinGripOpenManualCommand());
+		binGripCloseManualButton.whenPressed(new BinGripCloseManualCommand());
+
+
 
 	}
     //// CREATING BUTTONS
