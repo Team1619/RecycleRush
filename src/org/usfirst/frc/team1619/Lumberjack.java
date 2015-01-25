@@ -68,7 +68,12 @@ public class Lumberjack {
 	}
 	
 	private static String getDateString() {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd-kk-mm-ss-SSS");
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+		return date.format(new Date());
+	}
+	
+	private static String getHumanReadableDateString() {
+		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 		return date.format(new Date());
 	}
 	
@@ -93,7 +98,7 @@ public class Lumberjack {
 	
 	private void printCSV(String[] values) {
 		try {
-			fileWriter.append(getDateString());
+			fileWriter.append(getHumanReadableDateString());
 			for(String s : values) {
 				fileWriter.append(',');
 				fileWriter.append(s);

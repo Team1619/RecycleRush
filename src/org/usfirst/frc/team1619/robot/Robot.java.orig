@@ -53,9 +53,9 @@ public class Robot extends IterativeRobot {
 	public Camera camera;
 	public Smashboard smashboard;
 	public LiftSubsystem liftSubsystem;
-	public Conveyor conveyor;
 	private Lumberjack lumberjack;
-	private Timer timer;
+	public Conveyor conveyor;
+	
 	
 
     /**
@@ -74,36 +74,12 @@ public class Robot extends IterativeRobot {
 		gyro = new GyroSubsystem();
 		camera = new Camera();
 		smashboard = new Smashboard();
-		liftSubsystem = new LiftSubsystem();
-		conveyor = new Conveyor();
-		timer = new Timer();
-		lumberjack = new Lumberjack("PDP.csv",
-				"PDP Total Current", 
-				"Current 0", 
-				"Current 1", 
-				"Current 2", 
-				"Current 3", 
-				"Current 4", 
-				"Current 5",
-				"Current 6",
-				"Current 7",
-				"Current 8",
-				"Current 9",
-				"Current 10",
-				"Current 11",
-				"Current 12",
-				"Current 13",
-				"Current 14",
-				"Current 15",
-				"PDP Voltage", 
-				"PDP Temperature", 
-				"PDP Total Power", 
-				"PDP Total Energy"
-		);
-        
-
-		// new OI needs to be called last
 		oi = new OI();
+		liftSubsystem = new LiftSubsystem();
+		lumberjack = new Lumberjack("Robot Log", "PDP Total Current");
+		conveyor = new Conveyor();
+        // instantiate the command used for the autonomous period
+		// new OI needs to be called last
     }
 	
 	public void disabledPeriodic() {
@@ -118,6 +94,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()));
     }
 
     
@@ -133,6 +110,7 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called periodically during operator control
      */
+    Timer timer = new Timer();
     
    public void teleopInit() {
 	   timer.start();
@@ -142,32 +120,6 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
-        if (timer.get() >= 1) {
-        	System.out.println(pdpCAN.getTotalCurrent());
-            lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
-            		Double.toString(pdpCAN.getCurrent(0)),
-            		Double.toString(pdpCAN.getCurrent(1)),
-            		Double.toString(pdpCAN.getCurrent(2)),
-            		Double.toString(pdpCAN.getCurrent(3)),
-            		Double.toString(pdpCAN.getCurrent(4)),
-            		Double.toString(pdpCAN.getCurrent(5)),
-            		Double.toString(pdpCAN.getCurrent(6)),
-            		Double.toString(pdpCAN.getCurrent(7)),
-            		Double.toString(pdpCAN.getCurrent(8)),
-            		Double.toString(pdpCAN.getCurrent(9)),
-            		Double.toString(pdpCAN.getCurrent(10)),
-            		Double.toString(pdpCAN.getCurrent(11)),
-            		Double.toString(pdpCAN.getCurrent(12)),
-            		Double.toString(pdpCAN.getCurrent(13)),
-            		Double.toString(pdpCAN.getCurrent(14)),
-            		Double.toString(pdpCAN.getCurrent(15)),
-            		Double.toString(pdpCAN.getVoltage()), 
-            		Double.toString(pdpCAN.getTemperature()), 
-            		Double.toString(pdpCAN.getTotalPower()), 
-            		Double.toString(pdpCAN.getTotalEnergy())
-            );
-            timer.reset();
-        }
     }
     
     
