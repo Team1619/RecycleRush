@@ -72,18 +72,18 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whenPressed(new ConveyorForwardManualCommand());
-		conveyorBackwardManualButton.whenPressed(new ConveyorBackwardManualCommand());
-		guardrailCloseManualButton.whenPressed(new GuardRailCloseCommand());
-		guardrailOpenManualButton.whenPressed(new GuardRailOpenCommand());
-		toteElevatorDownManualButton.whenPressed(new ToteElevatorDownManualCommand());
-		toteElevatorUpManualButton.whenPressed(new ToteElevatorUpManualCommand());
-		binElevatorUpManualButton.whenPressed(new BinElevatorUpManualCommand());
-		binElevatorDownManualButton.whenPressed(new BinElevatorDownManualCommand());
-		binTiltUpManualButton.whenPressed(new BinTiltUpManualCommand());
-		binTiltDownManualButton.whenPressed(new BinTiltDownManualCommand());
-		binGripOpenManualButton.whenPressed(new BinGripOpenManualCommand());
-		binGripCloseManualButton.whenPressed(new BinGripCloseManualCommand());
+		conveyorForwardManualButton.whileHeld(new ConveyorForwardManualCommand());
+		conveyorBackwardManualButton.whileHeld(new ConveyorBackwardManualCommand());
+		guardrailCloseManualButton.whileHeld(new GuardRailCloseCommand());
+		guardrailOpenManualButton.whileHeld(new GuardRailOpenCommand());
+		toteElevatorDownManualButton.whileHeld(new ToteElevatorDownManualCommand());
+		toteElevatorUpManualButton.whileHeld(new ToteElevatorUpManualCommand());
+		binElevatorUpManualButton.whileHeld(new BinElevatorUpManualCommand());
+		binElevatorDownManualButton.whileHeld(new BinElevatorDownManualCommand());
+		binTiltUpManualButton.whileHeld(new BinTiltUpManualCommand());
+		binTiltDownManualButton.whileHeld(new BinTiltDownManualCommand());
+		binGripOpenManualButton.whileHeld(new BinGripOpenManualCommand());
+		binGripCloseManualButton.whileHeld(new BinGripCloseManualCommand());
 
 
 
