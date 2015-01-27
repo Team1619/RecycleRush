@@ -5,7 +5,6 @@ import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -30,7 +29,7 @@ public class RunMotorCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	motorSystem.run(rightStick.getX());
-    	SmartDashboard.putNumber("MotorSystem Encoder Position", motorSystem.getPosition());
+    	//SmartDashboard.putNumber("MotorSystem Encoder Position", motorSystem.getPosition());
     }
 
     // Make this return true when this Command no longer needs to run execute()
