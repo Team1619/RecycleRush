@@ -24,7 +24,9 @@ public class RobotMap {
 	public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 6;
-		
+	public static final int conveyorForwardManualButtonID = 4;
+	public static final int conveyorBackwardManualButtonID = 3;
+	
 	public static final int OpticalSensorID = 1;
 	
 	public static final int motorSystemID = 2;

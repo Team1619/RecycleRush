@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.GyroCommand;
+import org.usfirst.frc.team1619.robot.commands.DefaultGyroCommand;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Gyro;
@@ -43,6 +43,6 @@ public class GyroSubsystem extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new GyroCommand());
+        setDefaultCommand(new DefaultGyroCommand());
     }
 }

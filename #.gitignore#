@@ -1,0 +1,4 @@
+/bin/
+/build/org/
+/dist/
+.DS_Store
