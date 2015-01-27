@@ -1,23 +1,15 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-
-import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ConveyorBackwardManualCommand extends Command {
-	private Conveyor conveyor;
+public class GuardRailCloseCommand extends Command {
 
-
-    public ConveyorBackwardManualCommand() {
+    public GuardRailCloseCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	conveyor = Robot.getRobot().conveyor;
-    	requires(conveyor);
     }
 
     // Called just before this Command runs the first time

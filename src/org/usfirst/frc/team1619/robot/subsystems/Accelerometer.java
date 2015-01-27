@@ -19,14 +19,12 @@ public class Accelerometer extends Subsystem {
 	private double accelerationY;
 	private double accelerationZ;
 	private Timer timer;
-	private double last;
 	
 	public Accelerometer()
 	{
 		accelerometer = new BuiltInAccelerometer();
 		timer = new Timer();
 		timer.start();
-		last = 0;
 		
 	}
 	
@@ -35,9 +33,9 @@ public class Accelerometer extends Subsystem {
 		accelerationX = accelerometer.getX();
 		accelerationY = accelerometer.getY();
 		accelerationZ = accelerometer.getZ();
-		if(timer.get() >= last + 1) {
+		if(timer.get() >= 1) {
 			SmartDashboard.putString("Accelerometer", "X - " + accelerationX + "\nY - " + accelerationY + "\nZ - " + accelerationZ);
-			last = timer.get();
+			timer.reset();
 		}
 		
 	}
