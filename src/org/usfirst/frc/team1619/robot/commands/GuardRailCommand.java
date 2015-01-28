@@ -1,21 +1,23 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class BinTiltUpManualCommand extends Command {
-	private LiftSubsystem liftSubsystem;
-
-    public BinTiltUpManualCommand() {
+public class GuardRailCommand extends Command {
+	private Conveyor conveyor; 
+	protected Conveyor getConveyor() {
+		return conveyor;
+	}
+	
+    public GuardRailCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	liftSubsystem = Robot.getRobot().liftSubsystem;
-    	requires(liftSubsystem);
+    	conveyor = Robot.getRobot().conveyor;
+        requires(conveyor);
     }
 
     // Called just before this Command runs the first time
@@ -38,5 +40,17 @@ public class BinTiltUpManualCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    public static class GuardRailOpen extends GuardRailCommand {
+    	protected void execute() {
+    		getConveyor().moveGuardRail(1.0);
+    	}
+    }
+    
+    public static class GuardRailClose extends GuardRailCommand {
+    	protected void execute() {
+    		getConveyor().moveGuardRail(-1.0);
+    	}
     }
 }

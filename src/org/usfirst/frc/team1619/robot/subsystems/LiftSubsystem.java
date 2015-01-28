@@ -27,11 +27,7 @@ public class LiftSubsystem extends Subsystem {
     	
     }
     
-    public void binTiltUp() {
-    	
-    }
-    
-    public void tiltBinDown() {
+    public void binTilt(double moveValue) {
     	
     }
     
