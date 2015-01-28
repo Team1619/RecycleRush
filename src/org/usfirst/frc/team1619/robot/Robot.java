@@ -9,6 +9,7 @@ import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot {
 	public Conveyor conveyor;
 	private Lumberjack lumberjack;
 	private Timer timer;
+	public LEDStrip ledStrip;
 	
 
     /**
