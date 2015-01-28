@@ -43,7 +43,6 @@ public class BinElevatorCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-    
     public static class BinElevatorUp extends BinElevatorCommand {
     	protected void execute() {
     		getLiftSubsystem().moveBinElevator(1.0);

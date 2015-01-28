@@ -1,8 +1,8 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
-import org.usfirst.frc.team1619.robot.commands.BinGripCloseManualCommand;
-import org.usfirst.frc.team1619.robot.commands.BinGripOpenManualCommand;
+
+import org.usfirst.frc.team1619.robot.commands.BinGripCommand;
 import org.usfirst.frc.team1619.robot.commands.BinTiltDownManualCommand;
 import org.usfirst.frc.team1619.robot.commands.BinTiltUpManualCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorBackwardManualCommand;
@@ -80,8 +80,8 @@ public class OI {
 		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDown());
 		binTiltUpManualButton.whileHeld(new BinTiltUpManualCommand());
 		binTiltDownManualButton.whileHeld(new BinTiltDownManualCommand());
-		binGripOpenManualButton.whileHeld(new BinGripOpenManualCommand());
-		binGripCloseManualButton.whileHeld(new BinGripCloseManualCommand());
+		binGripOpenManualButton.whileHeld(new BinGripCommand());
+		
 
 
 
