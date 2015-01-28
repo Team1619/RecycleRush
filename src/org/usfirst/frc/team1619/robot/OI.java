@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.robot.commands.BinElevatorDownManualCommand;
-import org.usfirst.frc.team1619.robot.commands.BinElevatorUpManualCommand;
+import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.BinGripCloseManualCommand;
 import org.usfirst.frc.team1619.robot.commands.BinGripOpenManualCommand;
 import org.usfirst.frc.team1619.robot.commands.BinTiltDownManualCommand;
@@ -14,7 +13,6 @@ import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.ToteElevatorDownManualCommand;
 import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
-import org.usfirst.frc.team1619.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -78,8 +76,8 @@ public class OI {
 		guardrailOpenManualButton.whileHeld(new GuardRailOpenCommand());
 		toteElevatorDownManualButton.whileHeld(new ToteElevatorDownManualCommand());
 		toteElevatorUpManualButton.whileHeld(new ToteElevatorUpManualCommand());
-		binElevatorUpManualButton.whileHeld(new BinElevatorUpManualCommand());
-		binElevatorDownManualButton.whileHeld(new BinElevatorDownManualCommand());
+		binElevatorUpManualButton.whileHeld(new BinElevatorCommand.BinElevatorUp());
+		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDown());
 		binTiltUpManualButton.whileHeld(new BinTiltUpManualCommand());
 		binTiltDownManualButton.whileHeld(new BinTiltDownManualCommand());
 		binGripOpenManualButton.whileHeld(new BinGripOpenManualCommand());

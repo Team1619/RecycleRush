@@ -23,11 +23,7 @@ public class LiftSubsystem extends Subsystem {
     	
     }
     
-    public void lowerBinElevator() {
-    	
-    }
-    
-    public void raiseBinElevator() {
+    public void moveBinElevator(double moveValue) {
     	
     }
     
