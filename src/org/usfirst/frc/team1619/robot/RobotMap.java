@@ -47,7 +47,7 @@ public class RobotMap {
 	
 	public static final int sonarAnalogInputID = 0;
 	
-	public static final int switchSubsystemID = 9;
+	public static final int switchSubsystemID = 0;
 	
 	public static final int gyroTempAnalogID = 2;//temperature - analog 1
 	public static final int gyroRateAnalogID = 1;//rate - analog 2
