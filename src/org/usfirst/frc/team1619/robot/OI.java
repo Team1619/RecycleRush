@@ -1,10 +1,5 @@
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.robot.commands.KachigCommand;
-import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 //github.com/Team1619/RecycleRush.git
 //github.com/Team1619/RecycleRush.git
 import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
@@ -12,8 +7,12 @@ import org.usfirst.frc.team1619.robot.commands.BinGripCommand;
 import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteElevatorDownManualCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
+import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
+import org.usfirst.frc.team1619.robot.commands.ToteElevatorCommand;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 /**
@@ -68,18 +67,18 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whileHeld(new ConveyorCommand.ConveyorForward());
-		conveyorBackwardManualButton.whileHeld(new ConveyorCommand.ConveyorBackward());
-		guardrailCloseManualButton.whileHeld(new GuardRailCommand.GuardRailClose());
-		guardrailOpenManualButton.whileHeld(new GuardRailCommand.GuardRailOpen());
-		toteElevatorDownManualButton.whileHeld(new ToteElevatorDownManualCommand());
-		toteElevatorUpManualButton.whileHeld(new ToteElevatorUpManualCommand());
-		binElevatorUpManualButton.whileHeld(new BinElevatorCommand.BinElevatorUp());
-		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDown());
-		binTiltUpManualButton.whileHeld(new BinTiltCommand.BinTiltUp());
-		binTiltDownManualButton.whileHeld(new BinTiltCommand.BinTiltDown());
-		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpen());
-		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripClose());
+		conveyorForwardManualButton.whileHeld(new ConveyorCommand.ConveyorForwardCommand());
+		conveyorBackwardManualButton.whileHeld(new ConveyorCommand.ConveyorBackwardCommand());
+		guardrailCloseManualButton.whileHeld(new GuardRailCommand.GuardRailCloseCommand());
+		guardrailOpenManualButton.whileHeld(new GuardRailCommand.GuardRailOpenCommand());
+		toteElevatorDownManualButton.whileHeld(new ToteElevatorCommand.ToteElevatorDownCommand());
+		toteElevatorUpManualButton.whileHeld(new ToteElevatorCommand.ToteElevatorUpCommand());
+		binElevatorUpManualButton.whileHeld(new BinElevatorCommand.BinElevatorUpCommand());
+		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDownCommand());
+		binTiltUpManualButton.whileHeld(new BinTiltCommand.BinTiltUpCommand());
+		binTiltDownManualButton.whileHeld(new BinTiltCommand.BinTiltDownCommand());
+		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpenCommand());
+		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripCloseCommand());
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

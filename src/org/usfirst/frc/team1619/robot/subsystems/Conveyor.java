@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import edu.wpi.first.wpilibj.TalonSRX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -10,7 +9,7 @@ public class Conveyor extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private TalonSRX conveyorMotor;
+	//private TalonSRX conveyorMotor;
 	
 	public Conveyor()
 	{

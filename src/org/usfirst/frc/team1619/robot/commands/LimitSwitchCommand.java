@@ -1,22 +1,22 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ToteElevatorDownManualCommand extends Command {
-	private LiftSubsystem liftSubsystem;
+public class LimitSwitchCommand extends Command {
 	
+	private LimitSwitch switchSubsystem;
 
-    public ToteElevatorDownManualCommand() {
+    public LimitSwitchCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSubsystem = Robot.getRobot().liftSubsystem;
-    	requires(liftSubsystem);
+    	switchSubsystem = Robot.getRobot().switchSubsystem;
+        requires(switchSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,6 +25,7 @@ public class ToteElevatorDownManualCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	switchSubsystem.getState();
     }
 
     // Make this return true when this Command no longer needs to run execute()

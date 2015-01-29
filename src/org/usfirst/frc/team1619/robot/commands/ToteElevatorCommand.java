@@ -1,22 +1,24 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.SwitchSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class SwitchCommand extends Command {
-	
-	private SwitchSubsystem switchSubsystem;
+public class ToteElevatorCommand extends Command {
+	private LiftSystem liftSubsystem;
+	protected LiftSystem getLiftSubsystem() {
+		return liftSubsystem;
+	}
 
-    public SwitchCommand() {
+    public ToteElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	switchSubsystem = Robot.getRobot().switchSubsystem;
-        requires(switchSubsystem);
+    	liftSubsystem = Robot.getRobot().liftSubsystem;
+    	requires(liftSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +27,6 @@ public class SwitchCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	switchSubsystem.getState();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -40,5 +41,17 @@ public class SwitchCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    public static class ToteElevatorUpCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(1.0);
+    	}
+    }
+    
+    public static class ToteElevatorDownCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(-1.0);
+    	}
     }
 }

@@ -44,13 +44,13 @@ public class ConveyorCommand extends Command {
     protected void interrupted() {
     }
     
-    public static class ConveyorForward extends ConveyorCommand {
+    public static class ConveyorForwardCommand extends ConveyorCommand {
     	protected void execute() {
     		getConveyor().moveConveryor(1.0);
     	}
     }
     
-    public static class ConveyorBackward extends ConveyorCommand{
+    public static class ConveyorBackwardCommand extends ConveyorCommand{
     	protected void execute() {
     		getConveyor().moveConveryor(-1.0);
     	}
