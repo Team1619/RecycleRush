@@ -12,8 +12,8 @@ import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
-import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
-import org.usfirst.frc.team1619.robot.subsystems.SwitchSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.Sonar;
+import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -45,7 +45,7 @@ public class Robot extends IterativeRobot {
 	public Drivetrain drivetrain;
 	public OpticalSensor opticalSensor;
 	public MotorSystem motorSystem;
-	public SonarSystem sonarSystem;
+	public Sonar sonarSystem;
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
 	public Camera camera;
@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot {
 	private Lumberjack lumberjack;
 	private Timer timer;
 	public LEDStrip ledStrip;
-	public SwitchSubsystem switchSubsystem;
+	public LimitSwitch switchSubsystem;
 	
 
     /**
@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
     	drivetrain = new Drivetrain();
 		opticalSensor = new OpticalSensor();
 		motorSystem = new MotorSystem();
-		sonarSystem = new SonarSystem();
+		sonarSystem = new Sonar();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
 		camera = new Camera();
@@ -75,7 +75,7 @@ public class Robot extends IterativeRobot {
 		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
 		timer = new Timer();
-		switchSubsystem = new SwitchSubsystem();
+		switchSubsystem = new LimitSwitch();
 		lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 
