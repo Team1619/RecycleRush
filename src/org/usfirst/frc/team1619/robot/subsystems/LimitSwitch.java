@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.OpticalSensorCommand;
 import org.usfirst.frc.team1619.robot.commands.LimitSwitchCommand;
 
 import edu.wpi.first.wpilibj.DigitalInput;
