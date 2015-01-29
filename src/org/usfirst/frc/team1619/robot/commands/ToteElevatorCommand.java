@@ -1,18 +1,20 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ToteElevatorDownManualCommand extends Command {
-	private LiftSubsystem liftSubsystem;
-	
+public class ToteElevatorCommand extends Command {
+	private LiftSystem liftSubsystem;
+	protected LiftSystem getLiftSubsystem() {
+		return liftSubsystem;
+	}
 
-    public ToteElevatorDownManualCommand() {
+    public ToteElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	liftSubsystem = Robot.getRobot().liftSubsystem;
@@ -39,5 +41,17 @@ public class ToteElevatorDownManualCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    public static class ToteElevatorUpCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(1.0);
+    	}
+    }
+    
+    public static class ToteElevatorDownCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(-1.0);
+    	}
     }
 }

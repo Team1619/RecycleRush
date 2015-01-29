@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class LiftSubsystem extends Subsystem {
+public class LiftSystem extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -15,11 +15,7 @@ public class LiftSubsystem extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
     
-    public void lowerToteElevator() {
-    	
-    }
-    
-    public void raiseToteElevator() {
+    public void moveToteElevator(double moveValue) {
     	
     }
     

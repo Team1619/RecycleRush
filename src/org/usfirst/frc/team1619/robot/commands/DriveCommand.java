@@ -30,6 +30,8 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	drivetrain.drive(joystick);
+    	Robot.getRobot().smashboard.write("Gyro Direction", drivetrain.getHeading());
+    	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
     }
 
     // Make this return true when this Command no longer needs to run execute()

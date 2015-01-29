@@ -4,13 +4,11 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
-import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
@@ -44,16 +42,14 @@ public class Robot extends IterativeRobot {
 	public OI oi;
 	
 	public Drivetrain drivetrain;
-	public BearClaw bearClaw;
 	public OpticalSensor opticalSensor;
 	public MotorSystem motorSystem;
 	public SonarSystem sonarSystem;
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
-	public GyroSubsystem gyro;
 	public Camera camera;
 	public Smashboard smashboard;
-	public LiftSubsystem liftSubsystem;
+	public LiftSystem liftSubsystem;
 	public Conveyor conveyor;
 	private Lumberjack lumberjack;
 	private Timer timer;
@@ -67,16 +63,14 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	
     	drivetrain = new Drivetrain();
-		//bearClaw = new BearClaw();
 		opticalSensor = new OpticalSensor();
 		motorSystem = new MotorSystem();
 		sonarSystem = new SonarSystem();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
-		gyro = new GyroSubsystem();
 		camera = new Camera();
 		smashboard = new Smashboard();
-		liftSubsystem = new LiftSubsystem();
+		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
 		timer = new Timer();
 		lumberjack = new Lumberjack("PDP.csv",

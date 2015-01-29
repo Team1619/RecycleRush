@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class BinTiltCommand extends Command {
-	private LiftSubsystem liftSubsystem;
-	protected LiftSubsystem getLiftSubsystem() {
+	private LiftSystem liftSubsystem;
+	protected LiftSystem getLiftSubsystem() {
 		return liftSubsystem;
 	}
 
@@ -43,13 +43,13 @@ public class BinTiltCommand extends Command {
     protected void interrupted() {
     }
     
-    public static class BinTiltUp extends BinTiltCommand {
+    public static class BinTiltUpCommand extends BinTiltCommand {
     	protected void execute() {
     		getLiftSubsystem().binTilt(1.0);
     	}
     }
     
-    public static class BinTiltDown extends BinTiltCommand {
+    public static class BinTiltDownCommand extends BinTiltCommand {
     	protected void execute() {
     		getLiftSubsystem().binTilt(-1.0);
     	}

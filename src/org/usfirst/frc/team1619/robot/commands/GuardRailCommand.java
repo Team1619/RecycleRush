@@ -42,13 +42,13 @@ public class GuardRailCommand extends Command {
     protected void interrupted() {
     }
     
-    public static class GuardRailOpen extends GuardRailCommand {
+    public static class GuardRailOpenCommand extends GuardRailCommand {
     	protected void execute() {
     		getConveyor().moveGuardRail(1.0);
     	}
     }
     
-    public static class GuardRailClose extends GuardRailCommand {
+    public static class GuardRailCloseCommand extends GuardRailCommand {
     	protected void execute() {
     		getConveyor().moveGuardRail(-1.0);
     	}
