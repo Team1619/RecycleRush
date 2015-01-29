@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.OpticalSensorCommand;
 import org.usfirst.frc.team1619.robot.commands.LimitSwitchCommand;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -23,12 +22,10 @@ public class LimitSwitch extends Subsystem {
 		switchSubsystem = new DigitalInput(RobotMap.switchSubsystemID);
 		
 		switchSubsystem.requestInterrupts(new FixedInterruptHandler<Integer>() {
-			
 			@Override
 			protected void interruptFired2(int interruptAssertedMask, Integer param) {
 				System.out.println("Edge" + " " + interruptAssertedMask);
-			}
-			
+			}	
 		});
 		switchSubsystem.enableInterrupts();
 		switchSubsystem.setUpSourceEdge(true, true);
