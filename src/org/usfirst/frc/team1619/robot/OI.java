@@ -1,19 +1,19 @@
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
-import org.usfirst.frc.team1619.robot.commands.BinGripCloseManualCommand;
-import org.usfirst.frc.team1619.robot.commands.BinGripOpenManualCommand;
-import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
-import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
-import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteElevatorDownManualCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 //github.com/Team1619/RecycleRush.git
+//github.com/Team1619/RecycleRush.git
+import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.BinGripCommand;
+import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
+import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
+import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
+import org.usfirst.frc.team1619.robot.commands.ToteElevatorDownManualCommand;
+import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
 
 
 /**
@@ -78,11 +78,8 @@ public class OI {
 		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDown());
 		binTiltUpManualButton.whileHeld(new BinTiltCommand.BinTiltUp());
 		binTiltDownManualButton.whileHeld(new BinTiltCommand.BinTiltDown());
-		binGripOpenManualButton.whileHeld(new BinGripOpenManualCommand());
-		binGripCloseManualButton.whileHeld(new BinGripCloseManualCommand());
-
-
-
+		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpen());
+		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripClose());
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

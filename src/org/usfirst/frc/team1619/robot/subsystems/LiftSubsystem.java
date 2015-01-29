@@ -31,11 +31,7 @@ public class LiftSubsystem extends Subsystem {
     	
     }
     
-    public void binGripOpen() {
-    	
-    }
-    
-    public void binGripClose() {
+    public void moveBinGrip(double moveVal) {
     	
     }
 }
