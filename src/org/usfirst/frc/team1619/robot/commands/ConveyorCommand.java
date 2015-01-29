@@ -9,11 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ConveyorBackwardManualCommand extends Command {
+public class ConveyorCommand extends Command {
 	private Conveyor conveyor;
+	protected Conveyor getConveyor() {
+		return conveyor;
+	}
 
-
-    public ConveyorBackwardManualCommand() {
+    public ConveyorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	conveyor = Robot.getRobot().conveyor;
@@ -41,4 +43,17 @@ public class ConveyorBackwardManualCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
+    
+    public static class ConveyorForward extends ConveyorCommand {
+    	protected void execute() {
+    		getConveyor().moveConveryor(1.0);
+    	}
+    }
+    
+    public static class ConveyorBackward extends ConveyorCommand{
+    	protected void execute() {
+    		getConveyor().moveConveryor(-1.0);
+    	}
+    }
+    
 }

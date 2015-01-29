@@ -4,8 +4,7 @@ import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.BinGripCloseManualCommand;
 import org.usfirst.frc.team1619.robot.commands.BinGripOpenManualCommand;
 import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
-import org.usfirst.frc.team1619.robot.commands.ConveyorBackwardManualCommand;
-import org.usfirst.frc.team1619.robot.commands.ConveyorForwardManualCommand;
+import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
@@ -14,6 +13,7 @@ import org.usfirst.frc.team1619.robot.commands.ToteElevatorUpManualCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+//github.com/Team1619/RecycleRush.git
 
 
 /**
@@ -68,8 +68,8 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whileHeld(new ConveyorForwardManualCommand());
-		conveyorBackwardManualButton.whileHeld(new ConveyorBackwardManualCommand());
+		conveyorForwardManualButton.whileHeld(new ConveyorCommand.ConveyorForward());
+		conveyorBackwardManualButton.whileHeld(new ConveyorCommand.ConveyorBackward());
 		guardrailCloseManualButton.whileHeld(new GuardRailCommand.GuardRailClose());
 		guardrailOpenManualButton.whileHeld(new GuardRailCommand.GuardRailOpen());
 		toteElevatorDownManualButton.whileHeld(new ToteElevatorDownManualCommand());
