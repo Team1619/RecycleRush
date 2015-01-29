@@ -24,9 +24,9 @@ public class RobotMap {
 	//Right stick
 	public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
-	public static final int resetGyroButtonID = 6;
-	public static final int toteElevatorUpManualButtonID = 4;
-	public static final int toteElevatorDownManualButtonID = 3;
+	public static final int resetGyroButtonID = 7;
+	public static final int toteElevatorUpManualButtonID = 5;
+	public static final int toteElevatorDownManualButtonID = 6;
 	
 	//Left Stick
 	public static final int conveyorForwardManualButtonID = 4;
@@ -46,8 +46,6 @@ public class RobotMap {
 	public static final int motorSystemID = 2;
 	
 	public static final int sonarAnalogInputID = 0;
-	
-	public static final int switchSubsystemID = 9;
 	
 	public static final int gyroTempAnalogID = 2;//temperature - analog 1
 	public static final int gyroRateAnalogID = 1;//rate - analog 2
