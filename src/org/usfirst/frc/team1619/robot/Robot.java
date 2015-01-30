@@ -4,18 +4,16 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
-import org.usfirst.frc.team1619.robot.subsystems.BearClaw;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team1619.robot.subsystems.GyroSubsystem;
 import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
-import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
-import org.usfirst.frc.team1619.robot.subsystems.SwitchSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.Sonar;
+import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -45,21 +43,19 @@ public class Robot extends IterativeRobot {
 	public OI oi;
 	
 	public Drivetrain drivetrain;
-	public BearClaw bearClaw;
 	public OpticalSensor opticalSensor;
 	public MotorSystem motorSystem;
-	public SonarSystem sonarSystem;
+	public Sonar sonarSystem;
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
-	public GyroSubsystem gyro;
 	public Camera camera;
 	public Smashboard smashboard;
-	public LiftSubsystem liftSubsystem;
+	public LiftSystem liftSubsystem;
 	public Conveyor conveyor;
 	private Lumberjack lumberjack;
 	private Timer timer;
 	public LEDStrip ledStrip;
-	public SwitchSubsystem switchSubsystem;
+	public LimitSwitch switchSubsystem;
 	
 
     /**
@@ -69,19 +65,17 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	
     	drivetrain = new Drivetrain();
-		//bearClaw = new BearClaw();
 		opticalSensor = new OpticalSensor();
 		motorSystem = new MotorSystem();
-		sonarSystem = new SonarSystem();
+		sonarSystem = new Sonar();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
-		gyro = new GyroSubsystem();
 		camera = new Camera();
 		smashboard = new Smashboard();
-		liftSubsystem = new LiftSubsystem();
+		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
 		timer = new Timer();
-		switchSubsystem = new SwitchSubsystem();
+		switchSubsystem = new LimitSwitch();
 		lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 

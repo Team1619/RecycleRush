@@ -1,8 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.OpticalSensorCommand;
-import org.usfirst.frc.team1619.robot.commands.SwitchCommand;
+import org.usfirst.frc.team1619.robot.commands.LimitSwitchCommand;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.FixedInterruptHandler;
@@ -11,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class SwitchSubsystem extends Subsystem {
+public class LimitSwitch extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -19,16 +18,14 @@ public class SwitchSubsystem extends Subsystem {
     // here. Call these from Commands.
 	private DigitalInput switchSubsystem;
 	
-	public SwitchSubsystem() {
+	public LimitSwitch() {
 		switchSubsystem = new DigitalInput(RobotMap.switchSubsystemID);
 		
 		switchSubsystem.requestInterrupts(new FixedInterruptHandler<Integer>() {
-			
 			@Override
 			protected void interruptFired2(int interruptAssertedMask, Integer param) {
 				System.out.println("Edge" + " " + interruptAssertedMask);
-			}
-			
+			}	
 		});
 		switchSubsystem.enableInterrupts();
 		switchSubsystem.setUpSourceEdge(true, true);
@@ -36,7 +33,7 @@ public class SwitchSubsystem extends Subsystem {
 
 	@Override
 	protected void initDefaultCommand() {
-		setDefaultCommand(new SwitchCommand());
+		setDefaultCommand(new LimitSwitchCommand());
 		// TODO Auto-generated method stub
 		
 	}

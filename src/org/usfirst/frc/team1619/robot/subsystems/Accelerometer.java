@@ -25,7 +25,6 @@ public class Accelerometer extends Subsystem {
 		accelerometer = new BuiltInAccelerometer();
 		timer = new Timer();
 		timer.start();
-		
 	}
 	
 	public void operatorControl()
@@ -36,11 +35,24 @@ public class Accelerometer extends Subsystem {
 		if(timer.get() >= 1) {
 			SmartDashboard.putString("Accelerometer", "X - " + accelerationX + "\nY - " + accelerationY + "\nZ - " + accelerationZ);
 			timer.reset();
-		}
-		
+		}	
+	}
+	
+	public double getXAcceleration()
+	{
+		return accelerometer.getX();
+	}
+	
+	public double getYAcceleration()
+	{
+		return accelerometer.getY();
+	}
+	
+	public double getZAcceleration()
+	{
+		return accelerometer.getZ();
 	}
 		
-
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

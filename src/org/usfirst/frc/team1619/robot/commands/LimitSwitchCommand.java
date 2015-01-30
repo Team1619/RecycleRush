@@ -1,18 +1,18 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.SwitchSubsystem;
+import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class SwitchCommand extends Command {
+public class LimitSwitchCommand extends Command {
 	
-	private SwitchSubsystem switchSubsystem;
+	private LimitSwitch switchSubsystem;
 
-    public SwitchCommand() {
+    public LimitSwitchCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	switchSubsystem = Robot.getRobot().switchSubsystem;

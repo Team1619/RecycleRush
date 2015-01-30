@@ -9,14 +9,14 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  *
  */
-public class SonarSystem extends Subsystem {
+public class Sonar extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	private AnalogInput rangeFinder;
 	private double distanceToVoltageRatio;
 	
-	public SonarSystem() {
+	public Sonar() {
 		rangeFinder = new AnalogInput(RobotMap.sonarAnalogInputID);
 		distanceToVoltageRatio = 1.0;
 	}

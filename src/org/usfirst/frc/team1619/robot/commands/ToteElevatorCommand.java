@@ -1,21 +1,24 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.Camera;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class CameraCommand extends Command {
-	private Camera camera;
+public class ToteElevatorCommand extends Command {
+	private LiftSystem liftSubsystem;
+	protected LiftSystem getLiftSubsystem() {
+		return liftSubsystem;
+	}
 
-    public CameraCommand() {
+    public ToteElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	camera = Robot.getRobot().camera;
-    	requires(camera);
+    	liftSubsystem = Robot.getRobot().liftSubsystem;
+    	requires(liftSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -38,5 +41,17 @@ public class CameraCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    }
+    
+    public static class ToteElevatorUpCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(1.0);
+    	}
+    }
+    
+    public static class ToteElevatorDownCommand extends ToteElevatorCommand {
+    	protected void execute() {
+    		getLiftSubsystem().moveToteElevator(-1.0);
+    	}
     }
 }

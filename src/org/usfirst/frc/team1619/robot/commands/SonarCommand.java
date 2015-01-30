@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.SonarSystem;
+import org.usfirst.frc.team1619.robot.subsystems.Sonar;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class SonarCommand extends Command {
 
-	private SonarSystem sonarSystem;
+	private Sonar sonarSystem;
     public SonarCommand() {
     	sonarSystem = Robot.getRobot().sonarSystem;
         // Use requires() here to declare subsystem dependencies
