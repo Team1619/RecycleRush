@@ -9,18 +9,17 @@ import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
 import org.usfirst.frc.team1619.robot.subsystems.Sonar;
-import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -76,7 +75,7 @@ public class Robot extends IterativeRobot {
 		conveyor = new Conveyor();
 		timer = new Timer();
 		switchSubsystem = new LimitSwitch();
-		lumberjack = new Lumberjack("PDP.csv",
+		/*lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 
 				"Current 1", 
@@ -98,7 +97,7 @@ public class Robot extends IterativeRobot {
 				"PDP Temperature", 
 				"PDP Total Power", 
 				"PDP Total Energy"
-		);
+		);*/
         
 
 		// new OI needs to be called last
@@ -140,9 +139,9 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-        SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
+        /*SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
         if (timer.get() >= 1) {
-        	System.out.println(pdpCAN.getTotalCurrent());
+        	//System.out.println(pdpCAN.getTotalCurrent());
             lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
             		Double.toString(pdpCAN.getCurrent(0)),
             		Double.toString(pdpCAN.getCurrent(1)),
@@ -166,7 +165,7 @@ public class Robot extends IterativeRobot {
             		Double.toString(pdpCAN.getTotalEnergy())
             );
             timer.reset();
-        }
+        }*/
     }
     
     

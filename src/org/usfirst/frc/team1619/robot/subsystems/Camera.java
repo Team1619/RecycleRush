@@ -10,7 +10,7 @@ public class Camera extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	public CameraServer server;
+	private CameraServer server;
 	
 	public Camera()
 	{
