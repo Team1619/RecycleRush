@@ -36,6 +36,16 @@ public class Drivetrain extends Subsystem {
     	drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
     	drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
     	
+    	//drive motor parameters, no limit switches and coasting
+    	leftMotor1.enableLimitSwitch(false, false);
+    	leftMotor2.enableLimitSwitch(false, false);
+    	rightMotor1.enableLimitSwitch(false, false);
+    	rightMotor2.enableLimitSwitch(false, false);
+    	leftMotor1.enableBrakeMode(false);
+    	leftMotor2.enableBrakeMode(false);
+    	rightMotor1.enableBrakeMode(false);
+    	rightMotor2.enableBrakeMode(false);
+    	
     	gyro = new Gyro(RobotMap.gyroRateAnalogID);
 		gyroTemp = new AnalogInput(RobotMap.gyroTempAnalogID);
 		

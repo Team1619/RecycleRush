@@ -13,7 +13,9 @@ public class Conveyor extends Subsystem {
 	
 	public Conveyor()
 	{
-		//conveyorMotor = new TalonSRX(RobotMap.conveyorMotorID);
+//		conveyorMotor = new TalonSRX(RobotMap.conveyorMotorID);
+//		conveyorMotor.enableLimitSwitch(false, false);
+//    	conveyorMotor.enableBrakeMode(false);
 	}
 
 	public void moveConveryor(double moveValue) {
