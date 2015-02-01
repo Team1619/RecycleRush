@@ -18,7 +18,7 @@ public class OpticalSensor extends Subsystem {
 	private DigitalInput opticalSensor;
 	
 	public OpticalSensor() {
-		opticalSensor = new DigitalInput(RobotMap.OpticalSensorID);
+		opticalSensor = new DigitalInput(RobotMap.opticalSensorID);
 		
 		opticalSensor.requestInterrupts(new FixedInterruptHandler<Integer>() {
 			

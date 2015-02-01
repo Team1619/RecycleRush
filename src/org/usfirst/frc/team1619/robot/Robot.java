@@ -2,7 +2,6 @@
 package org.usfirst.frc.team1619.robot;
 
 
-import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
@@ -10,7 +9,6 @@ import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
-import org.usfirst.frc.team1619.robot.subsystems.MotorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
 import org.usfirst.frc.team1619.robot.subsystems.Sonar;
@@ -43,7 +41,6 @@ public class Robot extends IterativeRobot {
 	
 	public Drivetrain drivetrain;
 	public OpticalSensor opticalSensor;
-	public MotorSystem motorSystem;
 	public Sonar sonarSystem;
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
@@ -51,7 +48,7 @@ public class Robot extends IterativeRobot {
 	public Smashboard smashboard;
 	public LiftSystem liftSubsystem;
 	public Conveyor conveyor;
-	private Lumberjack lumberjack;
+	//private Lumberjack lumberjack;
 	private Timer timer;
 	public LEDStrip ledStrip;
 	public LimitSwitch switchSubsystem;
@@ -64,9 +61,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
     	
     	drivetrain = new Drivetrain();
-		opticalSensor = new OpticalSensor();
-		motorSystem = new MotorSystem();
-		sonarSystem = new Sonar();
+		//opticalSensor = new OpticalSensor();
+		//sonarSystem = new Sonar();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
 		camera = new Camera();
@@ -74,7 +70,7 @@ public class Robot extends IterativeRobot {
 		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
 		timer = new Timer();
-		switchSubsystem = new LimitSwitch();
+		//switchSubsystem = new LimitSwitch();
 		/*lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 
@@ -125,7 +121,7 @@ public class Robot extends IterativeRobot {
      * You can use it to reset subsystems before shutting down.
      */
     public void disabledInit(){
-    	Lumberjack.changeLogs();
+    	//Lumberjack.changeLogs();
     }
 
     /**

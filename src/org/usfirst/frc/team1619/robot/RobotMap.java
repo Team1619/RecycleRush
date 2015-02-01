@@ -10,14 +10,21 @@ public class RobotMap {
 	// For example to map the left and right motors, you could define the
 	// following variables to use with your drivetrain subsystem.
 	
-	public static final int bearClawMotorID = 1;
-	public static final int conveyorMotorID = 2;
-	
+
 	public final static int leftDriveMotor1 = 1;
-	public final static int leftDriveMotor2 = 4;
+	public final static int leftDriveMotor2 = 2;
 	public final static int rightDriveMotor1 = 3;
-	public final static int rightDriveMotor2 = 5;
+	public final static int rightDriveMotor2 = 4;
 	
+	public final static int toteElevatorMotor = 5;
+	public final static int tilterMotor = 6;
+	public final static int conveyorMotor = 7;
+	public final static int guardRailMotor = 8;
+	public final static int binElevatorMotor = 9;
+	public final static int binGripMotor = 10;
+	public final static int rakerMotor = 11;
+	public final static int spare = 12;
+
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
 	
@@ -41,16 +48,16 @@ public class RobotMap {
 	public static final int binGripCloseManualButtonID = 5;
 	
 	
-	public static final int OpticalSensorID = 1;
+	public static final int opticalSensorID = 1;
 	
-	public static final int motorSystemID = 2;
+	public static final int motorSystemID = 13; 
 	
 	public static final int sonarAnalogInputID = 0;
 	
 	public static final int switchSubsystemID = 0;
 	
-	public static final int gyroTempAnalogID = 2;//temperature - analog 1
-	public static final int gyroRateAnalogID = 1;//rate - analog 2
+	public static final int gyroTempAnalogID = 1;//temperature - analog 1
+	public static final int gyroRateAnalogID = 0;//rate - analog 2
 	
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:
