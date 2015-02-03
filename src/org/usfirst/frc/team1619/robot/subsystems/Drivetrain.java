@@ -31,20 +31,20 @@ public class Drivetrain extends Subsystem {
     	rightMotor2 = new CANTalon(RobotMap.rightDriveMotor2);
     	
     	drive = new RobotDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
-    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
-    	drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
-    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
-    	drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+    	drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
     	
     	//drive motor parameters, no limit switches and coasting
     	leftMotor1.enableLimitSwitch(false, false);
     	leftMotor2.enableLimitSwitch(false, false);
     	rightMotor1.enableLimitSwitch(false, false);
     	rightMotor2.enableLimitSwitch(false, false);
-    	leftMotor1.enableBrakeMode(false);
-    	leftMotor2.enableBrakeMode(false);
-    	rightMotor1.enableBrakeMode(false);
-    	rightMotor2.enableBrakeMode(false);
+    	leftMotor1.enableBrakeMode(true);
+    	leftMotor2.enableBrakeMode(true);
+    	rightMotor1.enableBrakeMode(true);
+    	rightMotor2.enableBrakeMode(true);
     	
     	gyro = new Gyro(RobotMap.gyroRateAnalogID);
 		gyroTemp = new AnalogInput(RobotMap.gyroTempAnalogID);
