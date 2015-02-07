@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class LinearDriveCommand extends Command {
-	public static final double kMoveForwardDistance = 3.0; //in meters
+	public static final double kMoveForwardDistance = 3.0; //in meters	
+	public static final double kDriveSpeed = 0.5;
+
 	
 	private Drivetrain drivetrain;
 	private double distance; 
@@ -37,7 +39,8 @@ public class LinearDriveCommand extends Command {
     	rightChangeVal = drivetrain.getRightEncoderPosition() - rightStartVal;
     	
     	
-    	drivetrain.drive(0.5, 0.0);
+    	
+    	drivetrain.drive(kDriveSpeed * (distance/Math.abs(distance)), 0.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
