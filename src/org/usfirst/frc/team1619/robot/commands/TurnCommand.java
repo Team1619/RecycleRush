@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
+import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -8,18 +9,25 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TurnCommand extends Command {
+	public static final double kTurnRightDistance = 0.6604; //Meters
+	
 	private Drivetrain drivetrain;
 	private double distance;
+	private double leftStartVal;
+	private double rightStartVal;
 
-    public TurnCommand() {
+    public TurnCommand(double turnDistance) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	drivetrain = new Drivetrain();
-    	distance = (Math.PI / 2) * 66.04;
+    	drivetrain = Robot.getRobot().drivetrain;
+    	requires(drivetrain);
+    	distance = turnDistance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	leftStartVal = drivetrain.getLeftEncoderPosition();
+    	rightStartVal = drivetrain.getRightEncoderPosition();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -29,11 +37,7 @@ public class TurnCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        if(drivetrain.getLeftEncoderPosition() == distance)
-        {
-        	return true;
-        }
-        return false;
+        return ((drivetrain.getLeftEncoderPosition()-leftStartVal) + (drivetrain.getRightEncoderPosition()-rightStartVal))/2 >= distance;
     }
 
     // Called once after isFinished returns true

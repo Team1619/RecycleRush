@@ -12,6 +12,7 @@ import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.ToteElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -41,8 +42,8 @@ public class OI {
 	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton resetEncoderButton;
-	private final JoystickButton driveForward;
-
+	private final JoystickButton driveForwardButton;
+	private final JoystickButton turnRightButton;
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -55,7 +56,9 @@ public class OI {
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
-		driveForward = new JoystickButton(rightStick, RobotMap.driveForward);
+		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
+		turnRightButton = new JoystickButton(rightStick, RobotMap.turnRightButtonID);
+		
 		
 		//Left stick
 		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
@@ -86,7 +89,8 @@ public class OI {
 		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpenCommand());
 		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripCloseCommand());
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
-		driveForward.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
+		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
+		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightDistance));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
