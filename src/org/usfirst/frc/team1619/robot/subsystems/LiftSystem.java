@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
+import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -25,15 +26,11 @@ public class LiftSystem extends Subsystem {
 	public static final int kStatePickup = 5;
 	public static final int kStateDropoff = 6;
 	
-	public LiftSystem() {
-		
-	}
 	
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	
-    	toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
+	private int currentState = kStateIdle;
+	
+	public LiftSystem() {
+		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
     	toteElevatorMotor.enableBrakeMode(false);
     	
@@ -48,6 +45,13 @@ public class LiftSystem extends Subsystem {
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
     	binGripMotor.enableBrakeMode(false);
+	}
+	
+    public void initDefaultCommand() {
+        // Set the default command for a subsystem here.
+        setDefaultCommand(new LiftSystemStateMachineCommand());
+    	
+    	
     }
     
     public void moveToteElevator(double moveValue) {
@@ -66,10 +70,45 @@ public class LiftSystem extends Subsystem {
     	binGripMotor.set(moveValue);
     }
     
+    private static String stateToString(int state) {
+    	switch(state) {
+    	case kStateIdle:
+    		return "Idle";
+    	case kStateBeginStack:
+    		return "Begin Stack";
+    	case kStateBeginFeed:
+    		return "Begin Feed";
+    	case kStateStackForFeed:
+    		return "Stack For Feed";
+    	case kStateStackForPickup:
+    		return "Stack for Pickup";
+    	case kStatePickup:
+    		return "Pickup";
+    	case kStateDropoff:
+    		return "Dropoff";
+    	default: 
+    		return "Invalid State";
+    	}
+    }
     
+    private int stateIdle() {
+    	return kStateIdle;
+    }
     
     public void runStateMachine() {
-    	
+    	int nextState = currentState;
+    	System.out.println("Current State: " + stateToString(currentState));
+    	switch(currentState) {
+    	case kStateIdle:
+    		nextState = stateIdle();
+    		break;
+    	default:
+    		break;
+    	}
+    	if(nextState != currentState) {
+        	System.out.println("Next State: " + stateToString(nextState));
+        	currentState = nextState;
+    	}
     }
 }
 
