@@ -9,19 +9,20 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class TurnCommand extends Command {
-	public static final double kTurnRightDistance = 0.6604; //Meters
+	public static final double kTurnRightAngle = Math.PI / 2; //Radians
+	public static final double kTurnRadius = 0.3302; //Meters
 	
 	private Drivetrain drivetrain;
 	private double distance;
 	private double leftStartVal;
 	private double rightStartVal;
 
-    public TurnCommand(double turnDistance) {
+    public TurnCommand(double turnAngle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	drivetrain = Robot.getRobot().drivetrain;
     	requires(drivetrain);
-    	distance = turnDistance;
+    	distance = turnAngle * kTurnRadius;
     }
 
     // Called just before this Command runs the first time
