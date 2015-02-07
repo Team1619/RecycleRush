@@ -36,6 +36,7 @@ public class RobotMap {
 	public static final int toteElevatorDownManualButtonID = 6;
 	public static final int resetEncoderButtonID = 8;
 	public static final int driveForward = 9;
+	public static final int turnRight = 10;
 	
 	//Left Stick
 	public static final int conveyorForwardManualButtonID = 4;
