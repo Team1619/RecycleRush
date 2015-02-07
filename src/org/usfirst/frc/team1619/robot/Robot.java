@@ -99,6 +99,8 @@ public class Robot extends IterativeRobot {
     	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
     	Robot.getRobot().smashboard.write("Left Drive Position", drivetrain.getLeftEncoderPosition());
     	Robot.getRobot().smashboard.write("Right Encoder Position", drivetrain.getRightEncoderPosition());
+    	Robot.getRobot().smashboard.write("Raw Left Drive Position", drivetrain.getRawLeftEncoderPosition());
+    	Robot.getRobot().smashboard.write("Raw Right Encoder Position", drivetrain.getRawRightEncoderPosition());
     }
 	
 	public void disabledPeriodic() {

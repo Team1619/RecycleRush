@@ -14,8 +14,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Drivetrain extends Subsystem {
-	public static final double kWheelDiameter = 0.152; //in meters
-	public static final int kPulsesPerRev = 128;
+	public static final double kWheelDiameter = 6 * (2.54/100); //in meters
+	public static final int kPulsesPerRev = 512;
+	public static final double kDistancePerPulse = kWheelDiameter*Math.PI / kPulsesPerRev;
+	
+	public static final double kTwistScalar = 0.5;
 			
 	private RobotDrive drive;	
     private CANTalon leftMotor1;
@@ -64,7 +67,7 @@ public class Drivetrain extends Subsystem {
     }
     
     public void drive(GenericHID inputDevice) {
-    	drive.arcadeDrive(inputDevice.getY(), inputDevice.getTwist());
+    	drive.arcadeDrive(inputDevice.getY(), inputDevice.getTwist() * kTwistScalar);
     }
     
     /**
@@ -102,19 +105,20 @@ public class Drivetrain extends Subsystem {
 		return gyroTemp.getValue();
 	}
 	
-	public static double distance(int Pulses){
-		double circumference = Math.PI * kWheelDiameter;    	
-    	double distancePerPulse = circumference / kPulsesPerRev;
-    	return distancePerPulse * Pulses;
-    }
-	
 	public double getLeftEncoderPosition() {
-		
-		return distance(-leftMotor1.getEncPosition());
+		return -kDistancePerPulse*leftMotor1.getEncPosition();
 	}
 	
 	public double getRightEncoderPosition() {
-		return distance(rightMotor1.getEncPosition());
+		return kDistancePerPulse*rightMotor1.getEncPosition();
+	}
+	
+	public int getRawRightEncoderPosition() {
+		return rightMotor1.getEncPosition();
+	}
+	
+	public int getRawLeftEncoderPosition() {
+		return leftMotor1.getEncPosition();
 	}
 	
 	public void resetEncoders() {
