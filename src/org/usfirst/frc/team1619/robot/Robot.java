@@ -1,6 +1,8 @@
 
 package org.usfirst.frc.team1619.robot;
 
+import com.ni.vision.NIVision;
+import com.ni.vision.NIVision.Image;
 
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
@@ -10,6 +12,7 @@ import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
@@ -46,6 +49,10 @@ public class Robot extends IterativeRobot {
 	//private Lumberjack lumberjack;
 	private Timer timer;
 	public LEDStrip ledStrip;
+	
+	/* Camera-related members */
+	private int cameraSession;
+    private Image cameraFrame;
 	
 
     /**
@@ -89,6 +96,13 @@ public class Robot extends IterativeRobot {
 				"PDP Total Energy"
 		);*/
         
+		// Camera-relate initialization
+		cameraFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+
+        // the camera name (ex "cam0") can be found through the roboRIO web interface
+        cameraSession = NIVision.IMAQdxOpenCamera("cam0",
+                NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+        NIVision.IMAQdxConfigureGrab(cameraSession);
 
 		// new OI needs to be called last
 		oi = new OI();
@@ -167,6 +181,17 @@ public class Robot extends IterativeRobot {
             );
             timer.reset();
         }*/
+        
+        NIVision.IMAQdxStartAcquisition(cameraSession);
+
+        /**
+         * grab an image and provide it for the camera server
+         * which will in turn send it to the dashboard.
+		 */
+
+        NIVision.IMAQdxGrab(cameraSession, cameraFrame, 1);
+        
+        CameraServer.getInstance().setImage(cameraFrame);
     }
     
     
