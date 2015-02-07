@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LinearDriveCommand extends Command {
 	public static final double kMoveForwardDistance = 3.0; //in meters	
+	
 	public static final double kDriveSpeed = 0.5;
 
 	
@@ -19,12 +20,15 @@ public class LinearDriveCommand extends Command {
 	private double rightStartVal;
 	private double leftChangeVal;
 	private double rightChangeVal;
+
+	private double turnVal;
 	
     public LinearDriveCommand(double moveDistance) {
         // Use requires() here to declare subsystem dependencies
     	drivetrain = Robot.getRobot().drivetrain;
         requires(drivetrain);
         distance = moveDistance;
+        turnVal = 0.0;
     }
 
     // Called just before this Command runs the first time
@@ -38,14 +42,20 @@ public class LinearDriveCommand extends Command {
     	leftChangeVal = drivetrain.getLeftEncoderPosition() - leftStartVal;
     	rightChangeVal = drivetrain.getRightEncoderPosition() - rightStartVal;
     	
+    	if(leftChangeVal != rightChangeVal) {
+    		turnVal = (rightChangeVal - leftChangeVal);
+    	}
     	
+    	else {
+    		turnVal = 0;
+    	}
     	
-    	drivetrain.drive(kDriveSpeed * (distance/Math.abs(distance)), 0.0);
+    	drivetrain.drive(kDriveSpeed * (distance/Math.abs(distance)), turnVal);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return ((drivetrain.getLeftEncoderPosition()-leftStartVal) + (drivetrain.getRightEncoderPosition()-rightStartVal))/2 >= distance;
+        return (leftChangeVal + rightChangeVal)/2 >= distance;
     }
 
     // Called once after isFinished returns true
