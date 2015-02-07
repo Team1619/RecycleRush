@@ -13,6 +13,8 @@ public class LinearDriveCommand extends Command {
 	
 	private Drivetrain drivetrain;
 	private double distance; 
+	private double leftStartVal;
+	private double rightStartVal;
 	
     public LinearDriveCommand(double moveDistance) {
         // Use requires() here to declare subsystem dependencies
@@ -23,7 +25,8 @@ public class LinearDriveCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	drivetrain.resetEncoders();
+    	leftStartVal = drivetrain.getLeftEncoderPosition();
+    	rightStartVal = drivetrain.getRightEncoderPosition();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -33,7 +36,7 @@ public class LinearDriveCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (drivetrain.getLeftEncoderPosition() + drivetrain.getRightEncoderPosition())/2 >= distance;
+        return ((drivetrain.getLeftEncoderPosition()-leftStartVal) + (drivetrain.getRightEncoderPosition()-rightStartVal))/2 >= distance;
     }
 
     // Called once after isFinished returns true

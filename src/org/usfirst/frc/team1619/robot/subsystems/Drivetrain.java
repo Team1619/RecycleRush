@@ -110,11 +110,11 @@ public class Drivetrain extends Subsystem {
 	
 	public double getLeftEncoderPosition() {
 		
-		return distance(leftMotor1.getEncPosition());
+		return distance(-leftMotor1.getEncPosition());
 	}
 	
 	public double getRightEncoderPosition() {
-		return distance(-rightMotor1.getEncPosition());
+		return distance(rightMotor1.getEncPosition());
 	}
 	
 	public void resetEncoders() {
