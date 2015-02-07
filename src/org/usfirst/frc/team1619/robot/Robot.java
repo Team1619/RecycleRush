@@ -99,10 +99,12 @@ public class Robot extends IterativeRobot {
     	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
     	Robot.getRobot().smashboard.write("Left Drive Position", drivetrain.getLeftEncoderPosition());
     	Robot.getRobot().smashboard.write("Right Encoder Position", drivetrain.getRightEncoderPosition());
+    	accelerometer.display();
     }
 	
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
+		sharedPeriodic();
 	}
 
     public void autonomousInit() {
@@ -113,6 +115,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        sharedPeriodic();
     }
 
     
@@ -172,5 +175,6 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+        sharedPeriodic();
     }
 }

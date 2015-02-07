@@ -2,16 +2,16 @@ package org.usfirst.frc.team1619.robot;
 
 //github.com/Team1619/RecycleRush.git
 //github.com/Team1619/RecycleRush.git
-import org.usfirst.frc.team1619.robot.commands.BinElevatorCommand;
-import org.usfirst.frc.team1619.robot.commands.BinGripCommand;
-import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
-import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
-import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualBinGripCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualBinTiltCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -76,21 +76,21 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whileHeld(new ConveyorCommand.ConveyorForwardCommand());
-		conveyorBackwardManualButton.whileHeld(new ConveyorCommand.ConveyorBackwardCommand());
-		guardrailCloseManualButton.whileHeld(new GuardRailCommand.GuardRailCloseCommand());
-		guardrailOpenManualButton.whileHeld(new GuardRailCommand.GuardRailOpenCommand());
-		toteElevatorDownManualButton.whileHeld(new ToteElevatorCommand.ToteElevatorDownCommand());
-		toteElevatorUpManualButton.whileHeld(new ToteElevatorCommand.ToteElevatorUpCommand());
-		binElevatorUpManualButton.whileHeld(new BinElevatorCommand.BinElevatorUpCommand());
-		binElevatorDownManualButton.whileHeld(new BinElevatorCommand.BinElevatorDownCommand());
-		binTiltUpManualButton.whileHeld(new BinTiltCommand.BinTiltUpCommand());
-		binTiltDownManualButton.whileHeld(new BinTiltCommand.BinTiltDownCommand());
-		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpenCommand());
-		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripCloseCommand());
+		conveyorForwardManualButton.whileHeld(new ManualConveyorCommand.ConveyorForwardCommand());
+		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand.ConveyorBackwardCommand());
+		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand.GuardRailCloseCommand());
+		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand.GuardRailOpenCommand());
+		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand.ToteElevatorDownCommand());
+		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand.ToteElevatorUpCommand());
+		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand.BinElevatorUpCommand());
+		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand.BinElevatorDownCommand());
+		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand.BinTiltUpCommand());
+		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand.BinTiltDownCommand());
+		binGripOpenManualButton.whileHeld(new ManualBinGripCommand.BinGripOpenCommand());
+		binGripCloseManualButton.whileHeld(new ManualBinGripCommand.BinGripCloseCommand());
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
-		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightDistance));
+		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

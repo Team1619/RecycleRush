@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.DriveCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualDriveCommand;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.CANTalon;
@@ -60,7 +60,7 @@ public class Drivetrain extends Subsystem {
     
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new DriveCommand());
+        setDefaultCommand(new ManualDriveCommand());
     }
     
     public void drive(GenericHID inputDevice) {

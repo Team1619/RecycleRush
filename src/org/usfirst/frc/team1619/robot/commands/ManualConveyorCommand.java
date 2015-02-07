@@ -1,24 +1,25 @@
 package org.usfirst.frc.team1619.robot.commands;
 
+
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ToteElevatorCommand extends Command {
-	private LiftSystem liftSubsystem;
-	protected LiftSystem getLiftSubsystem() {
-		return liftSubsystem;
+public class ManualConveyorCommand extends Command {
+	private Conveyor conveyor;
+	protected Conveyor getConveyor() {
+		return conveyor;
 	}
 
-    public ToteElevatorCommand() {
+    public ManualConveyorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSubsystem = Robot.getRobot().liftSubsystem;
-    	requires(liftSubsystem);
+    	conveyor = Robot.getRobot().conveyor;
+    	requires(conveyor);
     }
 
     // Called just before this Command runs the first time
@@ -43,15 +44,16 @@ public class ToteElevatorCommand extends Command {
     protected void interrupted() {
     }
     
-    public static class ToteElevatorUpCommand extends ToteElevatorCommand {
+    public static class ConveyorForwardCommand extends ManualConveyorCommand {
     	protected void execute() {
-    		getLiftSubsystem().moveToteElevator(1.0);
+    		getConveyor().moveConveryor(1.0);
     	}
     }
     
-    public static class ToteElevatorDownCommand extends ToteElevatorCommand {
+    public static class ConveyorBackwardCommand extends ManualConveyorCommand{
     	protected void execute() {
-    		getLiftSubsystem().moveToteElevator(-1.0);
+    		getConveyor().moveConveryor(-1.0);
     	}
     }
+    
 }

@@ -1,9 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import org.usfirst.frc.team1619.robot.commands.AccelerometerCommand;
-
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -15,47 +12,31 @@ public class Accelerometer extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	private BuiltInAccelerometer accelerometer;
-	private double accelerationX;
-	private double accelerationY;
-	private double accelerationZ;
-	private Timer timer;
 	
-	public Accelerometer()
-	{
+	public Accelerometer() {
 		accelerometer = new BuiltInAccelerometer();
-		timer = new Timer();
-		timer.start();
 	}
 	
-	public void operatorControl()
-	{
-		accelerationX = accelerometer.getX();
-		accelerationY = accelerometer.getY();
-		accelerationZ = accelerometer.getZ();
-		if(timer.get() >= 1) {
-			SmartDashboard.putString("Accelerometer", "X - " + accelerationX + "\nY - " + accelerationY + "\nZ - " + accelerationZ);
-			timer.reset();
-		}	
+	public void display() {
+		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getX()));
+		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getY()));
+		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getZ()));
 	}
 	
-	public double getXAcceleration()
-	{
+	public double getX() {
 		return accelerometer.getX();
 	}
 	
-	public double getYAcceleration()
-	{
+	public double getY() {
 		return accelerometer.getY();
 	}
 	
-	public double getZAcceleration()
-	{
+	public double getZ() {
 		return accelerometer.getZ();
 	}
+
+	@Override
+	protected void initDefaultCommand() {
 		
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
-    	setDefaultCommand(new AccelerometerCommand());
-    }
+	}
 }

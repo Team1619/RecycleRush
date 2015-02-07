@@ -8,13 +8,15 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class BinTiltCommand extends Command {
+public class ManualBinGripCommand extends Command {
 	private LiftSystem liftSubsystem;
+	
 	protected LiftSystem getLiftSubsystem() {
 		return liftSubsystem;
 	}
+	
 
-    public BinTiltCommand() {
+    public ManualBinGripCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	liftSubsystem = Robot.getRobot().liftSubsystem;
@@ -42,16 +44,14 @@ public class BinTiltCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-    
-    public static class BinTiltUpCommand extends BinTiltCommand {
+    public static class BinGripOpenCommand extends ManualBinGripCommand {
     	protected void execute() {
-    		getLiftSubsystem().binTilt(1.0);
+    		getLiftSubsystem().moveBinGrip(1.0);
     	}
     }
-    
-    public static class BinTiltDownCommand extends BinTiltCommand {
+    public static class BinGripCloseCommand extends ManualBinGripCommand {
     	protected void execute() {
-    		getLiftSubsystem().binTilt(-1.0);
+    		getLiftSubsystem().moveBinGrip(-1.0);
     	}
     }
 }

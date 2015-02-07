@@ -16,7 +16,15 @@ public class LiftSystem extends Subsystem {
 	private CANTalon binElevatorMotor;
 	private CANTalon tilterMotor;
 	private CANTalon binGripMotor;
-
+	
+	public static final int kStateIdle = 0;
+	public static final int kStateBeginStack = 1;
+	public static final int kStateBeginFeed = 2;
+	public static final int kStateStackForFeed = 3;
+	public static final int kStateStackForPickup = 4;
+	public static final int kStatePickup = 5;
+	public static final int kStateDropoff = 6;
+	
 	public LiftSystem() {
 		
 	}
@@ -24,6 +32,7 @@ public class LiftSystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    	
     	toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
     	toteElevatorMotor.enableBrakeMode(false);
@@ -55,6 +64,12 @@ public class LiftSystem extends Subsystem {
     
     public void moveBinGrip(double moveValue) {
     	binGripMotor.set(moveValue);
+    }
+    
+    
+    
+    public void runStateMachine() {
+    	
     }
 }
 

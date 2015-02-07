@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-
 import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 
@@ -9,17 +8,16 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class ConveyorCommand extends Command {
-	private Conveyor conveyor;
+public class ManualGuardRailCommand extends Command {
+	private Conveyor conveyor; 
 	protected Conveyor getConveyor() {
 		return conveyor;
 	}
-
-    public ConveyorCommand() {
+	
+    public ManualGuardRailCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	conveyor = Robot.getRobot().conveyor;
-    	requires(conveyor);
+        requires(conveyor);
     }
 
     // Called just before this Command runs the first time
@@ -44,16 +42,15 @@ public class ConveyorCommand extends Command {
     protected void interrupted() {
     }
     
-    public static class ConveyorForwardCommand extends ConveyorCommand {
+    public static class GuardRailOpenCommand extends ManualGuardRailCommand {
     	protected void execute() {
-    		getConveyor().moveConveryor(1.0);
+    		getConveyor().moveGuardRail(1.0);
     	}
     }
     
-    public static class ConveyorBackwardCommand extends ConveyorCommand{
+    public static class GuardRailCloseCommand extends ManualGuardRailCommand {
     	protected void execute() {
-    		getConveyor().moveConveryor(-1.0);
+    		getConveyor().moveGuardRail(-1.0);
     	}
     }
-    
 }
