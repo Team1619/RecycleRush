@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class Drivetrain extends Subsystem {
+	public static final double kWheelDiameter = 0.152; //in meters
+	public static final int kPulsesPerRev = 128;
+			
 	private RobotDrive drive;	
     private CANTalon leftMotor1;
     private CANTalon leftMotor2;
@@ -49,6 +52,9 @@ public class Drivetrain extends Subsystem {
     	gyro = new Gyro(RobotMap.gyroRateAnalogID);
 		gyroTemp = new AnalogInput(RobotMap.gyroTempAnalogID);
 		
+		leftMotor1.setPosition(0.0);
+		rightMotor1.setPosition(0.0);
+		
 		calibrate();
     }
     
@@ -61,8 +67,14 @@ public class Drivetrain extends Subsystem {
     	drive.arcadeDrive(inputDevice.getY(), inputDevice.getTwist());
     }
     
-    public void drive(double moveX, double moveY) {
-    	drive.arcadeDrive(moveX, moveY);
+    /**
+     * Arcade drive with linearVal being like the linear input on a joystick, and rotateVal being the 
+     * twist value. Both -1.0 to 1.0.
+     * @param linearVal
+     * @param rotateVal
+     */
+    public void drive(double linearVal, double rotateVal) {
+    	drive.arcadeDrive(-linearVal, rotateVal);
     }
     
     public void stop() {
@@ -88,6 +100,26 @@ public class Drivetrain extends Subsystem {
 	
 	public double getTemperature() {
 		return gyroTemp.getValue();
+	}
+	
+	public static double distance(int Pulses){
+		double circumference = Math.PI * kWheelDiameter;    	
+    	double distancePerPulse = circumference / kPulsesPerRev;
+    	return distancePerPulse * Pulses;
+    }
+	
+	public double getLeftEncoderPosition() {
+		
+		return distance(leftMotor1.getEncPosition());
+	}
+	
+	public double getRightEncoderPosition() {
+		return distance(-rightMotor1.getEncPosition());
+	}
+	
+	public void resetEncoders() {
+		leftMotor1.setPosition(0.0);
+		rightMotor1.setPosition(0.0);
 	}
 }
 

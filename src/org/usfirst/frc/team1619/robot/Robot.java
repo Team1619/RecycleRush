@@ -8,10 +8,7 @@ import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
-import org.usfirst.frc.team1619.robot.subsystems.LimitSwitch;
-import org.usfirst.frc.team1619.robot.subsystems.OpticalSensor;
 import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
-import org.usfirst.frc.team1619.robot.subsystems.Sonar;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -40,8 +37,6 @@ public class Robot extends IterativeRobot {
 	public OI oi;
 	
 	public Drivetrain drivetrain;
-	public OpticalSensor opticalSensor;
-	public Sonar sonarSystem;
 	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
 	public Camera camera;
@@ -51,7 +46,6 @@ public class Robot extends IterativeRobot {
 	//private Lumberjack lumberjack;
 	private Timer timer;
 	public LEDStrip ledStrip;
-	public LimitSwitch switchSubsystem;
 	
 
     /**
@@ -65,7 +59,7 @@ public class Robot extends IterativeRobot {
 		//sonarSystem = new Sonar();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
-		camera = new Camera();
+		//camera = new Camera();
 		smashboard = new Smashboard();
 		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
@@ -98,6 +92,13 @@ public class Robot extends IterativeRobot {
 
 		// new OI needs to be called last
 		oi = new OI();
+    }
+    
+    public void sharedPeriodic() {
+    	Robot.getRobot().smashboard.write("Gyro Direction", drivetrain.getHeading());
+    	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
+    	Robot.getRobot().smashboard.write("Left Drive Position", drivetrain.getLeftEncoderPosition());
+    	Robot.getRobot().smashboard.write("Right Encoder Position", drivetrain.getRightEncoderPosition());
     }
 	
 	public void disabledPeriodic() {
@@ -135,6 +136,7 @@ public class Robot extends IterativeRobot {
     
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        sharedPeriodic();
         /*SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
         if (timer.get() >= 1) {
         	//System.out.println(pdpCAN.getTotalCurrent());

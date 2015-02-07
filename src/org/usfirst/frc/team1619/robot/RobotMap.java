@@ -16,24 +16,26 @@ public class RobotMap {
 	public final static int rightDriveMotor1 = 3;
 	public final static int rightDriveMotor2 = 4;
 	
-	public final static int toteElevatorMotor = 5;
+	public final static int toteElevatorMotor = 11;
 	public final static int tilterMotor = 6;
 	public final static int conveyorMotor = 7;
 	public final static int guardRailMotor = 8;
 	public final static int binElevatorMotor = 9;
 	public final static int binGripMotor = 10;
-	public final static int rakerMotor = 11;
+	public final static int rakerMotor = 5;
 	public final static int spare = 12;
 
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
-	
+		
 	//Right stick
 	public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 7;
 	public static final int toteElevatorUpManualButtonID = 5;
 	public static final int toteElevatorDownManualButtonID = 6;
+	public static final int resetEncoderButtonID = 8;
+	public static final int driveForward = 9;
 	
 	//Left Stick
 	public static final int conveyorForwardManualButtonID = 4;
@@ -46,18 +48,15 @@ public class RobotMap {
 	public static final int binTiltDownManualButtonID = 6;
 	public static final int binGripOpenManualButtonID = 10;
 	public static final int binGripCloseManualButtonID = 5;
-	
-	
-	public static final int opticalSensorID = 1;
-	
-	public static final int motorSystemID = 13; 
-	
-	public static final int sonarAnalogInputID = 0;
-	
-	public static final int switchSubsystemID = 0;
-	
+		
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1
 	public static final int gyroRateAnalogID = 0;//rate - analog 2
+	
+	//public static final int opticalSensorID = 1;
+		
+	//public static final int sonarAnalogInputID = 0;
+	
+	//public static final int switchSubsystemID = 0;
 	
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:

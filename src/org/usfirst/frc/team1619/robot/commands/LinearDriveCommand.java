@@ -1,35 +1,39 @@
 package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.Sonar;
+import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class SonarCommand extends Command {
-
-	private Sonar sonarSystem;
-    public SonarCommand() {
-    	sonarSystem = Robot.getRobot().sonarSystem;
+public class LinearDriveCommand extends Command {
+	public static final double kMoveForwardDistance = 3.0; //in meters
+	
+	private Drivetrain drivetrain;
+	private double distance; 
+	
+    public LinearDriveCommand(double moveDistance) {
         // Use requires() here to declare subsystem dependencies
-        requires(sonarSystem);
+    	drivetrain = Robot.getRobot().drivetrain;
+        requires(drivetrain);
+        distance = moveDistance;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	drivetrain.resetEncoders();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	SmartDashboard.putNumber("Distance Ahead", sonarSystem.getRange());
+    	drivetrain.drive(0.5, 0.0);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return (drivetrain.getLeftEncoderPosition() + drivetrain.getRightEncoderPosition())/2 >= distance;
     }
 
     // Called once after isFinished returns true

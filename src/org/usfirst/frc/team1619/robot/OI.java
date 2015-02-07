@@ -8,6 +8,8 @@ import org.usfirst.frc.team1619.robot.commands.BinTiltCommand;
 import org.usfirst.frc.team1619.robot.commands.ConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.GuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.ToteElevatorCommand;
 
@@ -38,6 +40,8 @@ public class OI {
 	private final JoystickButton binElevatorUpManualButton, binElevatorDownManualButton;
 	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
+	private final JoystickButton resetEncoderButton;
+	private final JoystickButton driveForward;
 
 	
 	public OI() {
@@ -50,6 +54,8 @@ public class OI {
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
+		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
+		driveForward = new JoystickButton(rightStick, RobotMap.driveForward);
 		
 		//Left stick
 		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
@@ -79,6 +85,8 @@ public class OI {
 		binTiltDownManualButton.whileHeld(new BinTiltCommand.BinTiltDownCommand());
 		binGripOpenManualButton.whileHeld(new BinGripCommand.BinGripOpenCommand());
 		binGripCloseManualButton.whileHeld(new BinGripCommand.BinGripCloseCommand());
+		resetEncoderButton.whenPressed(new ResetEncoderCommand());
+		driveForward.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
