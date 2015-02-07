@@ -15,6 +15,8 @@ public class LinearDriveCommand extends Command {
 	private double distance; 
 	private double leftStartVal;
 	private double rightStartVal;
+	private double leftChangeVal;
+	private double rightChangeVal;
 	
     public LinearDriveCommand(double moveDistance) {
         // Use requires() here to declare subsystem dependencies
@@ -31,6 +33,10 @@ public class LinearDriveCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	leftChangeVal = drivetrain.getLeftEncoderPosition() - leftStartVal;
+    	rightChangeVal = drivetrain.getRightEncoderPosition() - rightStartVal;
+    	
+    	
     	drivetrain.drive(0.5, 0.0);
     }
 

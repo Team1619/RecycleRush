@@ -97,7 +97,7 @@ public class Robot extends IterativeRobot {
     public void sharedPeriodic() {
     	Robot.getRobot().smashboard.write("Gyro Direction", drivetrain.getHeading());
     	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
-    	Robot.getRobot().smashboard.write("Left Drive Position", drivetrain.getLeftEncoderPosition());
+    	Robot.getRobot().smashboard.write("Left Encoder Position", drivetrain.getLeftEncoderPosition());
     	Robot.getRobot().smashboard.write("Right Encoder Position", drivetrain.getRightEncoderPosition());
     	accelerometer.display();
     }

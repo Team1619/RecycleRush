@@ -39,8 +39,10 @@ public class LiftSystem extends Subsystem {
     	binElevatorMotor.enableBrakeMode(false);
     	
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
-    	tilterMotor.enableLimitSwitch(false, false);
+    	tilterMotor.enableLimitSwitch(true, true);
     	tilterMotor.enableBrakeMode(false);
+    	tilterMotor.ConfigFwdLimitSwitchNormallyOpen(false);
+    	tilterMotor.ConfigRevLimitSwitchNormallyOpen(false);
     	
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
@@ -50,8 +52,6 @@ public class LiftSystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         setDefaultCommand(new LiftSystemStateMachineCommand());
-    	
-    	
     }
     
     public void moveToteElevator(double moveValue) {
@@ -97,7 +97,8 @@ public class LiftSystem extends Subsystem {
     
     public void runStateMachine() {
     	int nextState = currentState;
-    	System.out.println("Current State: " + stateToString(currentState));
+    	//System.out.println("Current State: " + stateToString(currentState));
+    	
     	switch(currentState) {
     	case kStateIdle:
     		nextState = stateIdle();
@@ -105,10 +106,15 @@ public class LiftSystem extends Subsystem {
     	default:
     		break;
     	}
+    	
     	if(nextState != currentState) {
-        	System.out.println("Next State: " + stateToString(nextState));
+        	//System.out.println("Next State: " + stateToString(nextState));
         	currentState = nextState;
     	}
+    }
+    
+    public String getLimits() { //"fwd    rev"
+    	return "" + tilterMotor.isFwdLimitSwitchClosed() + "   " + tilterMotor.isRevLimitSwitchClosed();
     }
 }
 
