@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -14,7 +13,7 @@ public class CameraCommand extends Command {
 	
     public CameraCommand() {
         // Use requires() here to declare subsystem dependencies
-    	camera = Robot.getRobot().camera;
+    	camera = Camera.getInstance();
         requires(camera);
     }
 

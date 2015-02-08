@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
-import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -10,13 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ResetGyroCommand extends Command {
 	
-	private Drivetrain drivetrain;
+	private GyroSystem gyro;
 	
     public ResetGyroCommand() {
         // Use requires() here to declare subsystem dependencies
     	//gyroSubsystem = Robot.getRobot().gyroSubsystem;
-    	drivetrain  = Robot.getRobot().drivetrain;
-    	requires(drivetrain);
+    	gyro = GyroSystem.getInstance();
+    	requires(gyro);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +24,7 @@ public class ResetGyroCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	drivetrain.resetGyro();
+    	gyro.resetGyro();
     }
 
     // Make this return true when this Command no longer needs to run execute()

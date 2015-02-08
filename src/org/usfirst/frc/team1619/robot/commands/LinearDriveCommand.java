@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -25,7 +24,7 @@ public class LinearDriveCommand extends Command {
 	
     public LinearDriveCommand(double moveDistance) {
         // Use requires() here to declare subsystem dependencies
-    	drivetrain = Robot.getRobot().drivetrain;
+    	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
         distance = moveDistance;
         turnVal = 0.0;

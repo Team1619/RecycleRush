@@ -15,8 +15,7 @@ public class Conveyor extends Subsystem {
 	private CANTalon conveyorMotor;
 	private CANTalon guardRailMotor;
 	
-	public Conveyor()
-	{
+	private Conveyor() {
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
 		conveyorMotor.enableLimitSwitch(false, false);
     	conveyorMotor.enableBrakeMode(false);
@@ -26,6 +25,13 @@ public class Conveyor extends Subsystem {
     	guardRailMotor.enableBrakeMode(false);
 
 	}
+	
+	private static final Conveyor theSystem = new Conveyor();
+	
+	public static Conveyor getInstance() {
+		return theSystem;
+	}
+	
 
 	public void moveConveryor(double moveValue) {
 		conveyorMotor.set(moveValue);

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -15,7 +15,7 @@ public class LiftSystemStateMachineCommand extends Command {
     public LiftSystemStateMachineCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSystem = Robot.getRobot().liftSubsystem;
+    	liftSystem = LiftSystem.getInstance();
     	requires(liftSystem);
     }
     
@@ -26,8 +26,11 @@ public class LiftSystemStateMachineCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftSystem.runStateMachine();
-    	liftSystem.moveBinElevator(Robot.getRobot().oi.getLeftStick().getY());
-    	liftSystem.moveRaker(Robot.getRobot().oi.getLeftStick().getX());
+    	
+    	
+    	//
+    	liftSystem.moveBinElevator(OI.getInstance().leftStick.getY());
+    	liftSystem.moveRaker(OI.getInstance().leftStick.getX());
     	
     	//System.out.println(liftSystem.getLimits());
     }

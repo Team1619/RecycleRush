@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -9,18 +8,20 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualBinGripCommand extends Command {
-	private LiftSystem liftSubsystem;
+	private LiftSystem liftSystem;
+	private double speed;
 	
 	protected LiftSystem getLiftSubsystem() {
-		return liftSubsystem;
+		return liftSystem;
 	}
 	
 
-    public ManualBinGripCommand() {
+    public ManualBinGripCommand(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSubsystem = Robot.getRobot().liftSubsystem;
-    	requires(liftSubsystem);
+    	liftSystem = LiftSystem.getInstance();
+    	this.speed = speed;
+    	requires(liftSystem);
     }
 
     // Called just before this Command runs the first time
@@ -29,11 +30,12 @@ public class ManualBinGripCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	liftSystem.moveBinGrip(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
@@ -43,15 +45,5 @@ public class ManualBinGripCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    }
-    public static class BinGripOpenCommand extends ManualBinGripCommand {
-    	protected void execute() {
-    		getLiftSubsystem().moveBinGrip(1.0);
-    	}
-    }
-    public static class BinGripCloseCommand extends ManualBinGripCommand {
-    	protected void execute() {
-    		getLiftSubsystem().moveBinGrip(-1.0);
-    	}
     }
 }

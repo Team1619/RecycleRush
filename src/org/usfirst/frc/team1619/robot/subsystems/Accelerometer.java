@@ -13,8 +13,14 @@ public class Accelerometer extends Subsystem {
     // here. Call these from Commands.
 	private BuiltInAccelerometer accelerometer;
 	
-	public Accelerometer() {
+	private Accelerometer() {
 		accelerometer = new BuiltInAccelerometer();
+	}
+	
+	private static final Accelerometer theSystem = new Accelerometer();
+	
+	public static Accelerometer getInstance() {
+		return theSystem;
 	}
 	
 	public void display() {

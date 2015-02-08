@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -10,15 +9,13 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ManualBinElevatorCommand extends Command {
 	private LiftSystem liftSubsystem;
-	
-	protected LiftSystem getLiftSubsystem() {
-		return liftSubsystem;
-	}
+	private double speed;
 
-    public ManualBinElevatorCommand() {
+    public ManualBinElevatorCommand(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSubsystem = Robot.getRobot().liftSubsystem;
+    	liftSubsystem = LiftSystem.getInstance();
+    	this.speed = speed;
     	requires(liftSubsystem);
     }
 
@@ -28,11 +25,12 @@ public class ManualBinElevatorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	liftSubsystem.moveBinElevator(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
@@ -42,15 +40,5 @@ public class ManualBinElevatorCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    }
-    public static class BinElevatorUpCommand extends ManualBinElevatorCommand {
-    	protected void execute() {
-    		getLiftSubsystem().moveBinElevator(1.0);
-    	}
-    }
-    public static class BinElevatorDownCommand extends ManualBinElevatorCommand {
-    	protected void execute() {
-    		getLiftSubsystem().moveBinElevator(-1.0);
-    	}
     }
 }

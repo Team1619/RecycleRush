@@ -1,9 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import java.util.ArrayList;
-import java.util.TreeMap;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
@@ -35,7 +33,7 @@ public class LiftSystem extends Subsystem {
 	
 	private State eCurrentState = State.Init;
 	
-	public LiftSystem() {
+	private LiftSystem() {
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
     	toteElevatorMotor.enableBrakeMode(false);
@@ -58,6 +56,12 @@ public class LiftSystem extends Subsystem {
     	rakerMotor.enableLimitSwitch(false, false);
     	rakerMotor.enableBrakeMode(true);
     	
+	}
+	
+	private static final LiftSystem theSystem = new LiftSystem();
+	
+	public static LiftSystem getInstance() {
+		return theSystem;
 	}
 	
     public void initDefaultCommand() {

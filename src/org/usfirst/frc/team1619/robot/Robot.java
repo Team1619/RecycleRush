@@ -2,17 +2,15 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
-import org.usfirst.frc.team1619.robot.subsystems.Camera;
-import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
-import org.usfirst.frc.team1619.robot.subsystems.Smashboard;
+import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,37 +30,17 @@ public class Robot extends IterativeRobot {
 		return robot;
 	}
 
-	public OI oi;
-	
-	public Drivetrain drivetrain;
-	public Accelerometer accelerometer;
 	public PowerDistributionPanel pdpCAN;
-	public Camera camera;
-	public Smashboard smashboard;
-	public LiftSystem liftSubsystem;
-	public Conveyor conveyor;
 	//private Lumberjack lumberjack;
 	private Timer timer;
-	
-	
-	
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-    	
-    	drivetrain = new Drivetrain();
-		//opticalSensor = new OpticalSensor();
-		//sonarSystem = new Sonar();
-		accelerometer = new Accelerometer();
-		pdpCAN = new PowerDistributionPanel();
-		camera = new Camera();
-		smashboard = new Smashboard();
-		liftSubsystem = new LiftSystem();
-		conveyor = new Conveyor();
 		timer = new Timer();
+		
 		//switchSubsystem = new LimitSwitch();
 		/*lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
@@ -87,17 +65,14 @@ public class Robot extends IterativeRobot {
 				"PDP Total Power", 
 				"PDP Total Energy"
 		);*/
-
-		// new OI needs to be called last
-		oi = new OI();
     }
     
     public void sharedPeriodic() {
-    	Robot.getRobot().smashboard.write("Gyro Direction", drivetrain.getHeading());
-    	Robot.getRobot().smashboard.write("Gyro Temperature", drivetrain.getTemperature());
-    	Robot.getRobot().smashboard.write("Left Encoder Position", drivetrain.getLeftEncoderPosition());
-    	Robot.getRobot().smashboard.write("Right Encoder Position", drivetrain.getRightEncoderPosition());
-    	accelerometer.display();
+    	SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
+    	SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
+    	SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
+    	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
+    	Accelerometer.getInstance().display();
     }
 	
 	public void disabledPeriodic() {
