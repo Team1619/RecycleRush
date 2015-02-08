@@ -61,7 +61,7 @@ public class TurnCommand extends Command {
     	//Robot.getRobot().smashboard.write("Left turn distance", getLeftDistance());
     	//Robot.getRobot().smashboard.write("Right turn distance", getRightDistance());
     	Robot.getRobot().smashboard.write("Turn angle", getAngle());
-    	Robot.getRobot().smashboard.write("Turn turn distance", getTurnDistance());
+    	Robot.getRobot().smashboard.write("Turn distance", getTurnDistance());
     	
         return getTurnDistance() > distance;
     }
