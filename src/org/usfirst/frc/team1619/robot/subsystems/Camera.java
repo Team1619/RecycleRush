@@ -24,7 +24,7 @@ public class Camera extends Subsystem {
 	{
 		cameraFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
         // the camera name (ex "cam1") can be found through the roboRIO web interface
-    	cameraSession = NIVision.IMAQdxOpenCamera("cam1",
+		cameraSession = NIVision.IMAQdxOpenCamera("cam1",
     		NIVision.IMAQdxCameraControlMode.CameraControlModeController);
     	NIVision.IMAQdxConfigureGrab(cameraSession);
 	}

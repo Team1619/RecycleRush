@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.TreeMap;
+
+import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
@@ -18,17 +22,18 @@ public class LiftSystem extends Subsystem {
 	private CANTalon tilterMotor;
 	private CANTalon binGripMotor;
 	private CANTalon rakerMotor;
+
+	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
+	public class LiftSystemSignal extends Signal {
+		public LiftSystemSignal() {
+			signals.add(this);
+		}
+	}
+
+	public final Signal abortSignal = new LiftSystemSignal();
+	public final Signal resetSignal = new LiftSystemSignal();
 	
-	public static final int kStateIdle = 0;
-	public static final int kStateBeginStack = 1;
-	public static final int kStateBeginFeed = 2;
-	public static final int kStateStackForFeed = 3;
-	public static final int kStateStackForPickup = 4;
-	public static final int kStatePickup = 5;
-	public static final int kStateDropoff = 6;
-	
-	
-	private int currentState = kStateIdle;
+	private State eCurrentState = State.Init;
 	
 	public LiftSystem() {
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
@@ -52,6 +57,7 @@ public class LiftSystem extends Subsystem {
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(false, false);
     	rakerMotor.enableBrakeMode(true);
+    	
 	}
 	
     public void initDefaultCommand() {
@@ -79,46 +85,110 @@ public class LiftSystem extends Subsystem {
     	rakerMotor.set(moveValue*0.2);
     }
     
-    private static String stateToString(int state) {
-    	switch(state) {
-    	case kStateIdle:
-    		return "Idle";
-    	case kStateBeginStack:
-    		return "Begin Stack";
-    	case kStateBeginFeed:
-    		return "Begin Feed";
-    	case kStateStackForFeed:
-    		return "Stack For Feed";
-    	case kStateStackForPickup:
-    		return "Stack for Pickup";
-    	case kStatePickup:
-    		return "Pickup";
-    	case kStateDropoff:
-    		return "Dropoff";
-    	default: 
-    		return "Invalid State";
-    	}
+    
+    enum State {
+    	Init {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Init";
+    		}
+    	},
+    	Idle {
+    		State run(LiftSystem liftSystem) {
+    			if (liftSystem.resetSignal.check()) {
+    				return Init;
+    			}
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Idle";
+    		}
+    	},
+    	
+    	BeginStack {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Begin Stack";
+    		}
+    		
+    	},
+    	BeginFeed {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Begin Feed";
+    		}
+    	},
+    	StackForFeed {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Stack For Feed";
+    		}
+    	},
+    	StackForPickup {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Stack For Pickup";
+    		}
+    	},
+    	Pickup {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Pickup";
+    		}
+    	},
+    	Dropoff {
+    		State run(LiftSystem liftSystem) {
+    			return Idle;
+    		}
+    		
+    		public String toString() {
+    			return "Dropoff";
+    		}
+    	};
+    	
+    	
+    	
+    	//static LiftSystem liftSystem = Robot.getRobot().liftSubsystem;
+    	abstract State run(LiftSystem liftSystem);
     }
     
-    private int stateIdle() {
-    	return kStateIdle;
-    }
     
     public void runStateMachine() {
-    	int nextState = currentState;
-    	//System.out.println("Current State: " + stateToString(currentState));
+    	State eNextState = eCurrentState;
+
+    	eCurrentState = State.Idle;
+    	//System.out.println("Current State: " + eCurrentState);
     	
-    	switch(currentState) {
-    	case kStateIdle:
-    		nextState = stateIdle();
-    		break;
-    	default:
-    		break;
+    	
+    	
+    	eNextState = eCurrentState.run(this);
+    	
+    	for(Signal signal: signals) {
+    		signal.clear();
     	}
     	
-    	if(nextState != currentState) {
+    	if(eNextState != eCurrentState) {
         	//System.out.println("Next State: " + stateToString(nextState));
-        	currentState = nextState;
+        	eCurrentState = eNextState;
     	}
     }
     

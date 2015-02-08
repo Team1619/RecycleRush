@@ -2,16 +2,17 @@ package org.usfirst.frc.team1619.robot;
 
 //github.com/Team1619/RecycleRush.git
 //github.com/Team1619/RecycleRush.git
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinGripCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinTiltCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
-import org.usfirst.frc.team1619.robot.commands.KachigCommand;
-import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -44,6 +45,8 @@ public class OI {
 	private final JoystickButton resetEncoderButton;
 	private final JoystickButton driveForwardButton;
 	private final JoystickButton turnRightButton;
+	private final JoystickButton liftAbortButton;
+	private final JoystickButton liftResetButton;
 	
 	public OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -71,7 +74,8 @@ public class OI {
 		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
 		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
-		
+		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
+		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
 		
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
@@ -91,6 +95,9 @@ public class OI {
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
+		
+		liftAbortButton.whenPressed(new RaiseSignalCommand(Robot.getRobot().liftSubsystem.abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(Robot.getRobot().liftSubsystem.resetSignal));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
