@@ -10,10 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class CameraCommand extends Command {
 
-	private Camera camera;
-	
-	/* Camera-related members */
-	
+	private Camera camera;	
 	
     public CameraCommand() {
         // Use requires() here to declare subsystem dependencies

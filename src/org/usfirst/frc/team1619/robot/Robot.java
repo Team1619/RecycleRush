@@ -58,7 +58,7 @@ public class Robot extends IterativeRobot {
 		//sonarSystem = new Sonar();
 		accelerometer = new Accelerometer();
 		pdpCAN = new PowerDistributionPanel();
-		//camera = new Camera();
+		camera = new Camera();
 		smashboard = new Smashboard();
 		liftSubsystem = new LiftSystem();
 		conveyor = new Conveyor();
