@@ -58,8 +58,8 @@ public class TurnCommand extends Command {
     
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	Robot.getRobot().smashboard.write("Left distance", getLeftDistance());
-    	Robot.getRobot().smashboard.write("Right distance", getRightDistance());
+    	//Robot.getRobot().smashboard.write("Left turn distance", getLeftDistance());
+    	//Robot.getRobot().smashboard.write("Right turn distance", getRightDistance());
     	Robot.getRobot().smashboard.write("Turn angle", getAngle());
     	Robot.getRobot().smashboard.write("Turn turn distance", getTurnDistance());
     	

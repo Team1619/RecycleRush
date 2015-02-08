@@ -17,6 +17,7 @@ public class LiftSystem extends Subsystem {
 	private CANTalon binElevatorMotor;
 	private CANTalon tilterMotor;
 	private CANTalon binGripMotor;
+	private CANTalon rakerMotor;
 	
 	public static final int kStateIdle = 0;
 	public static final int kStateBeginStack = 1;
@@ -36,7 +37,7 @@ public class LiftSystem extends Subsystem {
     	
     	binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
     	binElevatorMotor.enableLimitSwitch(false, false);
-    	binElevatorMotor.enableBrakeMode(false);
+    	binElevatorMotor.enableBrakeMode(true);
     	
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
     	tilterMotor.enableLimitSwitch(true, true);
@@ -47,6 +48,10 @@ public class LiftSystem extends Subsystem {
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
     	binGripMotor.enableBrakeMode(false);
+    	
+    	rakerMotor = new CANTalon(RobotMap.rakerMotor);
+    	rakerMotor.enableLimitSwitch(false, false);
+    	rakerMotor.enableBrakeMode(true);
 	}
 	
     public void initDefaultCommand() {
@@ -59,7 +64,7 @@ public class LiftSystem extends Subsystem {
     }
     
     public void moveBinElevator(double moveValue) {
-    	binElevatorMotor.set(moveValue);
+    	binElevatorMotor.set(moveValue*0.2);
     }
     
     public void binTilt(double moveValue) {
@@ -68,6 +73,10 @@ public class LiftSystem extends Subsystem {
     
     public void moveBinGrip(double moveValue) {
     	binGripMotor.set(moveValue);
+    }
+    
+    public void moveRaker(double moveValue) {
+    	rakerMotor.set(moveValue*0.2);
     }
     
     private static String stateToString(int state) {

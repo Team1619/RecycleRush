@@ -10,8 +10,8 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class LinearDriveCommand extends Command {
 	public static final double kMoveForwardDistance = 3.0; //in meters	
-	
 	public static final double kDriveSpeed = 0.5;
+	public static final double kPValue = 2.0;
 
 	
 	private Drivetrain drivetrain;
@@ -43,7 +43,7 @@ public class LinearDriveCommand extends Command {
     	rightChangeVal = drivetrain.getRightEncoderPosition() - rightStartVal;
     	
     	if(leftChangeVal != rightChangeVal) {
-    		turnVal = (rightChangeVal - leftChangeVal);
+    		turnVal = (rightChangeVal - leftChangeVal)*kPValue;
     	}
     	
     	else {
@@ -51,6 +51,7 @@ public class LinearDriveCommand extends Command {
     	}
     	
     	drivetrain.drive(kDriveSpeed * (distance/Math.abs(distance)), turnVal);
+    	System.out.println(turnVal);
     }
 
     // Make this return true when this Command no longer needs to run execute()

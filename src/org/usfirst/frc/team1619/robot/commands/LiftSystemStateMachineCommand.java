@@ -26,8 +26,10 @@ public class LiftSystemStateMachineCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	liftSystem.runStateMachine();
-    	liftSystem.binTilt(Robot.getRobot().oi.getLeftStick().getY());
-    	System.out.println(liftSystem.getLimits());
+    	liftSystem.moveBinElevator(Robot.getRobot().oi.getLeftStick().getY());
+    	liftSystem.moveRaker(Robot.getRobot().oi.getLeftStick().getX());
+    	
+    	//System.out.println(liftSystem.getLimits());
     }
 
     // Make this return true when this Command no longer needs to run execute()

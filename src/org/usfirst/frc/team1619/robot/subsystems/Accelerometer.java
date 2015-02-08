@@ -19,8 +19,8 @@ public class Accelerometer extends Subsystem {
 	
 	public void display() {
 		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getX()));
-		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getY()));
-		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getZ()));
+		SmartDashboard.putString("Accelerometer Y", Double.toString(accelerometer.getY()));
+		SmartDashboard.putString("Accelerometer Z", Double.toString(accelerometer.getZ()));
 	}
 	
 	public double getX() {
