@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1619.robot;
 
-//github.com/Team1619/RecycleRush.git
-//github.com/Team1619/RecycleRush.git
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
