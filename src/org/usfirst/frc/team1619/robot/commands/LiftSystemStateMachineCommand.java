@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,8 +28,8 @@ public class LiftSystemStateMachineCommand extends Command {
     	
     	
     	//
-    	liftSystem.moveBinElevator(OI.getInstance().leftStick.getY());
-    	liftSystem.moveRaker(OI.getInstance().leftStick.getX());
+    	//liftSystem.moveBinElevator(OI.getInstance().leftStick.getY());
+    	//liftSystem.moveRaker(OI.getInstance().leftStick.getX());
     	
     	//System.out.println(liftSystem.getLimits());
     }

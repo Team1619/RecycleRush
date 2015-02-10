@@ -35,6 +35,7 @@ public class ManualBinElevatorCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	liftSubsystem.moveBinElevator(0.0);
     }
 
     // Called when another command which requires one or more of the same

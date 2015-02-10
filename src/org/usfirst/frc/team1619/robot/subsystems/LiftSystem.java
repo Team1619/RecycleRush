@@ -169,8 +169,6 @@ public class LiftSystem extends Subsystem {
     		}
     	};
     	
-    	
-    	
     	//static LiftSystem liftSystem = Robot.getRobot().liftSubsystem;
     	abstract State run(LiftSystem liftSystem);
     }

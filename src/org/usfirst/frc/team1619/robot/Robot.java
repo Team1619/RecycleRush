@@ -99,6 +99,7 @@ public class Robot extends IterativeRobot {
      */
     public void disabledInit(){
     	//Lumberjack.changeLogs();
+    	
     }
 
     /**
