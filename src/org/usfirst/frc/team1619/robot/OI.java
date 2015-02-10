@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1619.robot;
 
-//github.com/Team1619/RecycleRush.git
-//github.com/Team1619/RecycleRush.git
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
@@ -90,7 +88,6 @@ public class OI {
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
-		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().resetSignal));
