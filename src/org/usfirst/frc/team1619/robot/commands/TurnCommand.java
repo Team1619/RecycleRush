@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class TurnCommand extends Command {
-	public static final double kTurnRightAngle = Math.PI / 2; //Radians
+	public static final double kTurnAngle = Math.PI / 2; //Radians
 	public static final double kTurnRadius = (26 * 0.0254) / 2.0; //Meters
 	public static final double kDriveSpeed = 0.5;
 	

@@ -89,6 +89,7 @@ public class OI {
 		binGripCloseManualButton.whileHeld(new ManualBinGripCommand(-1.0));
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
+		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
