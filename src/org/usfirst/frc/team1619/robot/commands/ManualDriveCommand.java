@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -16,10 +16,10 @@ public class ManualDriveCommand extends Command {
 	
     public ManualDriveCommand() {
         // Use requires() here to declare subsystem dependencies
-    	drivetrain = Robot.getRobot().drivetrain;
+    	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
         
-        joystick = Robot.getRobot().oi.getRightStick();
+        this.joystick = OI.getInstance().rightStick;
     }
 
     // Called just before this Command runs the first time
@@ -34,6 +34,7 @@ public class ManualDriveCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	// Manual joystick drive is the default state!
         return false;
     }
 

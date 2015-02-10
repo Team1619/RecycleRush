@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,7 +15,7 @@ public class KachigCommand extends Command {
 	
     public KachigCommand() {
         // Use requires() here to declare subsystem dependencies
-    	drivetrain = Robot.getRobot().drivetrain;
+    	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
         
         timer = new Timer();

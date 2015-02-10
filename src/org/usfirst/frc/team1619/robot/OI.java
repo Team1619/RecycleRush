@@ -2,17 +2,19 @@ package org.usfirst.frc.team1619.robot;
 
 //github.com/Team1619/RecycleRush.git
 //github.com/Team1619/RecycleRush.git
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinGripCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualBinTiltCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
-import org.usfirst.frc.team1619.robot.commands.KachigCommand;
-import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
+import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
+import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -24,14 +26,8 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
  */
 public class OI {
 	
-	private final Joystick rightStick;
-	public Joystick getRightStick() {
-		return rightStick;
-	}
-	private final Joystick leftStick;
-	public Joystick getLeftStick() {
-		return leftStick;
-	}
+	public final Joystick rightStick;
+	public final Joystick leftStick;
 	
 	private final JoystickButton kachigLeft, kachigRight;
 	private final JoystickButton resetGyroButton;
@@ -44,8 +40,10 @@ public class OI {
 	private final JoystickButton resetEncoderButton;
 	private final JoystickButton driveForwardButton;
 	private final JoystickButton turnRightButton;
+	private final JoystickButton liftAbortButton;
+	private final JoystickButton liftResetButton;
 	
-	public OI() {
+	private OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
 		
@@ -71,27 +69,39 @@ public class OI {
 		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
 		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
-		
+		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
+		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
 		
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whileHeld(new ManualConveyorCommand.ConveyorForwardCommand());
-		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand.ConveyorBackwardCommand());
-		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand.GuardRailCloseCommand());
-		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand.GuardRailOpenCommand());
-		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand.ToteElevatorDownCommand());
-		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand.ToteElevatorUpCommand());
-		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand.BinElevatorUpCommand());
-		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand.BinElevatorDownCommand());
-		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand.BinTiltUpCommand());
-		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand.BinTiltDownCommand());
-		binGripOpenManualButton.whileHeld(new ManualBinGripCommand.BinGripOpenCommand());
-		binGripCloseManualButton.whileHeld(new ManualBinGripCommand.BinGripCloseCommand());
+		conveyorForwardManualButton.whileHeld(new ManualConveyorCommand(1.0));
+		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand(-1.0));
+		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand(-1.0));
+		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand(1.0));
+		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand(-1.0));
+		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand(1.0));
+		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand(1.0));
+		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand(-1.0));
+		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand(1.0));
+		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand(-1.0));
+		binGripOpenManualButton.whileHeld(new ManualBinGripCommand(1.0));
+		binGripCloseManualButton.whileHeld(new ManualBinGripCommand(-1.0));
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
+		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
+		
+		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().resetSignal));
 	}
+	
+	private static OI oi = new OI();
+	
+	public static OI getInstance() {
+		return oi;
+	}
+	
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
     // You create one by telling it which joystick it's on and which button

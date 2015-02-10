@@ -1,28 +1,31 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.Robot;
+import org.usfirst.frc.team1619.robot.subsystems.Camera;
+
 import edu.wpi.first.wpilibj.command.Command;
-import org.usfirst.frc.team1619.robot.subsystems.LEDStrip;
 
 /**
  *
  */
-public class LEDStripCommand extends Command {
-	private LEDStrip ledStrip;
+public class CameraCommand extends Command {
+
+	private Camera camera;	
 	
-    public LEDStripCommand() {
+    public CameraCommand() {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-		ledStrip = Robot.getRobot().ledStrip;
-		requires(ledStrip);
+    	camera = Camera.getInstance();
+        requires(camera);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	camera.initCamera();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	//Camera-relate initialization
+    	camera.makeCameraImage();
     }
 
     // Make this return true when this Command no longer needs to run execute()

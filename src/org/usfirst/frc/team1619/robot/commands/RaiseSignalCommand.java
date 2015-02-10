@@ -1,32 +1,29 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-
-import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
+import org.usfirst.frc.team1619.robot.subsystems.Signal;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ManualConveyorCommand extends Command {
-	private Conveyor conveyor;
-	private double speed;
-
-    public ManualConveyorCommand(double speed) {
+public class RaiseSignalCommand extends Command {
+	
+	private Signal signal;
+	
+    public RaiseSignalCommand(Signal signal) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	conveyor = Conveyor.getInstance();
-    	this.speed = speed;
-    	requires(conveyor);
+    	this.signal = signal;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	signal.raise();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		conveyor.moveConveryor(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
