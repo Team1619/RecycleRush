@@ -42,7 +42,7 @@ public class OI {
 	private final JoystickButton turnRightButton;
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
-	
+		
 	private OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
@@ -55,8 +55,7 @@ public class OI {
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
-		turnRightButton = new JoystickButton(rightStick, RobotMap.turnRightButtonID);
-		
+		turnRightButton = new JoystickButton(rightStick, RobotMap.turnRightButtonID);		
 		
 		//Left stick
 		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
@@ -90,7 +89,6 @@ public class OI {
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
-		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().resetSignal));

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class LinearDriveCommand extends Command {
 	public static final double kMoveForwardDistance = 3.0; //in meters	
 	public static final double kDriveSpeed = 0.5;
-	public static final double kPValue = 2.0;
+	public static final double kPValue = 4.0;
 
 	
 	private Drivetrain drivetrain;

@@ -15,11 +15,11 @@ public class LiftSystem extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private CANTalon toteElevatorMotor;
-	private CANTalon binElevatorMotor;
-	private CANTalon tilterMotor;
-	private CANTalon binGripMotor;
-	private CANTalon rakerMotor;
+	public final CANTalon toteElevatorMotor;
+	public final CANTalon binElevatorMotor;
+	public final CANTalon tilterMotor;
+	public final CANTalon binGripMotor;
+	public final CANTalon rakerMotor;
 
 	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
 	public class LiftSystemSignal extends Signal {
@@ -55,7 +55,6 @@ public class LiftSystem extends Subsystem {
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(false, false);
     	rakerMotor.enableBrakeMode(true);
-    	
 	}
 	
 	private static final LiftSystem theSystem = new LiftSystem();
@@ -90,10 +89,24 @@ public class LiftSystem extends Subsystem {
     }
     
     
+    
     enum State {
     	Init {
     		State run(LiftSystem liftSystem) {
-    			return Idle;
+    			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
+    				liftSystem.moveToteElevator(-0.3);    				
+    			}
+    			if(!liftSystem.binElevatorMotor.isRevLimitSwitchClosed()) {
+    				liftSystem.moveBinElevator(-0.2);    				
+    			}
+    			
+    			if(liftSystem.binElevatorMotor.isRevLimitSwitchClosed() && liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
+    				liftSystem.toteElevatorMotor.setPosition(0.0);
+    				liftSystem.binElevatorMotor.setPosition(0.0);
+    				return Idle;	
+    			}
+    			return Init;
+    			
     		}
     		
     		public String toString() {
@@ -169,8 +182,10 @@ public class LiftSystem extends Subsystem {
     		}
     	};
     	
-    	//static LiftSystem liftSystem = Robot.getRobot().liftSubsystem;
+    	
     	abstract State run(LiftSystem liftSystem);
+    	
+    	void init(LiftSystem liftSystem) {}
     }
     
     
@@ -191,6 +206,7 @@ public class LiftSystem extends Subsystem {
     	if(eNextState != eCurrentState) {
         	//System.out.println("Next State: " + stateToString(nextState));
         	eCurrentState = eNextState;
+        	eCurrentState.init(this);
     	}
     }
     

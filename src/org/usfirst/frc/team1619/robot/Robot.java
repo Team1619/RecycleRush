@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
+import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
 
@@ -39,6 +40,8 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	GyroSystem.getInstance().calibrate();
+    	Camera.getInstance();
 		timer = new Timer();
 		
 		//switchSubsystem = new LimitSwitch();
@@ -70,15 +73,12 @@ public class Robot extends IterativeRobot {
     public void sharedPeriodic() {
     	SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
     	SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
+    	SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
     	SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
     	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
     	Accelerometer.getInstance().display();
     }
 	
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-		sharedPeriodic();
-	}
 
     public void autonomousInit() {
     }
@@ -97,10 +97,52 @@ public class Robot extends IterativeRobot {
      * This function is called when the disabled button is hit.
      * You can use it to reset subsystems before shutting down.
      */
+    
+    private Timer gyroInitTimer = new Timer();
+    private boolean gyroInitTimerRunning;
+    private boolean gyroInitTimerFinished;
     public void disabledInit(){
     	//Lumberjack.changeLogs();
-    	
+    	gyroInitTimer.start();
+    	gyroInitTimerRunning = false;
+    	gyroInitTimerFinished = true;
     }
+    
+	public void disabledPeriodic() {
+		Scheduler.getInstance().run();
+		sharedPeriodic();
+		
+		if(OI.getInstance().rightStick.getRawButton(RobotMap.calibrateGyroButton)) {
+			gyroInitTimerFinished = false;
+			SmartDashboard.putString("Gyro status", "");
+		}
+		
+		if(!gyroInitTimerFinished) {
+			if(Math.abs(GyroSystem.getInstance().getTurnRate()) < 0.5) {
+				if(!gyroInitTimerRunning) {
+					gyroInitTimerRunning = true;
+					gyroInitTimer.start();
+					SmartDashboard.putString("Gyro status", "stabilizing");
+				}
+				
+				if(gyroInitTimer.hasPeriodPassed(3.0)) {
+					gyroInitTimer.stop();
+					SmartDashboard.putString("Gyro status", "stabilized and calibrating");
+					GyroSystem.getInstance().calibrate();
+					SmartDashboard.putString("Gyro status", "calibrated");
+					gyroInitTimerFinished = true;
+					gyroInitTimerRunning = false;
+				}
+			}
+			else {
+				gyroInitTimer.stop();
+				gyroInitTimer.reset();
+				if(gyroInitTimerRunning)
+					SmartDashboard.putString("Gyro status", "unstable");
+				gyroInitTimerRunning = false;
+			}
+		}
+	}
 
     /**
      * This function is called periodically during operator control

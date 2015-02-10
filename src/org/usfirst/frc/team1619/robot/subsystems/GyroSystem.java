@@ -10,10 +10,14 @@ public class GyroSystem extends Subsystem {
 
 	private Gyro gyro;
 	private AnalogInput gyroTemp;
+	private double gyroDirection = 0.0;
+	
+	
 	
 	private GyroSystem() {
 		gyro = new Gyro(RobotMap.gyroRateAnalogID);
 		gyroTemp = new AnalogInput(RobotMap.gyroTempAnalogID);
+		gyro.setSensitivity(0.007);
 	}
 	
 	private static final GyroSystem theSystem = new GyroSystem();
@@ -24,15 +28,17 @@ public class GyroSystem extends Subsystem {
 
     //gyro stuff
     public void calibrate() {
+    	gyroDirection = getHeading();
 		gyro.initGyro();
 	}
 	
 	public void resetGyro() {
+		gyroDirection = 0.0;
 		gyro.reset();
 	}
 	
 	public double getHeading() {
-		return gyro.getAngle()%360;
+		return (gyro.getAngle() + gyroDirection)%360;
 	}
 	
 	public double getTurnRate() {
@@ -40,7 +46,7 @@ public class GyroSystem extends Subsystem {
 	}
 	
 	public double getTemperature() {
-		return gyroTemp.getValue();
+		return 25 + (gyroTemp.getVoltage() - 2.5) / 0.009;
 	}
 	
 	@Override
