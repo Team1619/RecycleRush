@@ -90,7 +90,7 @@ public class OI {
 		binGripCloseManualButton.whileHeld(new ManualBinGripCommand.BinGripCloseCommand());
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
-		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnRightAngle));
+		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 	}
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.

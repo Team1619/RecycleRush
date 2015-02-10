@@ -12,8 +12,8 @@ public class Conveyor extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private CANTalon conveyorMotor;
-	private CANTalon guardRailMotor;
+	private CANTalon conveyorMotor; //multiple speeds based on optical sensor configuration
+	private CANTalon guardRailMotor; //overdrive slightly
 	
 	public Conveyor()
 	{
