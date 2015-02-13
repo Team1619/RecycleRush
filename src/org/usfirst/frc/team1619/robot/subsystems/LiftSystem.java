@@ -162,11 +162,11 @@ public class LiftSystem extends Subsystem {
     	},
     	BeginFeed {
     		State run(LiftSystem liftSystem) {
-    			if(liftSystem.tryFeedPickupSignal.check()) {
-    				return StackForFeed;
-    			}
     			if(liftSystem.abortSignal.check()) {
     				return Idle;
+    			}
+    			if(liftSystem.tryFeedPickupSignal.check()) {
+    				return StackForFeed;
     			}
     			return Idle;
     		}
@@ -177,6 +177,15 @@ public class LiftSystem extends Subsystem {
     	},
     	StackForFeed {
     		State run(LiftSystem liftSystem) {
+    			if(liftSystem.abortSignal.check()) {
+    				return BeginFeed;
+    			}
+    			if(liftSystem.resetSignal.check()) {
+    				return Init;
+    			}
+    			if(liftSystem.liftSignal.check()) {
+    				return Pickup;
+    			}
     			return Idle;
     		}
     		
@@ -186,6 +195,15 @@ public class LiftSystem extends Subsystem {
     	},
     	StackForPickup {
     		State run(LiftSystem liftSystem) {
+    			if(liftSystem.abortSignal.check()) {
+    				return BeginStack;
+    			}
+    			if(liftSystem.resetSignal.check()) {
+    				return Idle;
+    			}
+    			if(liftSystem.fedTotePickupSignal.check()) {
+    				return Pickup;
+    			}
     			return Idle;
     		}
     		
@@ -195,6 +213,19 @@ public class LiftSystem extends Subsystem {
     	},
     	Pickup {
     		State run(LiftSystem liftSystem) {
+    			if(liftSystem.abortSignal.check()) {
+    				return Idle; //There will need to be more logic here
+    				//We need to handle finding the previous state
+    			}
+    			if(liftSystem.resetSignal.check()) {
+    				return Idle;
+    			}
+    			if(liftSystem.finishSignal.check()) {
+    				return Idle;
+    			}
+    			if(liftSystem.continueFeedingSignal.check()) {
+    				return BeginFeed;
+    			}
     			return Idle;
     		}
     		
