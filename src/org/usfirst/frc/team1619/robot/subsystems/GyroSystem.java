@@ -46,6 +46,7 @@ public class GyroSystem extends Subsystem {
 	}
 	
 	public double getTemperature() {
+		//prevent gyro from overheating
 		return 25 + (gyroTemp.getVoltage() - 2.5) / 0.009;
 	}
 	

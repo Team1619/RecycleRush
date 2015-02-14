@@ -1,21 +1,21 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class LiftSystemStateMachineCommand extends Command {
+public class ToteLiftSystemStateMachineCommand extends Command {
 	
-	private LiftSystem liftSystem;
+	private ToteLiftSystem toteLiftSystem;
 	
-    public LiftSystemStateMachineCommand() {
+    public ToteLiftSystemStateMachineCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSystem = LiftSystem.getInstance();
-    	requires(liftSystem);
+    	toteLiftSystem = ToteLiftSystem.getInstance();
+    	requires(toteLiftSystem);
     }
     
     // Called just before this Command runs the first time
@@ -24,7 +24,7 @@ public class LiftSystemStateMachineCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftSystem.runStateMachine();
+    	toteLiftSystem.runStateMachine();
     	
     	
     	//

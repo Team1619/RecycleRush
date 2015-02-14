@@ -2,9 +2,11 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
+import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -43,6 +45,8 @@ public class Robot extends IterativeRobot {
     	OI.getInstance().init();
     	GyroSystem.getInstance().calibrate();
     	Camera.getInstance();
+    	BinLiftSystem.getInstance();
+    	ToteLiftSystem.getInstance();
 		timer = new Timer();
 		
 		//switchSubsystem = new LimitSwitch();
@@ -71,6 +75,9 @@ public class Robot extends IterativeRobot {
 		);*/
     }
     
+    /**
+     * Smart Dashboard
+     */
     public void sharedPeriodic() {
     	SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
     	SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
@@ -119,6 +126,9 @@ public class Robot extends IterativeRobot {
 		}
 		*/
 		
+		/**
+		 * Gyro Timer to Determine North, South, East, West
+		 */
 		if(!gyroInitTimerFinished) {
 			if(Math.abs(GyroSystem.getInstance().getTurnRate()) < 0.5) {
 				if(!gyroInitTimerRunning) {

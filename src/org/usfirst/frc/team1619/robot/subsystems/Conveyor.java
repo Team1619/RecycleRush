@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.ConveyorStateMachineCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -46,7 +42,6 @@ public class Conveyor extends Subsystem {
 	
 	private Conveyor() {
 		leftStick = OI.getInstance().leftStick;
-		
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
 		conveyorMotor.enableLimitSwitch(false, false);
     	conveyorMotor.enableBrakeMode(false);

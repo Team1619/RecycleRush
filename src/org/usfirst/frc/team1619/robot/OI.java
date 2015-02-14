@@ -8,7 +8,7 @@ import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -23,6 +23,10 @@ public class OI {
 	public final Joystick rightStick;
 	public final Joystick leftStick;
 	
+	/**
+	 * Operation Pairing via Buttons
+	 * pairs functions together that use the same button
+	 */
 	private final JoystickButton kachigLeft, kachigRight;
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton resetEncoderButton;
@@ -49,6 +53,10 @@ public class OI {
 	}
 	
 	public void init() {
+		/**
+		 * whenPressed = function that when a button is pressed, it starts and doesn't stop when released
+		 * whileHeld = function that only operates when a button is pressed and held, and stops when released
+		 */
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
@@ -56,8 +64,8 @@ public class OI {
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		
-		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
 	}
 	
 	private static OI oi = new OI();

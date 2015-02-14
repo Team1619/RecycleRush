@@ -15,25 +15,31 @@ public class Camera extends Subsystem {
 	private int cameraSession;
     private Image cameraFrame;
     
-	// Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	/**
+	 *  Put methods for controlling this subsystem here. Call these from Commands.
+	 */
 	
 	
 	private Camera() {
-		cameraFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-        // the camera name (ex "cam1") can be found through the roboRIO web interface
-		cameraSession = NIVision.IMAQdxOpenCamera("cam1",
-    		NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-    	NIVision.IMAQdxConfigureGrab(cameraSession);
-    	
-    	new Thread() {
-    		@Override
-    		public void run() {
-    			initCamera();
-    			while(true)
-    				makeCameraImage();
-    		}
-    	}.start();
+		try {
+			cameraFrame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+	        // the camera name (ex "cam1") can be found through the roboRIO web interface
+			cameraSession = NIVision.IMAQdxOpenCamera("cam1",
+	    		NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+	    	NIVision.IMAQdxConfigureGrab(cameraSession);
+	    	
+	    	new Thread() {
+	    		@Override
+	    		public void run() {
+	    			initCamera();
+	    			while(true)
+	    				makeCameraImage();
+	    		}
+	    	}.start();
+		}
+		catch (Exception e) {
+			
+		}
 	}
 	
 	private static final Camera theSystem = new Camera();
