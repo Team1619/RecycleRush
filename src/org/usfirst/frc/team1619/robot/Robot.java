@@ -40,6 +40,7 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+    	OI.getInstance().init();
     	GyroSystem.getInstance().calibrate();
     	Camera.getInstance();
 		timer = new Timer();

@@ -41,10 +41,10 @@ public class OI {
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
 		
-	private OI() {
+	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
-		
+
 		//Right stick
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
@@ -68,7 +68,9 @@ public class OI {
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
 		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
-		
+	}
+	
+	public void init() {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
