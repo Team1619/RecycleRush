@@ -75,7 +75,7 @@ public class LiftSystem extends Subsystem {
     	toteElevatorMotor.enableBrakeMode(false);
     	
     	binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
-    	binElevatorMotor.enableLimitSwitch(false, false);
+    	binElevatorMotor.enableLimitSwitch(true, true);
     	binElevatorMotor.enableBrakeMode(true);
     	
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
@@ -140,9 +140,9 @@ public class LiftSystem extends Subsystem {
     }
     private void binTiltUpdate() {
     	if(binTiltUpManualButton.get())
-        	tilterMotor.set(0.1);
+        	tilterMotor.set(0.50);
     	else if(binTiltDownManualButton.get())
-        	tilterMotor.set(-0.1);
+        	tilterMotor.set(-0.50);
     	else
     		tilterMotor.set(tilterMotorSpeed);
     }
