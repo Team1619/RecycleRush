@@ -25,8 +25,6 @@ public class OI {
 	
 	private final JoystickButton kachigLeft, kachigRight;
 	private final JoystickButton resetGyroButton;
-	private final JoystickButton conveyorForwardManualButton, conveyorBackwardManualButton;
-	private final JoystickButton guardrailCloseManualButton, guardrailOpenManualButton;
 	private final JoystickButton resetEncoderButton;
 	private final JoystickButton driveForwardButton;
 	private final JoystickButton turnRightButton;
@@ -46,10 +44,6 @@ public class OI {
 		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
 		
 		//Left stick
-		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
-		conveyorBackwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
-		guardrailCloseManualButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
-		guardrailOpenManualButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
 	}
@@ -58,10 +52,6 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		conveyorForwardManualButton.whileHeld(new ManualConveyorCommand(1.0));
-		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand(-1.0));
-		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand(-0.1));
-		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand(0.1));
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
