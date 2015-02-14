@@ -5,7 +5,8 @@ import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
- *
+ * does same job as tote elevator command within LiftSystem subsystem
+ * but is controlled manually via the left stick
  */
 public class ManualToteElevatorCommand extends Command {
 	private LiftSystem liftSystem;
