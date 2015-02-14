@@ -84,9 +84,9 @@ public class Conveyor extends Subsystem {
 	public void updateGuardRail()
 	{
 		if(guardRailOpenManualButton.get())
-    		guardRailMotor.set(1.0);
+    		guardRailMotor.set(0.15);
     	else if(guardRailCloseManualButton.get())
-    		guardRailMotor.set(-1.0);
+    		guardRailMotor.set(-0.25);
     	else
     		guardRailMotor.set(guardRailSpeed);
 

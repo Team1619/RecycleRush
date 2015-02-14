@@ -4,6 +4,7 @@ package org.usfirst.frc.team1619.robot;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
@@ -47,6 +48,7 @@ public class Robot extends IterativeRobot {
     	Camera.getInstance();
     	BinLiftSystem.getInstance();
     	ToteLiftSystem.getInstance();
+    	Conveyor.getInstance();
 		timer = new Timer();
 		
 		//switchSubsystem = new LimitSwitch();
