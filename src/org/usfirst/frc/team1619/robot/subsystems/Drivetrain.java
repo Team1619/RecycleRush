@@ -79,7 +79,10 @@ public class Drivetrain extends Subsystem {
     	drive.stopMotor();
     }
     
-	
+	/**
+	 * sends signal from wheels to encoder to get position, number of clicks
+	 * @return
+	 */
 	public double getLeftEncoderPosition() {
 		return -kDistancePerPulse*leftMotor1.getEncPosition();
 	}

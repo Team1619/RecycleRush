@@ -9,8 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Accelerometer extends Subsystem {
     
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+    /**
+     *  Put methods for controlling this subsystem here. Call these from Commands.
+     */
 	private BuiltInAccelerometer accelerometer;
 	
 	private Accelerometer() {
@@ -24,6 +25,7 @@ public class Accelerometer extends Subsystem {
 	}
 	
 	public void display() {
+		//display information about the accelerator to the dashboard so drivers know the speed.
 		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getX()));
 		SmartDashboard.putString("Accelerometer Y", Double.toString(accelerometer.getY()));
 		SmartDashboard.putString("Accelerometer Z", Double.toString(accelerometer.getZ()));

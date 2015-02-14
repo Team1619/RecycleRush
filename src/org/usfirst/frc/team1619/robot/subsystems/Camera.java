@@ -15,8 +15,9 @@ public class Camera extends Subsystem {
 	private int cameraSession;
     private Image cameraFrame;
     
-	// Put methods for controlling this subsystem
-    // here. Call these from Commands.
+	/**
+	 *  Put methods for controlling this subsystem here. Call these from Commands.
+	 */
 	
 	
 	private Camera() {
