@@ -2,12 +2,8 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualBinElevatorCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualBinGripCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualBinTiltCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualToteElevatorCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
@@ -31,10 +27,6 @@ public class OI {
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton conveyorForwardManualButton, conveyorBackwardManualButton;
 	private final JoystickButton guardrailCloseManualButton, guardrailOpenManualButton;
-	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
-	private final JoystickButton binElevatorUpManualButton, binElevatorDownManualButton;
-	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
-	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton resetEncoderButton;
 	private final JoystickButton driveForwardButton;
 	private final JoystickButton turnRightButton;
@@ -49,8 +41,6 @@ public class OI {
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
-		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
-		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
 		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
@@ -60,12 +50,6 @@ public class OI {
 		conveyorBackwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
 		guardrailCloseManualButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
 		guardrailOpenManualButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
-		binElevatorUpManualButton = new JoystickButton(leftStick, RobotMap.binElevatorUpManualButtonID);
-		binElevatorDownManualButton = new JoystickButton(leftStick, RobotMap.binElevatorDownManualButtonID);
-		binTiltUpManualButton = new JoystickButton(leftStick, RobotMap.binTiltUpManualButtonID);
-		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
-		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
-		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
 		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
 	}
@@ -78,14 +62,6 @@ public class OI {
 		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand(-1.0));
 		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand(-0.1));
 		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand(0.1));
-		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand(-0.1));
-		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand(0.1));
-		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand(0.1));
-		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand(-0.1));
-		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand(0.1));
-		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand(-0.1));
-		binGripOpenManualButton.whileHeld(new ManualBinGripCommand(0.1));
-		binGripCloseManualButton.whileHeld(new ManualBinGripCommand(-0.1));
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));

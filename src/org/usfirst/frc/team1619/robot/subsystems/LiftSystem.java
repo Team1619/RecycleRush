@@ -2,12 +2,13 @@ package org.usfirst.frc.team1619.robot.subsystems;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -22,6 +23,14 @@ public class LiftSystem extends Subsystem {
 	public final CANTalon tilterMotor;
 	public final CANTalon binGripMotor;
 	public final CANTalon rakerMotor;
+	
+	private final Joystick rightStick;
+	private final Joystick leftStick;
+	
+	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
+	private final JoystickButton binElevatorUpManualButton, binElevatorDownManualButton;
+	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
+	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 
 	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
 	public class LiftSystemSignal extends Signal {
@@ -46,6 +55,21 @@ public class LiftSystem extends Subsystem {
 	
 	
 	private LiftSystem() {
+		rightStick = OI.getInstance().rightStick;
+		leftStick = OI.getInstance().leftStick;
+		
+		//right stick
+		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
+		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
+		
+		//left stick
+		binElevatorUpManualButton = new JoystickButton(leftStick, RobotMap.binElevatorUpManualButtonID);
+		binElevatorDownManualButton = new JoystickButton(leftStick, RobotMap.binElevatorDownManualButtonID);
+		binTiltUpManualButton = new JoystickButton(leftStick, RobotMap.binTiltUpManualButtonID);
+		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
+		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
+		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
+		
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
     	toteElevatorMotor.enableBrakeMode(false);
@@ -67,7 +91,6 @@ public class LiftSystem extends Subsystem {
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(false, false);
     	rakerMotor.enableBrakeMode(true);
-    	
 	}
 	
 	private static final LiftSystem theSystem = new LiftSystem();
@@ -89,71 +112,75 @@ public class LiftSystem extends Subsystem {
     double rakerSpeed;
     
     public void moveToteElevator(double moveValue) {
-    	toteElevatorSpeed = moveValue*0.2;
+    	toteElevatorSpeed = moveValue;
     }
     private void toteElevatorUpdate() {
-    	toteElevatorMotor.set(toteElevatorSpeed);
+    	if(toteElevatorUpManualButton.get())
+        	toteElevatorMotor.set(0.1);
+    	else if(toteElevatorDownManualButton.get())
+    		toteElevatorMotor.set(-0.1);
+    	else
+    		toteElevatorMotor.set(toteElevatorSpeed);
     }
     
     public void moveBinElevator(double moveValue) {
-    	binElevatorSpeed = moveValue*0.2;
+    	binElevatorSpeed = moveValue;
     }
     private void binElevatorUpdate() {
-    	binElevatorMotor.set(binElevatorSpeed);
+    	if(binElevatorUpManualButton.get())
+    		binElevatorMotor.set(0.1);
+    	else if(binElevatorDownManualButton.get())
+    		binElevatorMotor.set(-0.1);
+    	else
+    		binElevatorMotor.set(binElevatorSpeed);
     }
     
     public void binTilt(double moveValue) {
-    	tilterMotorSpeed = moveValue*0.2;
+    	tilterMotorSpeed = moveValue;
     }
-    /*private void binTiltUpdate() {
-    	if(button1.down)
-        	tilterMotor.set(1);
-    	else if(button2.down)
-        	tilterMotor.set(-1);
+    private void binTiltUpdate() {
+    	if(binTiltUpManualButton.get())
+        	tilterMotor.set(0.1);
+    	else if(binTiltDownManualButton.get())
+        	tilterMotor.set(-0.1);
     	else
     		tilterMotor.set(tilterMotorSpeed);
-    }*/
-    private boolean binTiltManual = false;
-    public void binTiltManualStart() {
-    	binTiltManual = true;
     }
-    public void binTiltManualValue(double speed) {
-    	
-    }
-    public void binTiltManualStop() {
-    	binTiltManual = false;
-    }
-    
-    
     
     public void moveBinGrip(double moveValue) {
-    	binGripSpeed = moveValue*0.2;
+    	binGripSpeed = moveValue;
     }
     private void binGripUpdate() {
-    	binGripMotor.set(binGripSpeed);
+    	if(binGripOpenManualButton.get())
+        	binGripMotor.set(0.1);
+    	else if(binGripCloseManualButton.get())
+    		binGripMotor.set(-0.1);
+    	else
+    		binGripMotor.set(binGripSpeed);
     }
     
+    /*
     public void moveRaker(double moveValue) {
-    	rakerSpeed = moveValue*0.2;
+    	rakerSpeed = moveValue;
     }
     private void rakerUpdate() {
     	rakerMotor.set(rakerSpeed);
-    }
+    }*/
     
     
     enum State {
     	Init {
     		State run(LiftSystem liftSystem) {
     			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
-    				liftSystem.moveToteElevator(-0.3);    				
+    				//liftSystem.moveToteElevator(-0.3);    				
     			}
     			if(!liftSystem.binElevatorMotor.isRevLimitSwitchClosed()) {
-    				liftSystem.moveBinElevator(-0.2);    				
+    				//liftSystem.moveBinElevator(-0.2);    				
     			}
     			
     			if(liftSystem.binElevatorMotor.isRevLimitSwitchClosed() && liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
-    				liftSystem.toteElevatorMotor.setPosition(0.0);
-    				liftSystem.binElevatorMotor.setPosition(0.0);
+    				//liftSystem.toteElevatorMotor.setPosition(0.0);
+    				//liftSystem.binElevatorMotor.setPosition(0.0);
     				return Idle;	
     			}
     			return Init;
@@ -301,10 +328,10 @@ public class LiftSystem extends Subsystem {
     	eNextState = eCurrentState.run(this);
     	
     	binGripUpdate();
-    	//binTiltUpdate();
+    	binTiltUpdate();
     	binElevatorUpdate();
     	toteElevatorUpdate();
-    	rakerUpdate();
+    	//rakerUpdate();
     	
     	for(Signal signal: signals) {
     		signal.clear();
