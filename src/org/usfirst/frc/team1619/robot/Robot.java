@@ -112,10 +112,11 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
 		
-		if(OI.getInstance().rightStick.getRawButton(RobotMap.calibrateGyroButton)) {
+		/*if(OI.getInstance().rightStick.getRawButton(RobotMap.calibrateGyroButton)) {
 			gyroInitTimerFinished = false;
 			SmartDashboard.putString("Gyro status", "");
 		}
+		*/
 		
 		if(!gyroInitTimerFinished) {
 			if(Math.abs(GyroSystem.getInstance().getTurnRate()) < 0.5) {

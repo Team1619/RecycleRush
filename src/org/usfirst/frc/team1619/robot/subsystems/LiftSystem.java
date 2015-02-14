@@ -6,6 +6,7 @@ import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -74,6 +75,11 @@ public class LiftSystem extends Subsystem {
     
     public void moveBinElevator(double moveValue) {
     	binElevatorMotor.set(moveValue*0.2);
+    }
+    
+    public void binTilt(GenericHID inputDevice)
+    {
+    	tilterMotor.set(inputDevice.getY() / 4);
     }
     
     public void binTilt(double moveValue) {

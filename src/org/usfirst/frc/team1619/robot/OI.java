@@ -53,7 +53,7 @@ public class OI {
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
-		turnRightButton = new JoystickButton(rightStick, RobotMap.turnRightButtonID);		
+		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
 		
 		//Left stick
 		conveyorForwardManualButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
@@ -74,16 +74,16 @@ public class OI {
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		conveyorForwardManualButton.whileHeld(new ManualConveyorCommand(1.0));
 		conveyorBackwardManualButton.whileHeld(new ManualConveyorCommand(-1.0));
-		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand(-1.0));
-		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand(1.0));
-		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand(-1.0));
-		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand(1.0));
-		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand(1.0));
-		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand(-1.0));
-		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand(1.0));
-		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand(-1.0));
-		binGripOpenManualButton.whileHeld(new ManualBinGripCommand(1.0));
-		binGripCloseManualButton.whileHeld(new ManualBinGripCommand(-1.0));
+		guardrailCloseManualButton.whileHeld(new ManualGuardRailCommand(-0.1));
+		guardrailOpenManualButton.whileHeld(new ManualGuardRailCommand(0.1));
+		toteElevatorDownManualButton.whileHeld(new ManualToteElevatorCommand(-0.1));
+		toteElevatorUpManualButton.whileHeld(new ManualToteElevatorCommand(0.1));
+		binElevatorUpManualButton.whileHeld(new ManualBinElevatorCommand(0.1));
+		binElevatorDownManualButton.whileHeld(new ManualBinElevatorCommand(-0.1));
+		binTiltUpManualButton.whileHeld(new ManualBinTiltCommand(0.1));
+		binTiltDownManualButton.whileHeld(new ManualBinTiltCommand(-0.1));
+		binGripOpenManualButton.whileHeld(new ManualBinGripCommand(0.1));
+		binGripCloseManualButton.whileHeld(new ManualBinGripCommand(-0.1));
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
