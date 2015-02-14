@@ -7,6 +7,7 @@ import org.usfirst.frc.team1619.robot.commands.LiftSystemStateMachineCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -43,6 +44,7 @@ public class LiftSystem extends Subsystem {
 	
 	private State eCurrentState = State.Init;
 	
+	
 	private LiftSystem() {
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
@@ -65,6 +67,7 @@ public class LiftSystem extends Subsystem {
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(false, false);
     	rakerMotor.enableBrakeMode(true);
+    	
 	}
 	
 	private static final LiftSystem theSystem = new LiftSystem();
@@ -78,31 +81,64 @@ public class LiftSystem extends Subsystem {
         setDefaultCommand(new LiftSystemStateMachineCommand());
     }
     
+    //Manual commands
+    double toteElevatorSpeed;
+    double binElevatorSpeed;
+    double tilterMotorSpeed;
+    double binGripSpeed;
+    double rakerSpeed;
+    
     public void moveToteElevator(double moveValue) {
-    	toteElevatorMotor.set(moveValue);
+    	toteElevatorSpeed = moveValue*0.2;
+    }
+    private void toteElevatorUpdate() {
+    	toteElevatorMotor.set(toteElevatorSpeed);
     }
     
     public void moveBinElevator(double moveValue) {
-    	binElevatorMotor.set(moveValue*0.2);
+    	binElevatorSpeed = moveValue*0.2;
     }
-    
-    public void binTilt(GenericHID inputDevice)
-    {
-    	tilterMotor.set(inputDevice.getY() / 4);
+    private void binElevatorUpdate() {
+    	binElevatorMotor.set(binElevatorSpeed);
     }
     
     public void binTilt(double moveValue) {
-    	tilterMotor.set(moveValue);
+    	tilterMotorSpeed = moveValue*0.2;
+    }
+    /*private void binTiltUpdate() {
+    	if(button1.down)
+        	tilterMotor.set(1);
+    	else if(button2.down)
+        	tilterMotor.set(-1);
+    	else
+    		tilterMotor.set(tilterMotorSpeed);
+    }*/
+    private boolean binTiltManual = false;
+    public void binTiltManualStart() {
+    	binTiltManual = true;
+    }
+    public void binTiltManualValue(double speed) {
+    	
+    }
+    public void binTiltManualStop() {
+    	binTiltManual = false;
     }
     
+    
+    
     public void moveBinGrip(double moveValue) {
-    	binGripMotor.set(moveValue);
+    	binGripSpeed = moveValue*0.2;
+    }
+    private void binGripUpdate() {
+    	binGripMotor.set(binGripSpeed);
     }
     
     public void moveRaker(double moveValue) {
-    	rakerMotor.set(moveValue*0.2);
+    	rakerSpeed = moveValue*0.2;
     }
-    
+    private void rakerUpdate() {
+    	rakerMotor.set(rakerSpeed);
+    }
     
     
     enum State {
@@ -262,9 +298,13 @@ public class LiftSystem extends Subsystem {
     	eCurrentState = State.Idle;
     	//System.out.println("Current State: " + eCurrentState);
     	
-    	
-    	
     	eNextState = eCurrentState.run(this);
+    	
+    	binGripUpdate();
+    	//binTiltUpdate();
+    	binElevatorUpdate();
+    	toteElevatorUpdate();
+    	rakerUpdate();
     	
     	for(Signal signal: signals) {
     		signal.clear();
@@ -278,7 +318,7 @@ public class LiftSystem extends Subsystem {
     }
     
     public String getLimits() { //"fwd    rev"
-    	return "" + tilterMotor.isFwdLimitSwitchClosed() + "   " + tilterMotor.isRevLimitSwitchClosed();
+    	return "" + tilterMotor.isFwdLimitSwitchClosed() + "    " + tilterMotor.isRevLimitSwitchClosed();
     }
 }
 

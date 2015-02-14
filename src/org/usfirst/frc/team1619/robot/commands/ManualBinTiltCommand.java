@@ -19,7 +19,6 @@ public class ManualBinTiltCommand extends Command {
         // eg. requires(chassis);
     	liftSystem = LiftSystem.getInstance();
     	this.speed = speed;
-    	requires(liftSystem);
     	this.joystick = OI.getInstance().leftStick;
     }
 
@@ -29,7 +28,7 @@ public class ManualBinTiltCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	liftSystem.binTilt(joystick);
+    	liftSystem.binTilt(joystick.getY());
     }
 
     // Make this return true when this Command no longer needs to run execute()
