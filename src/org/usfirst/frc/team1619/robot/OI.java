@@ -8,7 +8,7 @@ import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -66,8 +66,8 @@ public class OI {
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		
-		liftAbortButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(LiftSystem.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
 	}
 	
 	private static OI oi = new OI();

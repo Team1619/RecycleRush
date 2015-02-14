@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.subsystems.LiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ManualToteElevatorCommand extends Command {
-	private LiftSystem liftSystem;
+	private ToteLiftSystem liftSystem;
 	private double speed;
 	
     public ManualToteElevatorCommand(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	liftSystem = LiftSystem.getInstance();
+    	liftSystem = ToteLiftSystem.getInstance();
     	this.speed = speed;
     	requires(liftSystem);
     }
