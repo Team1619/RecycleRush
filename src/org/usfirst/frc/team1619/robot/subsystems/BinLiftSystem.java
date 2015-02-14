@@ -33,6 +33,7 @@ public class BinLiftSystem extends Subsystem {
 	private final JoystickButton binElevatorUpManualButton, binElevatorDownManualButton;
 	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
+	private final JoystickButton rakerOpenManualButton, rakerCloseManualButton;
 	
 	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
 	public class BinLiftSystemSignal extends Signal {
@@ -66,6 +67,8 @@ public class BinLiftSystem extends Subsystem {
 		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
 		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
+		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
+		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
 		
 		binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
     	binElevatorMotor.enableLimitSwitch(true, true);
@@ -137,6 +140,18 @@ public class BinLiftSystem extends Subsystem {
     		binGripMotor.set(-0.1);
     	else
     		binGripMotor.set(binGripSpeed);
+    }
+    
+    public void moveRaker(double moveValue) {
+    	rakerSpeed = moveValue;
+    }
+    private void rakerUpdate() {
+    	if(rakerOpenManualButton.get())
+    		rakerMotor.set(0.1);
+    	else if(rakerCloseManualButton.get())
+    		rakerMotor.set(0.1);
+    	else
+    		rakerMotor.set(rakerSpeed);
     }
     
     enum State {
@@ -300,7 +315,7 @@ public class BinLiftSystem extends Subsystem {
     	binGripUpdate();
     	binTiltUpdate();
     	binElevatorUpdate();
-    	//rakerUpdate();
+    	rakerUpdate();
     	
     	for(Signal signal: signals) {
     		signal.clear();
