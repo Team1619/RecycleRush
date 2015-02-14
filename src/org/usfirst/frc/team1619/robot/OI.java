@@ -23,6 +23,10 @@ public class OI {
 	public final Joystick rightStick;
 	public final Joystick leftStick;
 	
+	/**
+	 * Operation Pairing via Buttons
+	 * pairs functions together that use the same button
+	 */
 	private final JoystickButton kachigLeft, kachigRight;
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton conveyorForwardManualButton, conveyorBackwardManualButton;
@@ -55,6 +59,10 @@ public class OI {
 	}
 	
 	public void init() {
+		/**
+		 * whenPressed = function that when a button is pressed, it starts and doesn't stop when released
+		 * whileHeld = function that only operates when a button is pressed and held, and stops when released
+		 */
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());

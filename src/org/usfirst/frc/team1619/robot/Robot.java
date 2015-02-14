@@ -71,6 +71,9 @@ public class Robot extends IterativeRobot {
 		);*/
     }
     
+    /**
+     * Smart Dashboard
+     */
     public void sharedPeriodic() {
     	SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
     	SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
@@ -119,6 +122,9 @@ public class Robot extends IterativeRobot {
 		}
 		*/
 		
+		/**
+		 * Gyro Timer to Determine North, South, East, West
+		 */
 		if(!gyroInitTimerFinished) {
 			if(Math.abs(GyroSystem.getInstance().getTurnRate()) < 0.5) {
 				if(!gyroInitTimerRunning) {
