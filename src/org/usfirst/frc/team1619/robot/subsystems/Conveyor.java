@@ -19,6 +19,7 @@ public class Conveyor extends Subsystem {
 	private CANTalon guardRailMotor; //overdrive slightly
 	
 	private Conveyor() {
+		//conveyor and guardrails don't have limit switches nor brake modes
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
 		conveyorMotor.enableLimitSwitch(false, false);
     	conveyorMotor.enableBrakeMode(false);
@@ -47,6 +48,7 @@ public class Conveyor extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
     	CommandGroup cg = new CommandGroup();
+    	//creates function that does the same thing but is manual
     	cg.addParallel(new ManualConveyorCommand(0));
     	cg.addParallel(new ManualGuardRailCommand(0));
         setDefaultCommand(cg);
