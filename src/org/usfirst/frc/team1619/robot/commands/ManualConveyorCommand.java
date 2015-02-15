@@ -6,6 +6,7 @@ import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -30,7 +31,8 @@ public class ManualConveyorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		conveyor.moveConveyor(speed);
+		conveyor.moveConveyor((leftStick.getThrottle() - 1) / 2 * -speed);
+		SmartDashboard.putString("Conveyor Speed", "" + (leftStick.getThrottle() - 1) / 2 * -speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
