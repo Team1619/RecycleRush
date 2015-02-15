@@ -149,7 +149,7 @@ public class BinLiftSystem extends Subsystem {
     	if(rakerOpenManualButton.get())
     		rakerMotor.set(0.1);
     	else if(rakerCloseManualButton.get())
-    		rakerMotor.set(0.1);
+    		rakerMotor.set(-0.1);
     	else
     		rakerMotor.set(rakerSpeed);
     }

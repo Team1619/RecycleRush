@@ -34,6 +34,10 @@ public class OI {
 	private final JoystickButton turnRightButton;
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
+	private final JoystickButton conveyorForwardButton;
+	private final JoystickButton conveyorBackwardButton;
+	private final JoystickButton guardRailOpenButton;
+	private final JoystickButton guardRailCloseButton;
 		
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -50,6 +54,10 @@ public class OI {
 		//Left stick
 		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
+		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
+		conveyorBackwardButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
+		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
+		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
 	}
 	
 	public void init() {
@@ -63,6 +71,10 @@ public class OI {
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
+		conveyorForwardButton.whileHeld(new ManualConveyorCommand(1.0));
+		conveyorBackwardButton.whileHeld(new ManualConveyorCommand(-1.0));
+		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
+		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
