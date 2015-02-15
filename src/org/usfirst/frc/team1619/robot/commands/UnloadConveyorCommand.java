@@ -43,6 +43,10 @@ public class UnloadConveyorCommand extends Command {
 					return RunTilBroken;
 				}
 			}
+			
+			public String toString() {
+				return "Run until broken";
+			}
 		}, 
 		SensorBroken(3.0) {
 			@Override
@@ -54,6 +58,10 @@ public class UnloadConveyorCommand extends Command {
 				else{
 					return Retract;
 				}
+			}
+			
+			public String toString() {
+				return "Sensor broken";
 			}
 		}, 
 		Retract(3.0) {
@@ -74,6 +82,9 @@ public class UnloadConveyorCommand extends Command {
 	    		cmd.retractTimer.reset();
 	    		cmd.retractTimer.start();
 	    	}
+			public String toString() {
+				return "Retract";
+			}
 		};
     	
 		double timeoutValue;
@@ -97,12 +108,15 @@ public class UnloadConveyorCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	currentState = State.RunTilBroken;
+    	currentState.init(this);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	State nextState = currentState.run(this);
     	if (nextState != currentState){
+    		System.out.println("Going from state '" + currentState + "' to '" + nextState + "'");
     		currentState = nextState;
     		currentState.init(this);
     	}
