@@ -19,6 +19,7 @@ public class ToteLiftSystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public final CANTalon toteElevatorMotor;
+	public final CANTalon toteElevatorMotorSmall;
 	
 	private final Joystick rightStick;
 	private final Joystick leftStick;
@@ -57,7 +58,11 @@ public class ToteLiftSystem extends Subsystem {
 		
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(false, false);
-    	toteElevatorMotor.enableBrakeMode(false);
+    	toteElevatorMotor.enableBrakeMode(true);
+    	
+    	toteElevatorMotorSmall = new CANTalon(RobotMap.spare);
+    	toteElevatorMotorSmall.enableLimitSwitch(false, false);
+    	toteElevatorMotorSmall.enableBrakeMode(true);
 	}
 	
 	private static final ToteLiftSystem theSystem = new ToteLiftSystem();
@@ -78,12 +83,18 @@ public class ToteLiftSystem extends Subsystem {
     	toteElevatorSpeed = moveValue;
     }
     private void toteElevatorUpdate() {
+    	/*
     	if(toteElevatorUpManualButton.get())
         	toteElevatorMotor.set(0.1);
     	else if(toteElevatorDownManualButton.get())
     		toteElevatorMotor.set(-0.1);
     	else
     		toteElevatorMotor.set(toteElevatorSpeed);
+    		*/
+    	//Following code is temporary, although controlling the tote elevator
+    	//with a joystick is likely a good idea.
+    	toteElevatorMotor.set(leftStick.getY() * 1);
+    	toteElevatorMotorSmall.set(leftStick.getY() * -1);
     }
     
     /*

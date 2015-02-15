@@ -16,7 +16,7 @@ public class Drivetrain extends Subsystem {
 	public static final int kPulsesPerRev = 512;
 	public static final double kDistancePerPulse = kWheelDiameter*Math.PI / kPulsesPerRev;
 	
-	public static final double kTwistScalar = 0.5;
+	public static final double kTwistScalar = 1.0;
 	
 	private RobotDrive drive;	
     private CANTalon leftMotor1;
