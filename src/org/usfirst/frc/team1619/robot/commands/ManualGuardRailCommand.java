@@ -17,7 +17,6 @@ public class ManualGuardRailCommand extends Command {
     public ManualGuardRailCommand(double speed) {
         // Use requires() here to declare subsystem dependencies
     	guardRailSystem = GuardRailSystem.getInstance();
-    	leftStick = OI.getInstance().leftStick;
     	timer = new Timer();
     	this.speed = speed;
         requires(guardRailSystem);
