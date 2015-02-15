@@ -60,11 +60,16 @@ public class Lumberjack {
 	}
 	
 	private static void cleanUp() {
-		File logFolder = new File(logFolderPath);
-		File[] logPaths = logFolder.listFiles();
-		Arrays.sort(logPaths);
-		for (int i = 0; i < (logPaths.length-maxLogs); i++)
-			deleteFile(logPaths[i]);
+		try {
+			File logFolder = new File(logFolderPath);
+			File[] logPaths = logFolder.listFiles();
+			Arrays.sort(logPaths);
+			for (int i = 0; i < (logPaths.length-maxLogs); i++)
+				deleteFile(logPaths[i]);
+		}
+		catch (Exception e) {
+			
+		}
 	}
 	
 	private static String getDateString() {
@@ -79,7 +84,6 @@ public class Lumberjack {
 	
 	public static void changeLogs() {
 		logGroup = getDateString();
-		new File(logFolderPath + logGroup).mkdir();
 		for (Lumberjack l : lumberjacks)
 			l.nextLog();
 		cleanUp();
@@ -89,14 +93,23 @@ public class Lumberjack {
 		try {
 			if (fileWriter != null)
 					fileWriter.close();
-			fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
-			printHeaders(headers);
+			
+			if(new File(logFolderPath + logGroup).mkdir()) {
+				fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
+				printHeaders(headers);
+			}
+			else {
+				System.err.println("Cannot create log folder!");
+				fileWriter = null;
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private void printCSV(String[] values) {
+		if(fileWriter == null)
+			return;
 		try {
 			fileWriter.append(getHumanReadableDateString());
 			for(String s : values) {
@@ -112,6 +125,8 @@ public class Lumberjack {
 	}
 	
 	private void printHeaders(String[] values) {
+		if(fileWriter == null)
+			return;
 		try {
 			boolean firstCall = true;
 			for(String s : values) {

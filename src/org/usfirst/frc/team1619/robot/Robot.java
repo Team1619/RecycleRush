@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
@@ -35,7 +36,7 @@ public class Robot extends IterativeRobot {
 	}
 
 	public PowerDistributionPanel pdpCAN;
-	//private Lumberjack lumberjack;
+	private Lumberjack lumberjack;
 	private Timer timer;
 
     /**
@@ -52,7 +53,7 @@ public class Robot extends IterativeRobot {
 		timer = new Timer();
 		
 		//switchSubsystem = new LimitSwitch();
-		/*lumberjack = new Lumberjack("PDP.csv",
+		lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 
 				"Current 1", 
@@ -74,7 +75,7 @@ public class Robot extends IterativeRobot {
 				"PDP Temperature", 
 				"PDP Total Power", 
 				"PDP Total Energy"
-		);*/
+		);
     }
     
     /**
@@ -112,7 +113,7 @@ public class Robot extends IterativeRobot {
     private boolean gyroInitTimerRunning;
     private boolean gyroInitTimerFinished;
     public void disabledInit(){
-    	//Lumberjack.changeLogs();
+    	Lumberjack.changeLogs();
     	gyroInitTimer.start();
     	gyroInitTimerRunning = false;
     	gyroInitTimerFinished = true;
@@ -170,9 +171,7 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         sharedPeriodic();
-        /*SmartDashboard.putNumber("PDP", pdpCAN.getTotalCurrent());
         if (timer.get() >= 1) {
-        	//System.out.println(pdpCAN.getTotalCurrent());
             lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
             		Double.toString(pdpCAN.getCurrent(0)),
             		Double.toString(pdpCAN.getCurrent(1)),
@@ -196,7 +195,7 @@ public class Robot extends IterativeRobot {
             		Double.toString(pdpCAN.getTotalEnergy())
             );
             timer.reset();
-        }*/
+        }
     }
     
     
