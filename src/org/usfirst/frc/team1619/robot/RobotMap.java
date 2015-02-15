@@ -59,6 +59,7 @@ public class RobotMap {
 	public static final int binGripCloseManualButtonID = 5;
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
+	public static final int unstickToteButtonID = 2;
 	
 		
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1

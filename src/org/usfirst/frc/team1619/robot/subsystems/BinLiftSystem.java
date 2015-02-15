@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.BinLiftSystemStateMachineCommand;
-import org.usfirst.frc.team1619.robot.commands.ToteLiftSystemStateMachineCommand;
-import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem.State;
-import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem.ToteLiftSystemSignal;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
