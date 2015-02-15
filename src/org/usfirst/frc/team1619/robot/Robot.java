@@ -90,6 +90,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
     	SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
     	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
+    	SmartDashboard.putBoolean("chute door", true);
     	Accelerometer.getInstance().display();
     }
 	
