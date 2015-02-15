@@ -89,6 +89,7 @@ public class OI {
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
+		
 	}
 	
 	private static OI oi = new OI();

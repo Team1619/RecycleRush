@@ -35,15 +35,9 @@ public class ToteLiftSystem extends Subsystem {
 
 	public final Signal abortSignal = new ToteLiftSystemSignal();
 	public final Signal resetSignal = new ToteLiftSystemSignal();
-	public final Signal beginLiftSignal = new ToteLiftSystemSignal();
-	public final Signal tryLiftSignal = new ToteLiftSystemSignal();
-	public final Signal liftSignal = new ToteLiftSystemSignal();
-	public final Signal finishSignal = new ToteLiftSystemSignal();
-	public final Signal beginFeedSignal = new ToteLiftSystemSignal();
-	public final Signal tryFeedPickupSignal = new ToteLiftSystemSignal();
-	public final Signal fedTotePickupSignal = new ToteLiftSystemSignal();
-	public final Signal continueFeedingSignal = new ToteLiftSystemSignal();
-	public final Signal dropToteSignal = new ToteLiftSystemSignal();
+	public final Signal humanPlayerFeedSignal = new ToteLiftSystemSignal();
+	public final Signal dropOffSignal = new ToteLiftSystemSignal();
+	public final Signal groundFeedSignal = new ToteLiftSystemSignal(); 
 	
 	private State eCurrentState = State.Init;
 	
@@ -79,7 +73,7 @@ public class ToteLiftSystem extends Subsystem {
     }
     
     //Manual commands
-    double toteElevatorSpeed;
+    private double toteElevatorSpeed;
     
     public void moveToteElevator(double moveValue) {
     	toteElevatorSpeed = moveValue;
@@ -111,20 +105,16 @@ public class ToteLiftSystem extends Subsystem {
     enum State {
     	Init {
     		State run(ToteLiftSystem liftSystem) {
-    			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.moveToteElevator(-0.3);    				
+    			//should be bottom limit switch
+    			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) { 
+    				//will have to change this to position control somehow
+    				liftSystem.moveToteElevator(-0.3);    				
     			}
-    			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.moveBinElevator(-0.2);    				
-    			}
-    			
-    			if(liftSystem.toteElevatorMotor.isRevLimitSwitchClosed() && liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.toteElevatorMotor.setPosition(0.0);
-    				//liftSystem.binElevatorMotor.setPosition(0.0);
+    			else {
+    				//liftSystem.toteElevatorMotor.setPosition(0.0); should set the "position" value, not move motor
     				return Idle;	
     			}
-    			return Init;
-    			
+    			return Init;	
     		}
     		
     		public String toString() {
@@ -133,6 +123,8 @@ public class ToteLiftSystem extends Subsystem {
     	},
     	Idle {
     		State run(ToteLiftSystem liftSystem) {
+    			//liftSystem.toteElevatorMotor.set(transitPosition);
+    			
     			if(liftSystem.resetSignal.check()) {
     				return Init;
     			}
@@ -153,7 +145,7 @@ public class ToteLiftSystem extends Subsystem {
     		}
     	},
     	
-    	BeginStack {
+    	HumanPlayerFeed {
     		State run(ToteLiftSystem liftSystem) {
     			if(liftSystem.abortSignal.check()) {
     				return Idle;
@@ -169,7 +161,7 @@ public class ToteLiftSystem extends Subsystem {
     		}
     		
     	},
-    	BeginFeed {
+    	GroundFeed {
     		State run(ToteLiftSystem liftSystem) {
     			if(liftSystem.abortSignal.check()) {
     				return Idle;
