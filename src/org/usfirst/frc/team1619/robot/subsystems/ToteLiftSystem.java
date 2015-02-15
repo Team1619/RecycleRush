@@ -25,7 +25,7 @@ public class ToteLiftSystem extends Subsystem {
 	private final Joystick leftStick;
 	
 	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
-
+	
 	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
 	public class ToteLiftSystemSignal extends Signal {
 		public ToteLiftSystemSignal() {

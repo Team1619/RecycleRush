@@ -50,6 +50,7 @@ public class Robot extends IterativeRobot {
     	BinLiftSystem.getInstance();
     	ToteLiftSystem.getInstance();
     	Conveyor.getInstance();
+    	pdpCAN = new PowerDistributionPanel();
 		timer = new Timer();
 		
 		//switchSubsystem = new LimitSwitch();
@@ -87,6 +88,8 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
     	SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
     	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
+    	SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
+    	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
     	Accelerometer.getInstance().display();
     }
 	
