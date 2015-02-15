@@ -10,7 +10,10 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class UnloadConveyorCommand extends Command {
-
+	private final static double kForwardSpeed = 1.0;
+	private final static double kBackwardSpeed = -1.0;	
+	private final static double kOpenSpeed = 0.15;
+	private final static double kCloseSpeed = -0.25;
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
 	private State currentState;	
@@ -26,34 +29,50 @@ public class UnloadConveyorCommand extends Command {
     }
    
     Timer stateTimeoutTimer = new Timer();
+    Timer retractTimer = new Timer();
     
     enum State {
     	RunTilBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kForwardSpeed);
+				if (cmd.conveyor.getFrontSensor()){
+					return SensorBroken;
+				}
+				else{
+					return RunTilBroken;
+				}
 			}
 		}, 
 		SensorBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kForwardSpeed);
+				if (cmd.conveyor.getFrontSensor()){
+					return SensorBroken;
+				}
+				else{
+					return Retract;
+				}
 			}
 		}, 
 		Retract(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kBackwardSpeed);
+				return Retract;
 			}
 			@Override
 			boolean isFinished(UnloadConveyorCommand cmd){
 	    		if (super.isFinished(cmd)){
 	    			return true;
 	    		}
-	    		return false;
+	    		return cmd.retractTimer.get() >= 1.0;
+	    	}
+			void init(UnloadConveyorCommand cmd) {
+				cmd.retractTimer.stop();
+	    		cmd.retractTimer.reset();
+	    		cmd.retractTimer.start();
 	    	}
 		};
     	
@@ -64,7 +83,7 @@ public class UnloadConveyorCommand extends Command {
 		
 		abstract State run(UnloadConveyorCommand cmd);
     	
-    	void init(UnloadConveyorCommand cmd){
+    	void init(UnloadConveyorCommand cmd) {
     		cmd.stateTimeoutTimer.stop();
     		cmd.stateTimeoutTimer.reset();
     		cmd.stateTimeoutTimer.start();

@@ -45,6 +45,7 @@ public class RobotMap {
 	public static final int liftAbortButtonID = 11;
 	public static final int liftResetButtonID = 12;
 	public static final int calibrateGyroButton = 2;
+	public static final int unloadConveyorButtonID = 16;
 	
 	//Left Stick
 	public static final int conveyorForwardManualButtonID = 4;

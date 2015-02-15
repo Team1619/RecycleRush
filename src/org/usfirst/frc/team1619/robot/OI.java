@@ -8,6 +8,7 @@ import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
+import org.usfirst.frc.team1619.robot.commands.UnloadConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
 import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
@@ -40,6 +41,7 @@ public class OI {
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
 	private final JoystickButton unstickToteButton;
+	private final JoystickButton unloadConveyorButton;
 		
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -52,6 +54,7 @@ public class OI {
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
 		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
+		unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
 		//Left stick
 		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
@@ -79,6 +82,7 @@ public class OI {
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		unstickToteButton.whileHeld(new UnstickToteCommand());
+		unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
