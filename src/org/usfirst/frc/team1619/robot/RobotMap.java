@@ -18,8 +18,8 @@ public class RobotMap {
 	public final static int rightDriveMotor1 = 3;
 	public final static int rightDriveMotor2 = 4;
 	
-	public final static int lowerConveyorOpticalSensor = 0;
-	public final static int upperConveyorOpticalSensor = 1;
+	public final static int frontConveyorOpticalSensorID = 0;
+	public final static int rearConveyorOpticalSensorID = 1;
 	
 	public final static int toteElevatorMotor = 11;
 	public final static int tilterMotor = 6;
