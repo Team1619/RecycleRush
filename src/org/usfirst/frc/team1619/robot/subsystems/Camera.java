@@ -42,9 +42,11 @@ public class Camera extends Subsystem {
 		}
 	}
 	
-	private static final Camera theSystem = new Camera();
+	private static Camera theSystem;
 	
 	public static Camera getInstance() {
+		if(theSystem == null)
+			theSystem = new Camera();
 		return theSystem;
 	}
 	

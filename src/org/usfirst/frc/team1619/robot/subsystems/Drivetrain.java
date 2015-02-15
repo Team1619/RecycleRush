@@ -24,9 +24,11 @@ public class Drivetrain extends Subsystem {
     private CANTalon rightMotor1;
     private CANTalon rightMotor2;
 
-    private static final Drivetrain theSystem = new Drivetrain();
+    private static Drivetrain theSystem;
 	
 	public static Drivetrain getInstance() {
+		if(theSystem == null)
+			theSystem = new Drivetrain();
 		return theSystem;
 	}
 

@@ -65,9 +65,11 @@ public class ToteLiftSystem extends Subsystem {
     	toteElevatorMotorSmall.enableBrakeMode(true);
 	}
 	
-	private static final ToteLiftSystem theSystem = new ToteLiftSystem();
+	private static ToteLiftSystem theSystem;
 	
 	public static ToteLiftSystem getInstance() {
+		if(theSystem == null)
+			theSystem = new ToteLiftSystem();
 		return theSystem;
 	}
 	

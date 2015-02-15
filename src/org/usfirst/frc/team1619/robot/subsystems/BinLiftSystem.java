@@ -86,9 +86,11 @@ public class BinLiftSystem extends Subsystem {
     	rakerMotor.enableBrakeMode(true);
 	}
 	
-	private static final BinLiftSystem theSystem = new BinLiftSystem();
+	private static BinLiftSystem theSystem;
 	
 	public static BinLiftSystem getInstance() {
+		if(theSystem == null)
+			theSystem = new BinLiftSystem();
 		return theSystem;
 	}
 

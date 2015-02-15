@@ -21,9 +21,11 @@ public class GuardRailSystem extends Subsystem {
     	guardRailMotor.enableBrakeMode(false);
 	}
 	
-	private static final GuardRailSystem theSystem = new GuardRailSystem();
+	private static GuardRailSystem theSystem;
 	
 	public static GuardRailSystem getInstance() {
+		if(theSystem == null)
+			theSystem = new GuardRailSystem();
 		return theSystem;
 	}
 

@@ -18,9 +18,11 @@ public class Accelerometer extends Subsystem {
 		accelerometer = new BuiltInAccelerometer();
 	}
 	
-	private static final Accelerometer theSystem = new Accelerometer();
+	private static Accelerometer theSystem;
 	
 	public static Accelerometer getInstance() {
+		if(theSystem == null)
+			theSystem = new Accelerometer();
 		return theSystem;
 	}
 	

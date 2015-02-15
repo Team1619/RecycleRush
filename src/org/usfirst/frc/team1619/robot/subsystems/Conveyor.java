@@ -21,9 +21,11 @@ public class Conveyor extends Subsystem {
     	conveyorMotor.enableBrakeMode(false);
 	}
 	
-	private static final Conveyor theSystem = new Conveyor();
+	private static Conveyor theSystem;
 	
 	public static Conveyor getInstance() {
+		if(theSystem == null)
+			theSystem = new Conveyor();
 		return theSystem;
 	}
 

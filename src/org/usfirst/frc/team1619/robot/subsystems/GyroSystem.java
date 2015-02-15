@@ -20,9 +20,11 @@ public class GyroSystem extends Subsystem {
 		gyro.setSensitivity(0.007);
 	}
 	
-	private static final GyroSystem theSystem = new GyroSystem();
+	private static GyroSystem theSystem;
 	
 	public static GyroSystem getInstance() {
+		if(theSystem == null)
+			theSystem = new GyroSystem();
 		return theSystem;
 	}
 
