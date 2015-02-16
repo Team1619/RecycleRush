@@ -1,11 +1,13 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
+import org.usfirst.frc.team1619.robot.commands.UnloadConveyorCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.FixedInterruptHandler;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -24,8 +26,8 @@ public class Conveyor extends Subsystem {
 		conveyorMotor.enableLimitSwitch(false, false);
     	conveyorMotor.enableBrakeMode(false);
     	
-    	frontConveyorOpticalSensor = OI.getInstance().frontConveyorOpticalSensor;
-    	rearConveyorOpticalSensor = OI.getInstance().rearConveyorOpticalSensor;
+    	frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
+		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
 	}
 	
 	private static Conveyor theSystem;
@@ -34,6 +36,25 @@ public class Conveyor extends Subsystem {
 		if(theSystem == null)
 			theSystem = new Conveyor();
 		return theSystem;
+	}
+	
+	public void init() {
+		rearConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Command>() {
+			Command cmd = new UnloadConveyorCommand();
+			
+			public Command overridableParamater() {
+				return cmd;
+			}
+			
+			@Override
+			protected void interruptFired2(int interruptAssertedMask,
+					Command cmd) {
+				cmd.start();
+			}
+			
+		});
+		rearConveyorOpticalSensor.setUpSourceEdge(false, true);
+		rearConveyorOpticalSensor.enableInterrupts();
 	}
 
 	public void moveConveyor(double moveValue) {

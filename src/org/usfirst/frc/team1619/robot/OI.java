@@ -11,7 +11,6 @@ import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
 import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -25,8 +24,6 @@ public class OI {
 	public final Joystick rightStick;
 	public final Joystick leftStick;
 	
-	public final DigitalInput frontConveyorOpticalSensor;
-	public final DigitalInput rearConveyorOpticalSensor;
 	
 	/**
 	 * Operation Pairing via Buttons
@@ -49,9 +46,6 @@ public class OI {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
 		
-		frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
-		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
-
 		//Right stick
 		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
@@ -89,12 +83,13 @@ public class OI {
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
-		
 	}
 	
-	private static OI oi = new OI();
+	private static OI oi;
 	
 	public static OI getInstance() {
+		if(oi == null)
+			oi = new OI();
 		return oi;
 	}
 	

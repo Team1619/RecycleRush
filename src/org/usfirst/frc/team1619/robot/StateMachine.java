@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 public class StateMachine {
+	private State currentState = State.Init;
+	
 	private StateMachine() {	
 	}
 	
@@ -59,12 +61,24 @@ public class StateMachine {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		},
 		GroundFeed {
 
 			@Override
 			public State run(StateMachine sm) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String toString() {
 				// TODO Auto-generated method stub
 				return null;
 			}
@@ -77,16 +91,52 @@ public class StateMachine {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		},
 		BinPickup {
+
+			@Override
+			public State run(StateMachine sm) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		},
 		Abort {
+
+			@Override
+			public State run(StateMachine sm) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public String toString() {
+				// TODO Auto-generated method stub
+				return null;
+			}
 			
 		};
 		
 		public abstract State run(StateMachine sm);
 		public abstract String toString();
+	}
+	
+	public void run() {
+		State nextState = currentState;
+		
+		
 	}
 }
