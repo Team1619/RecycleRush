@@ -1,21 +1,18 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.ToteLiftSystemStateMachineCommand;
+import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  *
  */
-public class ToteLiftSystem extends Subsystem {
+public class ToteLiftSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 0.0;
 	public static final double kTransitPosition = 0.0;
     
@@ -29,22 +26,6 @@ public class ToteLiftSystem extends Subsystem {
 	
 	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
 	
-	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
-	public class ToteLiftSystemSignal extends Signal {
-		public ToteLiftSystemSignal() {
-			signals.add(this);
-		}
-	}
-
-	public final Signal abortSignal = new ToteLiftSystemSignal();
-	public final Signal resetSignal = new ToteLiftSystemSignal();
-	public final Signal humanPlayerFeedSignal = new ToteLiftSystemSignal();
-	public final Signal dropoffSignal = new ToteLiftSystemSignal();
-	public final Signal groundFeedSignal = new ToteLiftSystemSignal(); 
-	
-	private State eCurrentState = State.Init;
-	
-	
 	private ToteLiftSystem() {
 		rightStick = OI.getInstance().rightStick;
 		leftStick = OI.getInstance().leftStick;
@@ -54,7 +35,7 @@ public class ToteLiftSystem extends Subsystem {
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
-    	toteElevatorMotor.enableLimitSwitch(false, false);
+    	toteElevatorMotor.enableLimitSwitch(true, true);
     	toteElevatorMotor.enableBrakeMode(true);
     	
     	toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
@@ -72,7 +53,7 @@ public class ToteLiftSystem extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        setDefaultCommand(new ToteLiftSystemStateMachineCommand());
+        //setDefaultCommand(new ToteLiftSystemStateMachineCommand());
     }
     
     //Manual commands
@@ -117,7 +98,7 @@ public class ToteLiftSystem extends Subsystem {
     	*/
     }
     
-    enum State {
+    /*
     	Init {
     		State run(ToteLiftSystem liftSystem) {
     			//should be bottom limit switch
@@ -241,25 +222,29 @@ public class ToteLiftSystem extends Subsystem {
     	
     	void init(ToteLiftSystem liftSystem) {}
     }
-    
-    public void runStateMachine() {
-    	State eNextState = eCurrentState;
-
-    	eCurrentState = State.Idle; //temporary for safety
-    	
-    	eNextState = eCurrentState.run(this);
-    	
-    	toteElevatorUpdate();
-    	
-    	for(Signal signal: signals) {
-    		signal.clear();
-    	}
-    	
-    	if(eNextState != eCurrentState) {
-        	eCurrentState = eNextState;
-        	eCurrentState.init(this);
-    	}
-    }
-    
+    */
+	@Override
+	public void run(State state) {
+		switch(state) {
+		case Init:
+			break;
+		case Idle:
+			break;
+		case HumanFeed:
+			break;
+		case GroundFeed:
+			break;
+		case Dropoff:
+			break;
+		case BinPickup:
+			break;
+		case Abort:	
+			break;
+		default:
+			break;
+		}
+		
+		toteElevatorUpdate();
+	}
 }
 

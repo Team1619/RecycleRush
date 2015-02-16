@@ -1,20 +1,18 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import java.util.ArrayList;
-
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.commands.BinLiftSystemStateMachineCommand;
+import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class BinLiftSystem extends Subsystem {
+public class BinLiftSystem extends StateMachineSystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -32,25 +30,6 @@ public class BinLiftSystem extends Subsystem {
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton rakerOpenManualButton, rakerCloseManualButton;
 	
-	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
-	public class BinLiftSystemSignal extends Signal {
-		public BinLiftSystemSignal() {
-			signals.add(this);
-		}
-	}
-	
-	public final Signal abortSignal = new BinLiftSystemSignal();
-	public final Signal resetSignal = new BinLiftSystemSignal();
-	public final Signal beginLiftSignal = new BinLiftSystemSignal();
-	public final Signal tryLiftSignal = new BinLiftSystemSignal();
-	public final Signal liftSignal = new BinLiftSystemSignal();
-	public final Signal finishSignal = new BinLiftSystemSignal();
-	public final Signal beginFeedSignal = new BinLiftSystemSignal();
-	public final Signal tryFeedPickupSignal = new BinLiftSystemSignal();
-	public final Signal fedTotePickupSignal = new BinLiftSystemSignal();
-	public final Signal continueFeedingSignal = new BinLiftSystemSignal();
-	public final Signal dropToteSignal = new BinLiftSystemSignal();
-	
 	private State eCurrentState = State.Init;
 	
 	private BinLiftSystem() {
@@ -58,8 +37,8 @@ public class BinLiftSystem extends Subsystem {
 		leftStick = OI.getInstance().leftStick;
 		
 		//left stick
-		binElevatorUpManualButton = new JoystickButton(leftStick, RobotMap.binElevatorUpManualButtonID);
 		binElevatorDownManualButton = new JoystickButton(leftStick, RobotMap.binElevatorDownManualButtonID);
+		binElevatorUpManualButton = new JoystickButton(leftStick, RobotMap.binElevatorUpManualButtonID);
 		binTiltUpManualButton = new JoystickButton(leftStick, RobotMap.binTiltUpManualButtonID);
 		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
 		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
@@ -74,15 +53,15 @@ public class BinLiftSystem extends Subsystem {
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
     	tilterMotor.enableLimitSwitch(true, true);
     	tilterMotor.enableBrakeMode(false);
-    	tilterMotor.ConfigFwdLimitSwitchNormallyOpen(false);
-    	tilterMotor.ConfigRevLimitSwitchNormallyOpen(false);
+    	//tilterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+    	//tilterMotor.ConfigRevLimitSwitchNormallyOpen(true);
     	
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
     	binGripMotor.enableBrakeMode(false);
     	
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
-    	rakerMotor.enableLimitSwitch(false, false);
+    	rakerMotor.enableLimitSwitch(true, true);
     	rakerMotor.enableBrakeMode(true);
 	}
 	
@@ -96,25 +75,26 @@ public class BinLiftSystem extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new BinLiftSystemStateMachineCommand());
+    	//setDefaultCommand(new BinLiftSystemStateMachineCommand());
     }
     
     //manual commands
-    double binElevatorSpeed;
-    double binGripSpeed;
-    double rakerSpeed;
-    double tilterMotorSpeed;
+    double binElevatorSpeed = 0.0;
+    double binGripSpeed = 0.0;
+    double rakerSpeed = 0.0;
+    double tilterMotorSpeed = 0.0;
     
     public void moveBinElevator(double moveValue) {
     	binElevatorSpeed = moveValue;
     }
     private void binElevatorUpdate() {
-    	if(binElevatorUpManualButton.get())
+    	if(binElevatorDownManualButton.get())
     		binElevatorMotor.set(0.1);
-    	else if(binElevatorDownManualButton.get())
+    	else if(binElevatorUpManualButton.get())
     		binElevatorMotor.set(-0.1);
     	else
     		binElevatorMotor.set(binElevatorSpeed);
+    	
     }
     
     public void binTilt(double moveValue) {
@@ -122,11 +102,12 @@ public class BinLiftSystem extends Subsystem {
     }
     private void binTiltUpdate() {
     	if(binTiltUpManualButton.get())
-        	tilterMotor.set(1);
+        	tilterMotor.set(0.75);
     	else if(binTiltDownManualButton.get())
-        	tilterMotor.set(-1);
+        	tilterMotor.set(-0.75);
     	else
     		tilterMotor.set(tilterMotorSpeed);
+    	
     }
     
     public void moveBinGrip(double moveValue) {
@@ -151,8 +132,9 @@ public class BinLiftSystem extends Subsystem {
     		rakerMotor.set(-0.25);
     	else
     		rakerMotor.set(rakerSpeed);
+    	
     }
-    
+    /*
     enum State {
     	Init {
     		State run(BinLiftSystem liftSystem) {
@@ -302,29 +284,40 @@ public class BinLiftSystem extends Subsystem {
     	
     	void init(BinLiftSystem liftSystem) {}
     }
-    
-    public void runStateMachine() {
-    	State eNextState = eCurrentState;
+    */
 
-    	eCurrentState = State.Idle;
-    	//System.out.println("Current State: " + eCurrentState);
-    	
-    	eNextState = eCurrentState.run(this);
-    	
-    	binGripUpdate();
-    	binTiltUpdate();
-    	binElevatorUpdate();
-    	rakerUpdate();
-    	
-    	for(Signal signal: signals) {
-    		signal.clear();
-    	}
-    	
-    	if(eNextState != eCurrentState) {
-        	//System.out.println("Next State: " + stateToString(nextState));
-        	eCurrentState = eNextState;
-        	eCurrentState.init(this);
-    	}
-    }
+	@Override
+	public void run(State state) {
+		// TODO Auto-generated method stub
+		switch(state) {
+		case Init:
+			break;
+		case Idle:
+			break;
+		case HumanFeed:
+			break;
+		case GroundFeed:
+			break;
+		case Dropoff:
+			break;
+		case BinPickup:
+			break;
+		case Abort:	
+			break;
+		default:
+			break;
+		}
+		
+		binElevatorUpdate();
+		binGripUpdate();
+		binTiltUpdate();
+		rakerUpdate();
+		SmartDashboard.putBoolean("binElevatorFwd", binElevatorMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binElevatorRev", binElevatorMotor.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTiltFwd", tilterMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTiltRev", tilterMotor.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("rakerFwd", rakerMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("rakerRev", rakerMotor.isRevLimitSwitchClosed());
+	}
 }
 

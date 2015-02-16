@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.subsystems.Signal;
+import org.usfirst.frc.team1619.robot.StateMachine.Signal;
 
 import edu.wpi.first.wpilibj.command.Command;
 

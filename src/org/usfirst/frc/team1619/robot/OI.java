@@ -9,7 +9,6 @@ import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
-import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -81,8 +80,8 @@ public class OI {
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		unstickToteButton.whileHeld(new UnstickToteCommand());
 		
-		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
 	}
 	
 	private static OI oi;

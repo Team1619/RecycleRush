@@ -54,8 +54,8 @@ public class RobotMap {
 	public static final int conveyorBackwardManualButtonID = 3;
 	public static final int guardrailCloseManualButtonID = 13;
 	public static final int guardrailOpenManualButtonID = 14;
-	public static final int binElevatorUpManualButtonID = 8;
-	public static final int binElevatorDownManualButtonID = 7;
+	public static final int binElevatorDownManualButtonID = 8;
+	public static final int binElevatorUpManualButtonID = 7;
 	public static final int binTiltUpManualButtonID = 9;
 	public static final int binTiltDownManualButtonID = 6;
 	public static final int binGripOpenManualButtonID = 10;

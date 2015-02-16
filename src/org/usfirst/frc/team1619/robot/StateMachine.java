@@ -23,19 +23,45 @@ public class StateMachine {
 		systems.add(sms);
 	}
 	
-	enum State {
-		Init {
+	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
+	public class Signal {
+		private boolean hasRisen;
+		
+		public Signal() {
+			hasRisen = false;
+			signals.add(this);
+		}
+		
+		public boolean check() {
+			return /*Jesus*/hasRisen;
+		}
+		
+		public void clear() {
+			hasRisen = false;
+		}
+		
+		public void raise() {
+			hasRisen = true;
+		}
+	}
 
+	public final Signal abortSignal = new Signal();
+	public final Signal resetSignal = new Signal();
+	public final Signal humanPlayerFeedSignal = new Signal();
+	public final Signal dropoffSignal = new Signal();
+	public final Signal groundFeedSignal = new Signal(); 
+	
+	
+	public enum State {
+		Init {
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Init";
 			}
 			
 		},
@@ -43,14 +69,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Idle";
 			}
 			
 		},
@@ -58,14 +82,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Human Feed";
 			}
 			
 		},
@@ -73,14 +95,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Ground Feed";
 			}
 			
 		},
@@ -88,14 +108,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Dropoff";
 			}
 			
 		},
@@ -103,14 +121,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Bin Pickup";
 			}
 			
 		},
@@ -118,14 +134,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
-				// TODO Auto-generated method stub
-				return null;
+				return Idle;
 			}
 
 			@Override
 			public String toString() {
-				// TODO Auto-generated method stub
-				return null;
+				return "Abort";
 			}
 			
 		};
@@ -135,8 +149,9 @@ public class StateMachine {
 	}
 	
 	public void run() {
-		State nextState = currentState;
-		
-		
+		for(StateMachineSystem sms: systems) {
+			sms.superSecretSpecialSatanRun(currentState);
+		}
+		currentState = currentState.run(this);
 	}
 }
