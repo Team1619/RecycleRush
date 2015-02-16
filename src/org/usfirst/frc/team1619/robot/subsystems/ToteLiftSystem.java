@@ -7,6 +7,7 @@ import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.commands.ToteLiftSystemStateMachineCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *
  */
 public class ToteLiftSystem extends Subsystem {
+	public static final double kEncoderTicksPerInch = 0.0;
+	public static final double kTransitPosition = 0.0;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -36,7 +39,7 @@ public class ToteLiftSystem extends Subsystem {
 	public final Signal abortSignal = new ToteLiftSystemSignal();
 	public final Signal resetSignal = new ToteLiftSystemSignal();
 	public final Signal humanPlayerFeedSignal = new ToteLiftSystemSignal();
-	public final Signal dropOffSignal = new ToteLiftSystemSignal();
+	public final Signal dropoffSignal = new ToteLiftSystemSignal();
 	public final Signal groundFeedSignal = new ToteLiftSystemSignal(); 
 	
 	private State eCurrentState = State.Init;
@@ -54,7 +57,7 @@ public class ToteLiftSystem extends Subsystem {
     	toteElevatorMotor.enableLimitSwitch(false, false);
     	toteElevatorMotor.enableBrakeMode(true);
     	
-    	toteElevatorMotorSmall = new CANTalon(RobotMap.spare);
+    	toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
     	toteElevatorMotorSmall.enableLimitSwitch(false, false);
     	toteElevatorMotorSmall.enableBrakeMode(true);
 	}
@@ -73,47 +76,59 @@ public class ToteLiftSystem extends Subsystem {
     }
     
     //Manual commands
-    private double toteElevatorSpeed;
+    private double toteElevatorValue; //will be either %vbus or position
     
     public void moveToteElevator(double moveValue) {
-    	toteElevatorSpeed = moveValue;
+    	toteElevatorValue = moveValue;
+    	
+    	toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+    	toteElevatorMotorSmall.changeControlMode(ControlMode.PercentVbus);
+    }
+    public void setToteElevatorPosition(double position) { //position in inches from '0' position
+    	toteElevatorValue = position*kEncoderTicksPerInch;
+    	
+    	toteElevatorMotor.changeControlMode(ControlMode.Position);
+    	toteElevatorMotorSmall.changeControlMode(ControlMode.Position);
     }
     private void toteElevatorUpdate() {
-    	/*
-    	if(toteElevatorUpManualButton.get())
+    	/*if(toteElevatorUpManualButton.get())
         	toteElevatorMotor.set(0.1);
     	else if(toteElevatorDownManualButton.get())
     		toteElevatorMotor.set(-0.1);
     	else
     		toteElevatorMotor.set(toteElevatorSpeed);
-    		*/
+    	 	*/
     	//Following code is temporary, although controlling the tote elevator
     	//with a joystick is likely a good idea.
     	toteElevatorMotor.set(leftStick.getY() * 1);
     	toteElevatorMotorSmall.set(leftStick.getY() * -1);
+    	
+    	/*Code to be used
+    	if(leftStick.getY() != 0.0) {
+    		toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+    		toteElevatorMotorSmall.changeControlMode(ControlMode.PercentVbus);
+    		toteElevatorMotor.set(leftStick.getY() * 1);
+        	toteElevatorMotorSmall.set(leftStick.getY() * -1);	
+    	}
+    	else {
+    		toteElevatorMotor.set(toteElevatorValue);
+    		toteElevatorMotorSmall.set(-toteElevatorValue);
+    	}
+    	*/
     }
-    
-    /*
-    public void moveRaker(double moveValue) {
-    	rakerSpeed = moveValue;
-    }
-    private void rakerUpdate() {
-    	rakerMotor.set(rakerSpeed);
-    }*/
-    
     
     enum State {
     	Init {
     		State run(ToteLiftSystem liftSystem) {
     			//should be bottom limit switch
     			if(!liftSystem.toteElevatorMotor.isRevLimitSwitchClosed()) { 
-    				//will have to change this to position control somehow
     				liftSystem.moveToteElevator(-0.3);    				
     			}
     			else {
-    				//liftSystem.toteElevatorMotor.setPosition(0.0); should set the "position" value, not move motor
+    				liftSystem.toteElevatorMotor.setPosition(0.0); //should set the "position" value, not move motor
     				return Idle;	
     			}
+    			
     			return Init;	
     		}
     		
@@ -123,20 +138,25 @@ public class ToteLiftSystem extends Subsystem {
     	},
     	Idle {
     		State run(ToteLiftSystem liftSystem) {
-    			//liftSystem.toteElevatorMotor.set(transitPosition);
+    			if(liftSystem.abortSignal.check()) {
+    				return Abort;
+    			}
+    			liftSystem.setToteElevatorPosition(kTransitPosition);
     			
     			if(liftSystem.resetSignal.check()) {
+    				//check to make sure assumptions are true?
     				return Init;
     			}
-    			if(liftSystem.beginLiftSignal.check()) {
-    				return BeginStack;
+    			if(liftSystem.humanPlayerFeedSignal.check()) {
+    				return HumanPlayerFeed;
     			}
-    			if(liftSystem.beginFeedSignal.check()) {
-    				return BeginFeed;
-    			}
-    			if(liftSystem.dropToteSignal.check()) {
+    			if(liftSystem.dropoffSignal.check()) {
     				return Dropoff;
     			}
+    			if(liftSystem.groundFeedSignal.check()) {
+    				return GroundFeed;
+    			}
+    			
     			return Idle;
     		}
     		
@@ -144,118 +164,88 @@ public class ToteLiftSystem extends Subsystem {
     			return "Idle";
     		}
     	},
-    	
     	HumanPlayerFeed {
     		State run(ToteLiftSystem liftSystem) {
     			if(liftSystem.abortSignal.check()) {
+    				return Abort;
+    			}
+    			
+    			boolean done = false;
+    			
+    			if(done) {
     				return Idle;
     			}
-    			if(liftSystem.tryLiftSignal.check()) {
-    				return StackForFeed;
-    			}
-    			return Idle;
+    			return HumanPlayerFeed;
     		}
     		
     		public String toString() {
-    			return "Begin Stack";
-    		}
-    		
-    	},
-    	GroundFeed {
-    		State run(ToteLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.tryFeedPickupSignal.check()) {
-    				return StackForFeed;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Begin Feed";
-    		}
-    	},
-    	StackForFeed {
-    		State run(ToteLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return BeginFeed;
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Init;
-    			}
-    			if(liftSystem.liftSignal.check()) {
-    				return Pickup;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Stack For Feed";
-    		}
-    	},
-    	StackForPickup {
-    		State run(ToteLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return BeginStack;
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.fedTotePickupSignal.check()) {
-    				return Pickup;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Stack For Pickup";
-    		}
-    	},
-    	Pickup {
-    		State run(ToteLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return Idle; //There will need to be more logic here
-    				//We need to handle finding the previous state
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.finishSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.continueFeedingSignal.check()) {
-    				return BeginFeed;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Pickup";
+    			return "Human Player Feed";
     		}
     	},
     	Dropoff {
     		State run(ToteLiftSystem liftSystem) {
-    			return Idle;
+    			if(liftSystem.abortSignal.check()) {
+    				return Abort;
+    			}
+    			
+    			boolean done = false;
+
+    			if(done) {
+    				return Idle;
+    			}
+    			return Dropoff;
     		}
     		
     		public String toString() {
     			return "Dropoff";
     		}
+    	},
+    	GroundFeed {
+    		State run(ToteLiftSystem liftSystem) {
+    			if(liftSystem.abortSignal.check()) {
+    				return Abort;
+    			}
+    			
+    			boolean done = false;
+    			
+    			if(done) {
+    				return Idle;	
+    			}
+    			return GroundFeed;
+    		}
+    		
+    		public String toString() {
+    			return "Ground Feed";
+    		}
+    	},
+    	Abort {
+    		State run(ToteLiftSystem liftSystem) {
+    			//set speed to 0
+    			if(liftSystem.abortSignal.check()) {
+    				return Idle;
+    			}
+    			if(liftSystem.resetSignal.check()) {
+    				return Init;
+    			}
+    			return Abort;
+    		}
+    		
+    		public String toString() {
+    			return "Abort";
+    		}
     	};
-    	
+      	
     	
     	abstract State run(ToteLiftSystem liftSystem);
+    	public abstract String toString();
     	
     	void init(ToteLiftSystem liftSystem) {}
     }
     
-    
     public void runStateMachine() {
     	State eNextState = eCurrentState;
 
-    	eCurrentState = State.Idle;
-    	//System.out.println("Current State: " + eCurrentState);
+    	eCurrentState = State.Idle; //temporary for safety
     	
     	eNextState = eCurrentState.run(this);
     	
@@ -266,7 +256,6 @@ public class ToteLiftSystem extends Subsystem {
     	}
     	
     	if(eNextState != eCurrentState) {
-        	//System.out.println("Next State: " + stateToString(nextState));
         	eCurrentState = eNextState;
         	eCurrentState.init(this);
     	}

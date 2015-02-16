@@ -28,7 +28,7 @@ public class RobotMap {
 	public final static int binElevatorMotor = 9;
 	public final static int binGripMotor = 10;
 	public final static int rakerMotor = 5;
-	public final static int spare = 12;
+	public final static int toteElevatorMotorSmall = 12;
 
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
