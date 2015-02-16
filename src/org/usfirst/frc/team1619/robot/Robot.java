@@ -178,6 +178,7 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
         sharedPeriodic();
         StateMachine.getInstance().run();
+
         if (timer.get() >= 1) {
             lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
             		Double.toString(pdpCAN.getCurrent(0)),

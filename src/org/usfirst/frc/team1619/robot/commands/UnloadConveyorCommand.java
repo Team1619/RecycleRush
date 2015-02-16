@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class UnloadConveyorCommand extends Command {
 	private static final double kForwardConveyorSpeed = 0.75;
 	private static final double kReverseConveyorSpeed = -1.0;
-	
+
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
 	private State currentState;	
@@ -70,9 +70,8 @@ public class UnloadConveyorCommand extends Command {
 	    		if (super.isFinished(cmd)){
 	    			return true;
 	    		}
-	    		
 	    		return cmd.retractTimer.get() > 0.5;
-			}
+	    	}
 			
 			@Override
 			void init(UnloadConveyorCommand cmd) {
