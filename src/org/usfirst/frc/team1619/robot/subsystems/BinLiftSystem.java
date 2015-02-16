@@ -53,8 +53,8 @@ public class BinLiftSystem extends StateMachineSystem {
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
     	tilterMotor.enableLimitSwitch(true, true);
     	tilterMotor.enableBrakeMode(false);
-    	//tilterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
-    	//tilterMotor.ConfigRevLimitSwitchNormallyOpen(true);
+    	tilterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+    	tilterMotor.ConfigRevLimitSwitchNormallyOpen(true);
     	
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
@@ -63,6 +63,8 @@ public class BinLiftSystem extends StateMachineSystem {
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(true, true);
     	rakerMotor.enableBrakeMode(true);
+    	rakerMotor.ConfigFwdLimitSwitchNormallyOpen(true);
+    	rakerMotor.ConfigRevLimitSwitchNormallyOpen(true);
 	}
 	
 	private static BinLiftSystem theSystem;
@@ -89,9 +91,9 @@ public class BinLiftSystem extends StateMachineSystem {
     }
     private void binElevatorUpdate() {
     	if(binElevatorDownManualButton.get())
-    		binElevatorMotor.set(0.1);
+    		binElevatorMotor.set(0.5);
     	else if(binElevatorUpManualButton.get())
-    		binElevatorMotor.set(-0.1);
+    		binElevatorMotor.set(-0.5);
     	else
     		binElevatorMotor.set(binElevatorSpeed);
     	
