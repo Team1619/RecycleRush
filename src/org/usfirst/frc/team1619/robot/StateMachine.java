@@ -69,6 +69,9 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
 				return Idle;
 			}
 
@@ -82,6 +85,9 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
 				return Idle;
 			}
 
@@ -95,6 +101,9 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
 				return Idle;
 			}
 
@@ -108,6 +117,9 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
 				return Idle;
 			}
 
@@ -121,6 +133,9 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
 				return Idle;
 			}
 
@@ -134,6 +149,12 @@ public class StateMachine {
 
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Idle;
+				}
+				if(sm.resetSignal.check()) {
+					return Init;
+				}
 				return Idle;
 			}
 

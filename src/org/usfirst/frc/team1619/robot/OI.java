@@ -63,8 +63,8 @@ public class OI {
 		unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
 		//Left stick
-		liftAbortButton = new JoystickButton(leftStick, RobotMap.liftAbortButtonID);
-		liftResetButton = new JoystickButton(leftStick, RobotMap.liftResetButtonID);
+		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
+		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
 		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
 		conveyorBackwardButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
