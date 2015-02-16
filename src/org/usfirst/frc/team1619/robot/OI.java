@@ -5,7 +5,7 @@ import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
-import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
+import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
@@ -71,7 +71,7 @@ public class OI {
 		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
 		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		resetEncoderButton.whenPressed(new ResetEncoderCommand());
+		resetEncoderButton.whenPressed(new ResetDriveEncodersCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		conveyorForwardButton.whileHeld(new ManualConveyorCommand(1.0));

@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.TrapezoidLine;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
@@ -13,7 +14,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class BinLiftSystem extends StateMachineSystem {
-    
+    private static final double kEncoderTicksPerInch = 0.0;
+	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public final CANTalon binElevatorMotor;
@@ -30,7 +32,13 @@ public class BinLiftSystem extends StateMachineSystem {
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton rakerOpenManualButton, rakerCloseManualButton;
 	
-	private State eCurrentState = State.Init;
+	private double binElevatorSpeed = 0.0;
+	private boolean usePosition = false;
+	private TrapezoidLine speedCurve = new TrapezoidLine();
+	
+	private double binGripSpeed = 0.0;
+	private double rakerSpeed = 0.0;
+	private double tilterMotorSpeed = 0.0;
 	
 	private BinLiftSystem() {
 		rightStick = OI.getInstance().rightStick;
@@ -77,16 +85,29 @@ public class BinLiftSystem extends StateMachineSystem {
         // Set the default command for a subsystem here.
     	//setDefaultCommand(new BinLiftSystemStateMachineCommand());
     }
-    
     //manual commands
-    double binElevatorSpeed = 0.0;
-    double binGripSpeed = 0.0;
-    double rakerSpeed = 0.0;
-    double tilterMotorSpeed = 0.0;
     
-    public void moveBinElevator(double moveValue) {
-    	binElevatorSpeed = moveValue;
+    public void setBinElevatorSpeed(double speed) {
+    	binElevatorSpeed = speed;
+    	usePosition = false;
     }
+    public void setBinElevatorPosition(double position) {  //in inches
+    	usePosition = true;
+    	
+    	speedCurve = new TrapezoidLine(
+    			getBinElevatorPosition(), 0.0,
+    			getBinElevatorPosition() + (position - getBinElevatorPosition())/3, 0.5,
+    			getBinElevatorPosition() + 2*(position - getBinElevatorPosition())/3, 0.5,
+    			position, 0.0
+    			);
+    }
+    private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
+    	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
+    }
+    public double getBinElevatorPosition() { //get current position in inches
+    	return binElevatorMotor.getPosition()/kEncoderTicksPerInch;
+    }
+    
     private void binElevatorUpdate() {
     	if(binElevatorDownManualButton.get())
     		binElevatorMotor.set(0.1);
@@ -134,163 +155,18 @@ public class BinLiftSystem extends StateMachineSystem {
     		rakerMotor.set(rakerSpeed);
     	
     }
-    /*
-    enum State {
-    	Init {
-    		State run(BinLiftSystem liftSystem) {
-    			if(!liftSystem.binElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.moveToteElevator(-0.3);    				
-    			}
-    			if(!liftSystem.binElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.moveBinElevator(-0.2);    				
-    			}
-    			
-    			if(liftSystem.binElevatorMotor.isRevLimitSwitchClosed() && liftSystem.binElevatorMotor.isRevLimitSwitchClosed()) {
-    				//liftSystem.toteElevatorMotor.setPosition(0.0);
-    				//liftSystem.binElevatorMotor.setPosition(0.0);
-    				return Idle;	
-    			}
-    			return Init;
-    			
-    		}
-    		
-    		public String toString() {
-    			return "Init";
-    		}
-    	},
-    	Idle {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.resetSignal.check()) {
-    				return Init;
-    			}
-    			if(liftSystem.beginLiftSignal.check()) {
-    				return BeginStack;
-    			}
-    			if(liftSystem.beginFeedSignal.check()) {
-    				return BeginFeed;
-    			}
-    			if(liftSystem.dropToteSignal.check()) {
-    				return Dropoff;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Idle";
-    		}
-    	},
-    	
-    	BeginStack {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.tryLiftSignal.check()) {
-    				return StackForFeed;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Begin Stack";
-    		}
-    		
-    	},
-    	BeginFeed {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.tryFeedPickupSignal.check()) {
-    				return StackForFeed;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Begin Feed";
-    		}
-    	},
-    	StackForFeed {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return BeginFeed;
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Init;
-    			}
-    			if(liftSystem.liftSignal.check()) {
-    				return Pickup;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Stack For Feed";
-    		}
-    	},
-    	StackForPickup {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return BeginStack;
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.fedTotePickupSignal.check()) {
-    				return Pickup;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Stack For Pickup";
-    		}
-    	},
-    	Pickup {
-    		State run(BinLiftSystem liftSystem) {
-    			if(liftSystem.abortSignal.check()) {
-    				return Idle; //There will need to be more logic here
-    				//We need to handle finding the previous state
-    			}
-    			if(liftSystem.resetSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.finishSignal.check()) {
-    				return Idle;
-    			}
-    			if(liftSystem.continueFeedingSignal.check()) {
-    				return BeginFeed;
-    			}
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Pickup";
-    		}
-    	},
-    	Dropoff {
-    		State run(BinLiftSystem liftSystem) {
-    			return Idle;
-    		}
-    		
-    		public String toString() {
-    			return "Dropoff";
-    		}
-    	};
-    	
-    	
-    	abstract State run(BinLiftSystem liftSystem);
-    	
-    	void init(BinLiftSystem liftSystem) {}
-    }
-    */
 
 	@Override
 	public void run(State state) {
-		// TODO Auto-generated method stub
 		switch(state) {
 		case Init:
+			if(!binElevatorMotor.isRevLimitSwitchClosed()) { //should be bottom limit switch
+				setBinElevatorSpeed(-0.2);    				
+			}
+			
+			if(binElevatorMotor.isRevLimitSwitchClosed()) {
+				setBinElevatorPositionValue(0.0);	
+			}
 			break;
 		case Idle:
 			break;
@@ -303,6 +179,10 @@ public class BinLiftSystem extends StateMachineSystem {
 		case BinPickup:
 			break;
 		case Abort:	
+			setBinElevatorSpeed(0.0);
+			binGripSpeed = 0.0;
+			rakerSpeed = 0.0;
+			tilterMotorSpeed = 0.0;
 			break;
 		default:
 			break;

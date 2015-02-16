@@ -34,5 +34,11 @@ public class TrapezoidLine implements Line {
 		this.dY = dY;
 	}
 
+	public TrapezoidLine() {
+		aX = aY = 0.0;
+		bX = bY = 0.0;
+		cX = cY = 0.0;
+		dX = dY = 0.0;
+	}
 }
 
