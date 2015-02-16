@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
+import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
@@ -13,6 +14,7 @@ import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.InternalButton;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -91,6 +93,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
     	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
     	Accelerometer.getInstance().display();
+    	OI.getInstance().updateKachig();
     }
 	
 
@@ -166,6 +169,7 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     
+	
    public void teleopInit() {
 	   timer.start();
 	   
@@ -174,6 +178,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
         sharedPeriodic();
+        
+                
         if (timer.get() >= 1) {
             lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
             		Double.toString(pdpCAN.getCurrent(0)),

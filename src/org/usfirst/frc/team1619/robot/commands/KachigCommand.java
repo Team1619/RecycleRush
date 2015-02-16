@@ -12,11 +12,15 @@ public class KachigCommand extends Command {
 	
 	protected Drivetrain drivetrain;
 	private Timer timer;
+	private double rotationalspeed;
+	private double linearspeed;
 	
-    public KachigCommand() {
+    public KachigCommand(double linearspeed, double rotationalspeed) {
         // Use requires() here to declare subsystem dependencies
     	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
+        this.rotationalspeed = rotationalspeed;
+        this.linearspeed = linearspeed;
         
         timer = new Timer();
     }
@@ -29,6 +33,7 @@ public class KachigCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	drivetrain.drive(linearspeed, rotationalspeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,17 +50,4 @@ public class KachigCommand extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     }
-    
-    static public class KachigLeftCommand extends KachigCommand {
-    	protected void execute() {
-    		drivetrain.drive(0, 1);
-    	}
-    }
-    
-    static public class KachigRightCommand extends KachigCommand {
-    	protected void execute() {
-    		drivetrain.drive(0, -1);
-    	}
-    }
-    
 }

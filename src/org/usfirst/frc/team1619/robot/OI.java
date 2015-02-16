@@ -14,6 +14,7 @@ import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.InternalButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
@@ -33,7 +34,7 @@ public class OI {
 	 * Operation Pairing via Buttons
 	 * pairs functions together that use the same button
 	 */
-	private final JoystickButton kachigLeft, kachigRight;
+	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton resetEncoderButton;
 	private final JoystickButton driveForwardButton;
@@ -55,8 +56,13 @@ public class OI {
 		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
 
 		//Right stick
-		kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
-		kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
+		//kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
+		//kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
+		kachigLeft = new InternalButton();
+		kachigRight = new InternalButton();
+		kachigForward = new InternalButton();
+		kachigBackward = new InternalButton();
+		
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
@@ -78,8 +84,10 @@ public class OI {
 		 * whenPressed = function that when a button is pressed, it starts and doesn't stop when released
 		 * whileHeld = function that only operates when a button is pressed and held, and stops when released
 		 */
-		kachigLeft.whenPressed(new KachigCommand.KachigLeftCommand());
-		kachigRight.whenPressed(new KachigCommand.KachigRightCommand());
+		kachigLeft.whenPressed(new KachigCommand(0, -1));
+		kachigRight.whenPressed(new KachigCommand(0, 1));
+		kachigForward.whenPressed(new KachigCommand(1, 0));
+		kachigBackward.whenPressed(new KachigCommand(-1, 0));
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		resetEncoderButton.whenPressed(new ResetEncoderCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
@@ -93,6 +101,14 @@ public class OI {
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
+	}
+	
+	public void updateKachig() {
+		int pov = rightStick.getPOV();
+		kachigRight.setPressed(pov == 90);
+		kachigForward.setPressed(pov == 0);
+		kachigLeft.setPressed(pov == 270);
+		kachigBackward.setPressed(pov == 180);
 	}
 	
 	private static OI oi = new OI();
