@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class BinLiftSystem extends StateMachineSystem {
-    private static final double kEncoderTicksPerInch = 0.0;
+    private static final double kEncoderTicksPerInch = (2834.0 + 33.0)/-32.875;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -31,6 +31,7 @@ public class BinLiftSystem extends StateMachineSystem {
 	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton rakerOpenManualButton, rakerCloseManualButton;
+	private final JoystickButton moveBin;
 	
 	private double binElevatorSpeed = 0.0;
 	private boolean usePosition = false;
@@ -53,6 +54,7 @@ public class BinLiftSystem extends StateMachineSystem {
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
 		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
 		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
+		moveBin = new JoystickButton(rightStick, 4);
 		
 		binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
     	binElevatorMotor.enableLimitSwitch(true, true);
@@ -97,7 +99,7 @@ public class BinLiftSystem extends StateMachineSystem {
     	usePosition = true;
     	
     	speedCurve = new TrapezoidLine(
-    			getBinElevatorPosition(), 0.0,
+    			getBinElevatorPosition(), 0.1,
     			getBinElevatorPosition() + (position - getBinElevatorPosition())/3, 0.5,
     			getBinElevatorPosition() + 2*(position - getBinElevatorPosition())/3, 0.5,
     			position, 0.0
@@ -115,8 +117,12 @@ public class BinLiftSystem extends StateMachineSystem {
     		binElevatorMotor.set(0.5);
     	else if(binElevatorUpManualButton.get())
     		binElevatorMotor.set(-0.5);
-    	else
+    	else if(usePosition) {
+    			binElevatorMotor.set(-speedCurve.getValue(getBinElevatorPosition()));
+    	}
+    	else {
     		binElevatorMotor.set(binElevatorSpeed);
+    	}
     	
     }
     
@@ -163,14 +169,19 @@ public class BinLiftSystem extends StateMachineSystem {
 		switch(state) {
 		case Init:
 			if(!binElevatorMotor.isRevLimitSwitchClosed()) { //should be bottom limit switch
-				setBinElevatorSpeed(-0.2);    				
+				setBinElevatorSpeed(0.2);    				
 			}
 			
-			if(binElevatorMotor.isRevLimitSwitchClosed()) {
+			if(binElevatorMotor.isFwdLimitSwitchClosed()) {
 				setBinElevatorPositionValue(0.0);	
+				setBinElevatorSpeed(0.0);
 			}
 			break;
 		case Idle:
+			//setBinElevatorSpeed(0.0);
+			if(moveBin.get()) {
+				setBinElevatorPosition(10.0);
+			}
 			break;
 		case HumanFeed:
 			break;

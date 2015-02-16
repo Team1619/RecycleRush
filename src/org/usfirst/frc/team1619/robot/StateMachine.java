@@ -2,7 +2,10 @@ package org.usfirst.frc.team1619.robot;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
 	private State currentState = State.Init;
@@ -56,7 +59,10 @@ public class StateMachine {
 		Init {
 			@Override
 			public State run(StateMachine sm) {
-				return Idle;
+				if(BinLiftSystem.getInstance().getBinElevatorPosition() == 0.0) {
+					return Idle;
+				}
+				return Init;
 			}
 
 			@Override
@@ -155,7 +161,7 @@ public class StateMachine {
 				if(sm.resetSignal.check()) {
 					return Init;
 				}
-				return Idle;
+				return Abort;
 			}
 
 			@Override
@@ -170,9 +176,14 @@ public class StateMachine {
 	}
 	
 	public void run() {
+		State nextState = currentState.run(this);
+		SmartDashboard.putString("CurrentState", currentState.toString());
 		for(StateMachineSystem sms: systems) {
 			sms.superSecretSpecialSatanRun(currentState);
 		}
-		currentState = currentState.run(this);
+		for(Signal sig : signals) {
+			sig.clear();
+		}
+		currentState = nextState;
 	}
 }

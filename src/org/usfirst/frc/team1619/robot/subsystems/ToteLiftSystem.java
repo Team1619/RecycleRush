@@ -117,7 +117,6 @@ public class ToteLiftSystem extends StateMachineSystem {
 		case Init:
 			//should be bottom limit switch
 			if(!toteElevatorMotor.isRevLimitSwitchClosed()) { 
-				setToteElevatorSpeed(-0.3);    				
 			}
 			else {
 				setToteElevatorPositionValue(0.0); //should set the "position" value in inches, not move motor

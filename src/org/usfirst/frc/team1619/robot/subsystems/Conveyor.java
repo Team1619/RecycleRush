@@ -63,7 +63,7 @@ public class Conveyor extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new ManualConveyorCommand(0.675));
+    	setDefaultCommand(new ManualConveyorCommand(1.0));
     }
     
     public boolean getFrontSensor() {

@@ -37,7 +37,7 @@ public class RobotMap {
 	 * Button Identification
 	 */
 	//Right stick
-	public static final int kachigLeftButtonID = 4;
+	//public static final int kachigLeftButtonID = 4;
 	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 7;
 	public static final int toteElevatorUpManualButtonID = 5;
