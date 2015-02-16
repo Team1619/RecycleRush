@@ -5,14 +5,12 @@ import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
-import org.usfirst.frc.team1619.robot.commands.ResetEncoderCommand;
+import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import org.usfirst.frc.team1619.robot.commands.UnloadConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
-import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.InternalButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -27,8 +25,6 @@ public class OI {
 	public final Joystick rightStick;
 	public final Joystick leftStick;
 	
-	public final DigitalInput frontConveyorOpticalSensor;
-	public final DigitalInput rearConveyorOpticalSensor;
 	
 	/**
 	 * Operation Pairing via Buttons
@@ -52,9 +48,6 @@ public class OI {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
 		
-		frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
-		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
-
 		//Right stick
 		//kachigLeft = new JoystickButton(rightStick, RobotMap.kachigLeftButtonID);
 		//kachigRight = new JoystickButton(rightStick, RobotMap.kachigRightButtonID);
@@ -89,7 +82,7 @@ public class OI {
 		kachigForward.whenPressed(new KachigCommand(1, 0));
 		kachigBackward.whenPressed(new KachigCommand(-1, 0));
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		resetEncoderButton.whenPressed(new ResetEncoderCommand());
+		resetEncoderButton.whenPressed(new ResetDriveEncodersCommand());
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		conveyorForwardButton.whileHeld(new ManualConveyorCommand(1.0));
@@ -99,8 +92,8 @@ public class OI {
 		unstickToteButton.whileHeld(new UnstickToteCommand());
 		unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
-		liftAbortButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(ToteLiftSystem.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
 	}
 	
 	public void updateKachig() {

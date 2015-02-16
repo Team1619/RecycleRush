@@ -28,7 +28,7 @@ public class RobotMap {
 	public final static int binElevatorMotor = 9;
 	public final static int binGripMotor = 10;
 	public final static int rakerMotor = 5;
-	public final static int spare = 12;
+	public final static int toteElevatorMotorSmall = 12;
 
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
@@ -55,8 +55,8 @@ public class RobotMap {
 	public static final int conveyorBackwardManualButtonID = 3;
 	public static final int guardrailCloseManualButtonID = 13;
 	public static final int guardrailOpenManualButtonID = 14;
-	public static final int binElevatorUpManualButtonID = 8;
-	public static final int binElevatorDownManualButtonID = 7;
+	public static final int binElevatorDownManualButtonID = 8;
+	public static final int binElevatorUpManualButtonID = 7;
 	public static final int binTiltUpManualButtonID = 9;
 	public static final int binTiltDownManualButtonID = 6;
 	public static final int binGripOpenManualButtonID = 10;

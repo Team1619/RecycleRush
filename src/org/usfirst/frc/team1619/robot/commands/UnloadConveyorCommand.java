@@ -10,22 +10,18 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class UnloadConveyorCommand extends Command {
-	private final static double kForwardSpeed = 1.0;
-	private final static double kBackwardSpeed = -1.0;	
-	private final static double kOpenSpeed = 0.15;
-	private final static double kCloseSpeed = -0.25;
+	private static final double kForwardConveyorSpeed = 0.75;
+	private static final double kReverseConveyorSpeed = -1.0;
+	
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
 	private State currentState;	
 	
     public UnloadConveyorCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	guardRailSystem = GuardRailSystem.getInstance();
     	requires(guardRailSystem);
     	conveyor = Conveyor.getInstance();
     	requires(conveyor);
-    	currentState = State.RunTilBroken;
     }
    
     Timer stateTimeoutTimer = new Timer();
@@ -35,53 +31,56 @@ public class UnloadConveyorCommand extends Command {
     	RunTilBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				cmd.conveyor.moveConveyor(kForwardSpeed);
-				if (cmd.conveyor.getFrontSensor()){
+				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				
+				if(cmd.conveyor.getFrontSensor())
 					return SensorBroken;
-				}
-				else{
-					return RunTilBroken;
-				}
+				else
+					return this;
 			}
 			
 			public String toString() {
-				return "Run until broken";
+				return "RunTilBroken";
 			}
 		}, 
 		SensorBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				cmd.conveyor.moveConveyor(kForwardSpeed);
-				if (cmd.conveyor.getFrontSensor()){
+				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				
+				if(cmd.conveyor.getFrontSensor())
 					return SensorBroken;
-				}
-				else{
+				else
 					return Retract;
-				}
+					
 			}
 			
 			public String toString() {
-				return "Sensor broken";
+				return "SensorBroken";
 			}
 		}, 
 		Retract(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				cmd.conveyor.moveConveyor(kBackwardSpeed);
-				return Retract;
+				cmd.conveyor.moveConveyor(kReverseConveyorSpeed);
+				return this;
 			}
 			@Override
 			boolean isFinished(UnloadConveyorCommand cmd){
 	    		if (super.isFinished(cmd)){
 	    			return true;
 	    		}
-	    		return cmd.retractTimer.get() >= 1.0;
-	    	}
+	    		
+	    		return cmd.retractTimer.get() > 0.5;
+			}
+			
+			@Override
 			void init(UnloadConveyorCommand cmd) {
 				cmd.retractTimer.stop();
-	    		cmd.retractTimer.reset();
-	    		cmd.retractTimer.start();
-	    	}
+				cmd.retractTimer.reset();
+				cmd.retractTimer.start();
+			}
+
 			public String toString() {
 				return "Retract";
 			}
@@ -98,6 +97,8 @@ public class UnloadConveyorCommand extends Command {
     		cmd.stateTimeoutTimer.stop();
     		cmd.stateTimeoutTimer.reset();
     		cmd.stateTimeoutTimer.start();
+    		
+    		System.out.println("state: " + this);
     	}
     	
     	boolean isFinished(UnloadConveyorCommand cmd){
