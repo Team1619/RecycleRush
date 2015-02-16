@@ -10,51 +10,80 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class UnloadConveyorCommand extends Command {
-
+	private static final double kForwardConveyorSpeed = 0.75;
+	private static final double kReverseConveyorSpeed = -1.0;
+	
+	
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
 	private State currentState;	
 	
     public UnloadConveyorCommand() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	guardRailSystem = GuardRailSystem.getInstance();
     	requires(guardRailSystem);
     	conveyor = Conveyor.getInstance();
     	requires(conveyor);
-    	currentState = State.RunTilBroken;
     }
    
     Timer stateTimeoutTimer = new Timer();
+    Timer retractTimer = new Timer();
     
     enum State {
     	RunTilBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				
+				if(cmd.conveyor.getFrontSensor())
+					return SensorBroken;
+				else
+					return this;
+			}
+			
+			public String toString() {
+				return "RunTilBroken";
 			}
 		}, 
 		SensorBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				
+				if(cmd.conveyor.getFrontSensor())
+					return SensorBroken;
+				else
+					return Retract;
+					
+			}
+			
+			public String toString() {
+				return "SensorBroken";
 			}
 		}, 
 		Retract(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
-				// TODO Auto-generated method stub
-				return null;
+				cmd.conveyor.moveConveyor(kReverseConveyorSpeed);
+				return this;
 			}
 			@Override
 			boolean isFinished(UnloadConveyorCommand cmd){
 	    		if (super.isFinished(cmd)){
 	    			return true;
 	    		}
-	    		return false;
+	    		return cmd.retractTimer.get() > 0.5;
 	    	}
+			
+			@Override
+			void init(UnloadConveyorCommand cmd) {
+				cmd.retractTimer.stop();
+				cmd.retractTimer.reset();
+				cmd.retractTimer.start();
+			}
+			
+			public String toString() {
+				return "Retract";
+			}
 		};
     	
 		double timeoutValue;
@@ -68,6 +97,8 @@ public class UnloadConveyorCommand extends Command {
     		cmd.stateTimeoutTimer.stop();
     		cmd.stateTimeoutTimer.reset();
     		cmd.stateTimeoutTimer.start();
+    		
+    		System.out.println("state: " + this);
     	}
     	
     	boolean isFinished(UnloadConveyorCommand cmd){
@@ -78,6 +109,7 @@ public class UnloadConveyorCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	currentState = State.RunTilBroken;
     }
 
     // Called repeatedly when this Command is scheduled to run
