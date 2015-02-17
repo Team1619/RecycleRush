@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.command.Command;
 public class UnloadConveyorCommand extends Command {
 	private static final double kForwardConveyorSpeed = 0.75;
 	private static final double kReverseConveyorSpeed = -1.0;
+	private static final double kCloseGuardRailSpeed = -0.25;
+	private static final double kOpenGuardRailSpeed = 0.15;
 
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
@@ -26,12 +28,14 @@ public class UnloadConveyorCommand extends Command {
    
     Timer stateTimeoutTimer = new Timer();
     Timer retractTimer = new Timer();
+    Timer finishTimer = new Timer();
     
     enum State {
     	RunTilBroken(3.0) {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				cmd.guardRailSystem.setGuardRailSpeed(kCloseGuardRailSpeed);
 				
 				if(cmd.conveyor.getFrontSensor())
 					return SensorBroken;
@@ -47,6 +51,7 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
+				cmd.guardRailSystem.setGuardRailSpeed(kCloseGuardRailSpeed);
 				
 				if(cmd.conveyor.getFrontSensor())
 					return SensorBroken;
@@ -63,16 +68,16 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kReverseConveyorSpeed);
-				return this;
+				cmd.guardRailSystem.setGuardRailSpeed(kOpenGuardRailSpeed);
+				
+				if (cmd.retractTimer.get() > 0.5) {
+					return Finish;
+				}
+				else {
+					return Retract;
+				}
 			}
-			@Override
-			boolean isFinished(UnloadConveyorCommand cmd){
-	    		if (super.isFinished(cmd)){
-	    			return true;
-	    		}
-	    		return cmd.retractTimer.get() > 0.5;
-	    	}
-			
+						
 			@Override
 			void init(UnloadConveyorCommand cmd) {
 				cmd.retractTimer.stop();
@@ -83,6 +88,31 @@ public class UnloadConveyorCommand extends Command {
 			public String toString() {
 				return "Retract";
 			}
+		},
+		Finish(-1) {
+			@Override
+			State run(UnloadConveyorCommand cmd) {
+				cmd.conveyor.moveConveyor(0);
+				cmd.guardRailSystem.setGuardRailSpeed(kOpenGuardRailSpeed);
+				return this;
+			}
+			@Override
+			void init(UnloadConveyorCommand cmd) {
+				cmd.finishTimer.stop();
+				cmd.finishTimer.reset();
+				cmd.finishTimer.start();
+			}
+			@Override
+			boolean isFinished(UnloadConveyorCommand cmd){
+	    		if (super.isFinished(cmd)){
+	    			return true;
+	    		}
+	    		return cmd.finishTimer.get() > 0.5;
+	    	}
+			public String toString() {
+				return "Finish";
+			}
+
 		};
     	
 		double timeoutValue;
@@ -90,6 +120,16 @@ public class UnloadConveyorCommand extends Command {
 			this.timeoutValue = timeoutValue;
 		}
 		
+		State runState(UnloadConveyorCommand cmd) {
+			if(timeoutValue < 0 || cmd.stateTimeoutTimer.get() < timeoutValue) {
+				return run(cmd);
+			}	
+			else {
+				return Finish;
+			}
+		}
+		
+
 		abstract State run(UnloadConveyorCommand cmd);
     	
     	void init(UnloadConveyorCommand cmd) {
@@ -101,7 +141,7 @@ public class UnloadConveyorCommand extends Command {
     	}
     	
     	boolean isFinished(UnloadConveyorCommand cmd){
-    		return cmd.stateTimeoutTimer.get() >= timeoutValue;
+    		return false;
     	}
     	
     }
@@ -114,7 +154,7 @@ public class UnloadConveyorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	State nextState = currentState.run(this);
+    	State nextState = currentState.runState(this);
     	if (nextState != currentState){
     		System.out.println("Going from state '" + currentState + "' to '" + nextState + "'");
     		currentState = nextState;

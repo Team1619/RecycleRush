@@ -31,8 +31,15 @@ public class ManualConveyorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-		conveyor.moveConveyor((leftStick.getThrottle() - 1) / 2 * -speed);
-		SmartDashboard.putString("Conveyor Speed", "" + (leftStick.getThrottle() - 1) / 2 * -speed);
+    	double conveyorSpeed = (leftStick.getThrottle() - 1) / 2 * -speed;
+		if (Math.abs(conveyorSpeed) >= 0.1){
+			conveyor.moveConveyor(conveyorSpeed);
+			SmartDashboard.putNumber("Conveyor Speed", conveyorSpeed);
+		}
+		else {
+			conveyor.moveConveyor(0);
+			SmartDashboard.putNumber("Conveyor Speed", 0);
+		}
     }
 
     // Make this return true when this Command no longer needs to run execute()
