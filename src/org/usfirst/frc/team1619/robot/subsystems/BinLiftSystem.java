@@ -31,7 +31,6 @@ public class BinLiftSystem extends StateMachineSystem {
 	private final JoystickButton binTiltUpManualButton, binTiltDownManualButton;
 	private final JoystickButton binGripOpenManualButton, binGripCloseManualButton;
 	private final JoystickButton rakerOpenManualButton, rakerCloseManualButton;
-	private final JoystickButton moveBin;
 	
 	private double binElevatorSpeed = 0.0;
 	private boolean usePosition = false;
@@ -54,7 +53,6 @@ public class BinLiftSystem extends StateMachineSystem {
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
 		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
 		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
-		moveBin = new JoystickButton(rightStick, 4);
 		
 		binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
     	binElevatorMotor.enableLimitSwitch(true, true);
@@ -113,17 +111,20 @@ public class BinLiftSystem extends StateMachineSystem {
     }
     
     private void binElevatorUpdate() {
-    	if(binElevatorDownManualButton.get())
+    	if(binElevatorDownManualButton.get()) {
     		binElevatorMotor.set(0.5);
-    	else if(binElevatorUpManualButton.get())
-    		binElevatorMotor.set(-0.5);
+    		usePosition = false;
+    	}
+    	else if(binElevatorUpManualButton.get()) {
+    		binElevatorMotor.set(-0.5);    		
+    		usePosition = false;
+    	}
     	else if(usePosition) {
     			binElevatorMotor.set(-speedCurve.getValue(getBinElevatorPosition()));
     	}
     	else {
     		binElevatorMotor.set(binElevatorSpeed);
     	}
-    	
     }
     
     public void binTilt(double moveValue) {
@@ -136,7 +137,6 @@ public class BinLiftSystem extends StateMachineSystem {
         	tilterMotor.set(-0.75);
     	else
     		tilterMotor.set(tilterMotorSpeed);
-    	
     }
     
     public void moveBinGrip(double moveValue) {
@@ -168,20 +168,15 @@ public class BinLiftSystem extends StateMachineSystem {
 	public void run(State state) {
 		switch(state) {
 		case Init:
-			if(!binElevatorMotor.isRevLimitSwitchClosed()) { //should be bottom limit switch
+			if(!binElevatorMotor.isFwdLimitSwitchClosed()) { //should be bottom limit switch
 				setBinElevatorSpeed(0.2);    				
 			}
-			
-			if(binElevatorMotor.isFwdLimitSwitchClosed()) {
+			else {
 				setBinElevatorPositionValue(0.0);	
 				setBinElevatorSpeed(0.0);
 			}
 			break;
 		case Idle:
-			//setBinElevatorSpeed(0.0);
-			if(moveBin.get()) {
-				setBinElevatorPosition(10.0);
-			}
 			break;
 		case HumanFeed:
 			break;
@@ -193,6 +188,9 @@ public class BinLiftSystem extends StateMachineSystem {
 			break;
 		case Abort:	
 			setBinElevatorSpeed(0.0);
+			usePosition = false;
+			speedCurve = new TrapezoidLine();
+			
 			binGripSpeed = 0.0;
 			rakerSpeed = 0.0;
 			tilterMotorSpeed = 0.0;

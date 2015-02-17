@@ -37,24 +37,23 @@ public class RobotMap {
 	 * Button Identification
 	 */
 	//Right stick
-	//public static final int kachigLeftButtonID = 4;
-	public static final int kachigRightButtonID = 3;
 	public static final int resetGyroButtonID = 7;
-	public static final int toteElevatorUpManualButtonID = 5;
-	public static final int toteElevatorDownManualButtonID = 6;
-	public static final int resetEncoderButtonID = 8;
+	public static final int resetDriveEncodersButtonID = 8;
+	
 	public static final int driveForwardButtonID = 9;
 	public static final int turnButtonID = 10;
+	
 	public static final int liftAbortButtonID = 11;
 	public static final int liftResetButtonID = 12;	
-	public static final int calibrateGyroButton = 2;
+	
 	public static final int unloadConveyorButtonID = 16;
 	
+	public static final int calibrateGyroButton = 2; //used in disabled
+	
 	//Left Stick
-	public static final int conveyorForwardManualButtonID = 4;
-	public static final int conveyorBackwardManualButtonID = 3;
 	public static final int guardrailCloseManualButtonID = 13;
 	public static final int guardrailOpenManualButtonID = 14;
+	
 	public static final int binElevatorDownManualButtonID = 8;
 	public static final int binElevatorUpManualButtonID = 7;
 	public static final int binTiltUpManualButtonID = 9;
@@ -63,6 +62,7 @@ public class RobotMap {
 	public static final int binGripCloseManualButtonID = 5;
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
+	
 	public static final int unstickToteButtonID = 2;
 	
 		

@@ -2,7 +2,6 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
@@ -32,13 +31,11 @@ public class OI {
 	 */
 	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
 	private final JoystickButton resetGyroButton;
-	private final JoystickButton resetEncoderButton;
+	private final JoystickButton resetDriveEncodersButton;
 	private final JoystickButton driveForwardButton;
 	private final JoystickButton turnRightButton;
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
-	private final JoystickButton conveyorForwardButton;
-	private final JoystickButton conveyorBackwardButton;
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
 	private final JoystickButton unstickToteButton;
@@ -57,18 +54,20 @@ public class OI {
 		kachigBackward = new InternalButton();
 		
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
-		resetEncoderButton = new JoystickButton(rightStick, RobotMap.resetEncoderButtonID);
+		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
+		
 		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
 		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
+		
+		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
+		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
+		
 		unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
 		//Left stick
-		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
-		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
-		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.conveyorForwardManualButtonID);
-		conveyorBackwardButton = new JoystickButton(leftStick, RobotMap.conveyorBackwardManualButtonID);
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+
 		unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
 	}
 	
@@ -81,12 +80,13 @@ public class OI {
 		kachigRight.whenPressed(new KachigCommand(0, 1));
 		kachigForward.whenPressed(new KachigCommand(1, 0));
 		kachigBackward.whenPressed(new KachigCommand(-1, 0));
+		
 		resetGyroButton.whenPressed(new ResetGyroCommand());
-		resetEncoderButton.whenPressed(new ResetDriveEncodersCommand());
+		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
+		
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
-		conveyorForwardButton.whileHeld(new ManualConveyorCommand(1.0));
-		conveyorBackwardButton.whileHeld(new ManualConveyorCommand(-1.0));
+		
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		unstickToteButton.whileHeld(new UnstickToteCommand());

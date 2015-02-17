@@ -7,7 +7,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  *
@@ -27,17 +26,11 @@ public class ToteLiftSystem extends StateMachineSystem {
 	private double toteElevatorSpeed; //will be %vbus 
 	private boolean usePosition;
 	private TrapezoidLine speedCurve;
-	
-	private final JoystickButton toteElevatorDownManualButton, toteElevatorUpManualButton;
-	
+		
 	private ToteLiftSystem() {
 		rightStick = OI.getInstance().rightStick;
 		leftStick = OI.getInstance().leftStick;
-		
-		//right stick
-		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
-		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
-		
+				
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(true, true);
     	toteElevatorMotor.enableBrakeMode(true);
@@ -92,17 +85,13 @@ public class ToteLiftSystem extends StateMachineSystem {
     }
     
     private void toteElevatorUpdate() {
-    	//Following code is temporary, although controlling the tote elevator
-    	//with a joystick is likely a good idea.
-    	//moveToteElevator(leftStick.getY());
-    	
-    	//Code to be used
     	if(leftStick.getY() != 0.0) {
     		moveToteElevator(leftStick.getY());	
+    		usePosition = false;
     	}
     	else {
     		if(usePosition) {
-    			moveToteElevator(speedCurve.getValue(getToteElevatorPosition()));
+    			moveToteElevator(-speedCurve.getValue(getToteElevatorPosition()));
     		}
     		else {
 	    		moveToteElevator(toteElevatorSpeed);
@@ -116,10 +105,12 @@ public class ToteLiftSystem extends StateMachineSystem {
 		switch(state) {
 		case Init:
 			//should be bottom limit switch
-			if(!toteElevatorMotor.isRevLimitSwitchClosed()) { 
+			if(!toteElevatorMotor.isFwdLimitSwitchClosed()) { 
+				//setToteElevatorSpeed(0.2);
 			}
 			else {
 				setToteElevatorPositionValue(0.0); //should set the "position" value in inches, not move motor
+				setToteElevatorSpeed(0.0);
 			}
 			break;
 		case Idle:
@@ -135,6 +126,8 @@ public class ToteLiftSystem extends StateMachineSystem {
 			break;
 		case Abort:	
 			setToteElevatorSpeed(0.0);
+			usePosition = false;
+			speedCurve = new TrapezoidLine();
 			break;
 		default:
 			break;
