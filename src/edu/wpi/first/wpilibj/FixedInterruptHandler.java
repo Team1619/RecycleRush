@@ -20,7 +20,6 @@ abstract public class FixedInterruptHandler<T> extends InterruptHandlerFunction<
 	}
 	//Override using a lambda expression to use interruptHandlerFunction
 	protected abstract void interruptFired2(int interruptAssertedMask, T param);
-
 }
 
 

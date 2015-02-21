@@ -3,12 +3,12 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
-import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
-import org.usfirst.frc.team1619.robot.subsystems.ToteLiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -47,8 +47,8 @@ public class Robot extends IterativeRobot {
     	OI.getInstance().init();
     	GyroSystem.getInstance().calibrate();
     	Camera.getInstance();
-    	BinLiftSystem.getInstance();
-    	ToteLiftSystem.getInstance();
+    	BinElevatorSystem.getInstance();
+    	ToteElevatorSystem.getInstance();
     	Conveyor.getInstance().init();
     	pdpCAN = new PowerDistributionPanel();
 		timer = new Timer();
@@ -90,7 +90,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
     	SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
     	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
-    	SmartDashboard.putNumber("BinLiftEncoderPosition", BinLiftSystem.getInstance().getBinElevatorPosition());
+    	SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
     	SmartDashboard.putBoolean("chute door", true);
     	Accelerometer.getInstance().display();
     	OI.getInstance().updateKachig();

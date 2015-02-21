@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.subsystems;
 import org.usfirst.frc.team1619.TrapezoidLine;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
+import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -11,26 +12,27 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  *
  */
-public class ToteLiftSystem extends StateMachineSystem {
+public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 0.0;
 	public static final double kTransitPosition = 0.0;
+	public static final double kFeederPosition = 0.0;
+	public static final double kPickUpPosition = 0.0;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	public final CANTalon toteElevatorMotor;
 	public final CANTalon toteElevatorMotorSmall;
 	
-	private final Joystick rightStick;
 	private final Joystick leftStick;
 	
 	private double toteElevatorSpeed; //will be %vbus 
 	private boolean usePosition;
 	private TrapezoidLine speedCurve;
-		
-	private ToteLiftSystem() {
-		rightStick = OI.getInstance().rightStick;
+	private double moveTo;
+			
+	private ToteElevatorSystem() {
 		leftStick = OI.getInstance().leftStick;
-				
+		
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
     	toteElevatorMotor.enableLimitSwitch(true, true);
     	toteElevatorMotor.enableBrakeMode(true);
@@ -42,13 +44,14 @@ public class ToteLiftSystem extends StateMachineSystem {
     	toteElevatorSpeed = 0.0;
     	usePosition = false;
     	speedCurve = new TrapezoidLine();
+    	moveTo = -1.0;
 	}
 	
-	private static ToteLiftSystem theSystem;
+	private static ToteElevatorSystem theSystem;
 	
-	public static ToteLiftSystem getInstance() {
+	public static ToteElevatorSystem getInstance() {
 		if(theSystem == null)
-			theSystem = new ToteLiftSystem();
+			theSystem = new ToteElevatorSystem();
 		return theSystem;
 	}
 	
@@ -67,16 +70,18 @@ public class ToteLiftSystem extends StateMachineSystem {
     	usePosition = false;
     }
     public void setToteElevatorPosition(double position) {  //in inches
-    	usePosition = true;
-    	
-    	speedCurve = new TrapezoidLine(
-    			getToteElevatorPosition(), 0.0,
-    			getToteElevatorPosition() + (position - getToteElevatorPosition())/3, 0.5,
-    			getToteElevatorPosition() + 2*(position - getToteElevatorPosition())/3, 0.5,
-    			position, 0.0
-    			);
+    	if(position != moveTo) {
+    		usePosition = true;
+        	
+        	speedCurve = new TrapezoidLine(
+        			getToteElevatorPosition(), 0.0,
+        			getToteElevatorPosition() + (position - getToteElevatorPosition())/3, 0.5,
+        			getToteElevatorPosition() + 2*(position - getToteElevatorPosition())/3, 0.5,
+        			position, 0.0
+        			);
+        	moveTo = position;
+    	}
     }
-   
     private void setToteElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
     	toteElevatorMotor.setPosition(position*kEncoderTicksPerInch);
     }
@@ -117,6 +122,12 @@ public class ToteLiftSystem extends StateMachineSystem {
 			setToteElevatorPosition(kTransitPosition);
 			break;
 		case HumanFeed:
+			if(StateMachine.getInstance().humanFeedTimer.get() < 0.1) { //just at beginning of human feeder
+				setToteElevatorPosition(kFeederPosition);
+			}
+			if(Math.abs(kTransitPosition - getToteElevatorPosition()) < 0.1) { //once it picks up tote that was just placed there
+				setToteElevatorPosition(kFeederPosition);
+			}
 			break;
 		case GroundFeed:
 			break;

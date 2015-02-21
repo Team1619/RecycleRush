@@ -30,7 +30,7 @@ public class ManualGuardRailCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	guardRailSystem.setGuardRailSpeed(speed);
+    	guardRailSystem.moveGuardRail(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -40,7 +40,7 @@ public class ManualGuardRailCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	guardRailSystem.setGuardRailSpeed(0.0);
+    	guardRailSystem.moveGuardRail(0.0);
     }
 
     // Called when another command which requires one or more of the same

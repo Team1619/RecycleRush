@@ -67,6 +67,7 @@ public class OI {
 		//Left stick
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+		
 
 		unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
 	}
@@ -89,6 +90,7 @@ public class OI {
 		
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
+		
 		unstickToteButton.whileHeld(new UnstickToteCommand());
 		unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		

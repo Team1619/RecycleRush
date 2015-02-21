@@ -2,9 +2,10 @@ package org.usfirst.frc.team1619.robot;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
@@ -54,12 +55,17 @@ public class StateMachine {
 	public final Signal dropoffSignal = new Signal();
 	public final Signal groundFeedSignal = new Signal(); 
 	
+	public final Timer humanFeedTimer = new Timer();
 	
 	public enum State {
 		Init {
 			@Override
+			protected void init(StateMachine sm) {
+			}
+			
+			@Override
 			public State run(StateMachine sm) {
-				if(BinLiftSystem.getInstance().getBinElevatorPosition() == 0.0) {
+				if(BinElevatorSystem.getInstance().getBinElevatorPosition() == 0.0) {
 					return Idle;
 				}
 				return Init;
@@ -69,10 +75,12 @@ public class StateMachine {
 			public String toString() {
 				return "Init";
 			}
-			
 		},
 		Idle {
-
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -85,10 +93,15 @@ public class StateMachine {
 			public String toString() {
 				return "Idle";
 			}
-			
 		},
 		HumanFeed {
-
+			@Override
+			protected void init(StateMachine sm) {
+				sm.humanFeedTimer.stop();
+				sm.humanFeedTimer.reset();
+				sm.humanFeedTimer.start();
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -99,12 +112,14 @@ public class StateMachine {
 
 			@Override
 			public String toString() {
-				return "Human Feed";
+				return null;
 			}
-			
 		},
 		GroundFeed {
-
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -117,10 +132,12 @@ public class StateMachine {
 			public String toString() {
 				return "Ground Feed";
 			}
-			
 		},
 		Dropoff {
-
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -133,10 +150,12 @@ public class StateMachine {
 			public String toString() {
 				return "Dropoff";
 			}
-			
 		},
 		BinPickup {
-
+			@Override
+			protected void init(StateMachine sm) {				
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -149,10 +168,12 @@ public class StateMachine {
 			public String toString() {
 				return "Bin Pickup";
 			}
-			
 		},
 		Abort {
-
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
@@ -167,23 +188,30 @@ public class StateMachine {
 			@Override
 			public String toString() {
 				return "Abort";
-			}
-			
+			}			
 		};
 		
 		public abstract State run(StateMachine sm);
 		public abstract String toString();
+		
+		protected abstract void init(StateMachine sm);
 	}
 	
 	public void run() {
-		State nextState = currentState.run(this);
 		SmartDashboard.putString("CurrentState", currentState.toString());
+		
 		for(StateMachineSystem sms: systems) {
 			sms.superSecretSpecialSatanRun(currentState);
 		}
+
+		State nextState = currentState.run(this);
+		if(currentState != nextState) {
+			currentState = nextState;
+			currentState.init(this);
+		}
+		
 		for(Signal sig : signals) {
 			sig.clear();
 		}
-		currentState = nextState;
 	}
 }

@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.commands;
 
-import org.usfirst.frc.team1619.robot.subsystems.BinLiftSystem;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.GuardRailSystem;
 
@@ -21,14 +21,14 @@ public class UnloadConveyorCommand extends Command {
 	private GuardRailSystem guardRailSystem;
 	private Conveyor conveyor;
 	private State currentState;	
-	private BinLiftSystem binLiftSystem;
+	private BinElevatorSystem binLiftSystem;
 	
     public UnloadConveyorCommand() {
     	guardRailSystem = GuardRailSystem.getInstance();
     	requires(guardRailSystem);
     	conveyor = Conveyor.getInstance();
     	requires(conveyor);
-    	binLiftSystem = BinLiftSystem.getInstance();
+    	binLiftSystem = BinElevatorSystem.getInstance();
     	requires(binLiftSystem);
     }
    
@@ -41,7 +41,7 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
-				cmd.guardRailSystem.setGuardRailSpeed(kCloseGuardRailSpeed);
+				cmd.guardRailSystem.moveGuardRail(kCloseGuardRailSpeed);
 				
 				if(cmd.conveyor.getFrontSensor())
 					return SensorBroken;
@@ -57,7 +57,7 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kForwardConveyorSpeed);
-				cmd.guardRailSystem.setGuardRailSpeed(kCloseGuardRailSpeed);
+				cmd.guardRailSystem.moveGuardRail(kCloseGuardRailSpeed);
 				cmd.binLiftSystem.setBinElevatorSpeed(kBinLiftUpSpeed);
 				
 				if(cmd.conveyor.getFrontSensor())
@@ -75,7 +75,7 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(kReverseConveyorSpeed);
-				cmd.guardRailSystem.setGuardRailSpeed(kOpenGuardRailSpeed);
+				cmd.guardRailSystem.moveGuardRail(kOpenGuardRailSpeed);
 				
 				if (cmd.retractTimer.get() > 0.5) {
 					return Finish;
@@ -100,7 +100,7 @@ public class UnloadConveyorCommand extends Command {
 			@Override
 			State run(UnloadConveyorCommand cmd) {
 				cmd.conveyor.moveConveyor(0);
-				cmd.guardRailSystem.setGuardRailSpeed(kOpenGuardRailSpeed);
+				cmd.guardRailSystem.moveGuardRail(kOpenGuardRailSpeed);
 				cmd.binLiftSystem.setBinElevatorSpeed(kBinLiftDownSpeed);
 				return this;
 			}
