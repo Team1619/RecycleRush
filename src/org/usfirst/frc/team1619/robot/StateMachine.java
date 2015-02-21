@@ -36,7 +36,7 @@ public class StateMachine {
 		}
 		
 		public boolean check() {
-			return /*Jesus*/hasRisen;
+			return /*Our Lord and Savior Jesus*/hasRisen;	// "Hit home to Jerusalem" - Daniel
 		}
 		
 		public void clear() {
