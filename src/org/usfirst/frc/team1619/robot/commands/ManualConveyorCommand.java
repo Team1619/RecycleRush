@@ -14,14 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class ManualConveyorCommand extends Command {
 	private Conveyor conveyor;
 	private Joystick leftStick;
-	private double speed;
 
-    public ManualConveyorCommand(double speed) {
+    public ManualConveyorCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	conveyor = Conveyor.getInstance();
-    	leftStick = OI.getInstance().leftStick;
-    	this.speed = speed;
+    	leftStick = OI.getInstance().leftStick;;
     	requires(conveyor);
     }
 
@@ -31,7 +29,7 @@ public class ManualConveyorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	double conveyorSpeed = (leftStick.getThrottle() - 1) / 2 * -speed;
+    	double conveyorSpeed = (leftStick.getThrottle() - 1) / -2;
 		if (Math.abs(conveyorSpeed) >= 0.1){
 			conveyor.moveConveyor(conveyorSpeed);
 			SmartDashboard.putNumber("Conveyor Speed", conveyorSpeed);

@@ -49,7 +49,7 @@ public class Conveyor extends Subsystem {
 			@Override
 			protected void interruptFired2(int interruptAssertedMask,
 					Command cmd) {
-				cmd.start();
+				//cmd.start();
 			}
 			
 		});
@@ -63,7 +63,7 @@ public class Conveyor extends Subsystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new ManualConveyorCommand(1.0));
+    	setDefaultCommand(new ManualConveyorCommand());
     }
     
     public boolean getFrontSensor() {

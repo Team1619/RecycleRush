@@ -90,7 +90,7 @@ public class OI {
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		unstickToteButton.whileHeld(new UnstickToteCommand());
-		unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
+		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));

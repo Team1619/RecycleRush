@@ -92,6 +92,7 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
     	SmartDashboard.putNumber("BinLiftEncoderPosition", BinLiftSystem.getInstance().getBinElevatorPosition());
     	SmartDashboard.putBoolean("chute door", true);
+    	SmartDashboard.putNumber("Tote Lift Encoder Position", ToteLiftSystem.getInstance().getToteElevatorPosition());
     	Accelerometer.getInstance().display();
     	OI.getInstance().updateKachig();
     }
@@ -136,7 +137,7 @@ public class Robot extends IterativeRobot {
 		*/
 		
 		/**
-		 * Gyro Timer to Determine North, South, East, West
+		 * Gyro Timer to recalibrate
 		 */
 		if(!gyroInitTimerFinished) {
 			if(Math.abs(GyroSystem.getInstance().getTurnRate()) < 0.5) {
