@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -42,16 +41,33 @@ public class GuardRailSystem extends StateMachineSystem {
     }
 
 	@Override
-	public void run(State state) {
+	public void run(State state, double elapsed) {
 		switch(state) {
 		case Init:
 			break;
 		case Idle:
 			break;
-		case HumanFeed:
-			if(StateMachine.getInstance().humanFeedTimer.get() <= 0.25) { //just at beginning
+		case HumanFeed_RaiseTote:
+			if(elapsed <= 0.25) { //just at beginning
 				moveGuardRail(kOpenGuardRailSpeed);
 			}
+			else {
+				moveGuardRail(0.0);
+			}
+			break;
+		case HumanFeed_WaitForTote:
+			moveGuardRail(0.0);
+			break;
+		case HumanFeed_ToteOnConveyor:
+			if(elapsed <= 0.25) {
+				moveGuardRail(kCloseGuardRailSpeed);
+			}
+			else {
+				moveGuardRail(0.0);
+			}
+			break;
+		case HumanFeed_ThrottleConveyorDescend:
+			moveGuardRail(0.0);
 			break;
 		case GroundFeed:
 			break;

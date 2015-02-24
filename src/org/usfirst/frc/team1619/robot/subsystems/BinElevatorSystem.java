@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import org.usfirst.frc.team1619.TrapezoidLine;
+import org.usfirst.frc.team1619.GenericLine;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
@@ -34,7 +34,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 	
 	private double binElevatorSpeed = 0.0;
 	private boolean usePosition = false;
-	private TrapezoidLine speedCurve = new TrapezoidLine();
+	private GenericLine speedCurve = new GenericLine();
 	
 	private double binGripSpeed = 0.0;
 	private double rakerSpeed = 0.0;
@@ -94,14 +94,15 @@ public class BinElevatorSystem extends StateMachineSystem {
     	usePosition = false;
     }
     public void setBinElevatorPosition(double position) {  //in inches
-    	usePosition = true;
+    	/*usePosition = true;
     	
-    	speedCurve = new TrapezoidLine(
+    	speedCurve = new GenericLine(
     			getBinElevatorPosition(), 0.1,
     			getBinElevatorPosition() + (position - getBinElevatorPosition())/3, 0.5,
     			getBinElevatorPosition() + 2*(position - getBinElevatorPosition())/3, 0.5,
     			position, 0.0
     			);
+    			*/
     }
     
     private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
@@ -121,7 +122,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     		usePosition = false;
     	}
     	else if(usePosition) {
-    		binElevatorMotor.set(-speedCurve.getValue(getBinElevatorPosition()));
+    		binElevatorMotor.set(speedCurve.getValue(getBinElevatorPosition()));
     	}
     	else {
     		binElevatorMotor.set(binElevatorSpeed);
@@ -166,12 +167,12 @@ public class BinElevatorSystem extends StateMachineSystem {
     }
 
 	@Override
-	public void run(State state) {
+	public void run(State state, double elapsed) {
 		switch(state) {
 		case Init:
-			//should be bottom limit switch
-			if(!binElevatorMotor.isFwdLimitSwitchClosed()) { 
-				setBinElevatorSpeed(0.2);    				
+			//should be top limit switch
+			if(!binElevatorMotor.isRevLimitSwitchClosed()) { 
+				setBinElevatorSpeed(-0.2);    				
 			}
 			else {
 				setBinElevatorPositionValue(0.0);	
@@ -180,8 +181,17 @@ public class BinElevatorSystem extends StateMachineSystem {
 			break;
 		case Idle:
 			break;
-		case HumanFeed:
-			setBinElevatorPosition(30.0); //just move it to top for now
+		case HumanFeed_RaiseTote:
+			setBinElevatorPosition(0.0); //just move it to top for now
+			break;
+		case HumanFeed_WaitForTote:
+			setBinElevatorPosition(0.0); //just move it to top for now
+			break;
+		case HumanFeed_ToteOnConveyor:
+			setBinElevatorPosition(0.0); //just move it to top for now
+			break;
+		case HumanFeed_ThrottleConveyorDescend:
+			setBinElevatorPosition(0.0); //just move it to top for now
 			break;
 		case GroundFeed:
 			break;
@@ -192,7 +202,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 		case Abort:	
 			setBinElevatorSpeed(0.0);
 			usePosition = false;
-			speedCurve = new TrapezoidLine();
+			speedCurve = new GenericLine();
 			
 			binGripSpeed = 0.0;
 			rakerSpeed = 0.0;
@@ -212,6 +222,10 @@ public class BinElevatorSystem extends StateMachineSystem {
     	SmartDashboard.putBoolean("binTiltRev", tilterMotor.isRevLimitSwitchClosed());
     	SmartDashboard.putBoolean("rakerFwd", rakerMotor.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("rakerRev", rakerMotor.isRevLimitSwitchClosed());
+	}
+	
+	public boolean initFinished() {
+		return getBinElevatorPosition() == 0.0;
 	}
 }
 

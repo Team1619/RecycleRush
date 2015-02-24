@@ -2,7 +2,6 @@ package org.usfirst.frc.team1619.robot;
 
 import java.util.ArrayList;
 
-import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -18,6 +17,7 @@ public class StateMachine {
 	public static StateMachine getInstance() {
 		if(stateMachine == null) {
 			stateMachine = new StateMachine();
+			stateMachine.stateTimer.start();
 		}
 		return stateMachine;
 	}
@@ -51,11 +51,15 @@ public class StateMachine {
 
 	public final Signal abortSignal = new Signal();
 	public final Signal resetSignal = new Signal();
-	public final Signal humanPlayerFeedSignal = new Signal();
+	public final Signal humanPlayerFeed_Start = new Signal();
+	public final Signal humanPlayerFeed_RaiseTote = new Signal();
+	public final Signal humanPlayerFeed_WaitForTote = new Signal();
+	public final Signal humanPlayerFeed_ToteOnConveyor = new Signal();
+	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal dropoffSignal = new Signal();
 	public final Signal groundFeedSignal = new Signal(); 
 	
-	public final Timer humanFeedTimer = new Timer();
+	private final Timer stateTimer = new Timer();
 	
 	public enum State {
 		Init {
@@ -65,10 +69,19 @@ public class StateMachine {
 			
 			@Override
 			public State run(StateMachine sm) {
-				if(BinElevatorSystem.getInstance().getBinElevatorPosition() == 0.0) {
-					return Idle;
+				boolean finished = true;
+				for(StateMachineSystem s : sm.systems) {
+					if(s.initFinished())
+						continue;
+					else {
+						finished = false;
+						break;
+					}
 				}
-				return Init;
+				if(finished)
+					return Idle;
+				else
+					return Init;
 			}
 
 			@Override
@@ -86,6 +99,9 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
+				if(sm.humanPlayerFeed_Start.check()) {
+					return HumanFeed_RaiseTote;
+				}
 				return Idle;
 			}
 
@@ -94,12 +110,32 @@ public class StateMachine {
 				return "Idle";
 			}
 		},
-		HumanFeed {
+		HumanFeed_RaiseTote {
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanPlayerFeed_WaitForTote.check()) {
+					return HumanFeed_WaitForTote;
+				}
+				return this;
+			}
+
+			@Override
+			public String toString() {
+				return "HumanFeed_RaiseTote";
+			}
+
 			@Override
 			protected void init(StateMachine sm) {
-				sm.humanFeedTimer.stop();
-				sm.humanFeedTimer.reset();
-				sm.humanFeedTimer.start();
+			}
+			
+		},
+		HumanFeed_WaitForTote {
+			@Override
+			protected void init(StateMachine sm) {
+				
 			}
 			
 			@Override
@@ -107,12 +143,57 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				return Idle;
+				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
+					return HumanFeed_ToteOnConveyor;
+				}
+				return this;
 			}
 
 			@Override
 			public String toString() {
-				return null;
+				return "HumanFeed_WaitForTote";
+			}
+		},
+		HumanFeed_ToteOnConveyor {
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
+					return HumanFeed_ThrottleConveyorDescend;
+				}
+				return this;
+			}
+
+			@Override
+			public String toString() { 
+				return "HumanFeed_ToteOnConveyor";
+			}
+
+			@Override
+			protected void init(StateMachine sm) {
+			}
+		},
+		HumanFeed_ThrottleConveyorDescend {
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanPlayerFeed_RaiseTote.check()) {
+					return HumanFeed_RaiseTote;
+				}
+				return this;
+			}
+
+			@Override
+			public String toString() {
+				return "HumanFeed_ThrottleConveyorDescend";
+			}
+
+			@Override
+			protected void init(StateMachine sm) {
 			}
 		},
 		GroundFeed {
@@ -200,14 +281,18 @@ public class StateMachine {
 	public void run() {
 		SmartDashboard.putString("CurrentState", currentState.toString());
 		
+		double elapsed = stateTimer.get();
 		for(StateMachineSystem sms: systems) {
-			sms.superSecretSpecialSatanRun(currentState);
+			sms.superSecretSpecialSatanRun(currentState, elapsed);
 		}
 
 		State nextState = currentState.run(this);
 		if(currentState != nextState) {
 			currentState = nextState;
 			currentState.init(this);
+			stateTimer.reset();
+			for(StateMachineSystem s : systems)
+				s.init(currentState);
 		}
 		
 		for(Signal sig : signals) {

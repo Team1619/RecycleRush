@@ -46,7 +46,7 @@ public class RobotMap {
 	public static final int liftAbortButtonID = 11;
 	public static final int liftResetButtonID = 12;	
 	
-	public static final int unloadConveyorButtonID = 16;
+	public static final int startHumanFeedButtonID = 16;
 	
 	public static final int calibrateGyroButton = 2; //used in disabled
 	
@@ -62,6 +62,8 @@ public class RobotMap {
 	public static final int binGripCloseManualButtonID = 5;
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
+	
+	
 	
 	public static final int unstickToteButtonID = 2;
 	

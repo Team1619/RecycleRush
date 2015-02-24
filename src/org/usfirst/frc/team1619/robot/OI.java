@@ -7,7 +7,6 @@ import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 import org.usfirst.frc.team1619.robot.commands.TurnCommand;
-import org.usfirst.frc.team1619.robot.commands.UnloadConveyorCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -39,7 +38,8 @@ public class OI {
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
 	private final JoystickButton unstickToteButton;
-	private final JoystickButton unloadConveyorButton;
+	//private final JoystickButton unloadConveyorButton;
+	private final JoystickButton startHumanFeedButton;
 		
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -62,7 +62,9 @@ public class OI {
 		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
 		
-		unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
+		startHumanFeedButton = new JoystickButton(rightStick, RobotMap.startHumanFeedButtonID);
+		
+		//unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
 		//Left stick
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
@@ -88,11 +90,13 @@ public class OI {
 		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
 		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		
+		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Start));
+		
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		
 		unstickToteButton.whileHeld(new UnstickToteCommand());
-		unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
+		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));

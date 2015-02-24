@@ -2,15 +2,13 @@ package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
+import org.usfirst.frc.team1619.robot.StateMachine.Signal;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
-import org.usfirst.frc.team1619.robot.commands.ManualConveyorCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
-import org.usfirst.frc.team1619.robot.commands.UnloadConveyorCommand;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.FixedInterruptHandler;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
@@ -24,9 +22,13 @@ public class Conveyor extends StateMachineSystem {
 	private CANTalon conveyorMotor; //multiple speeds based on optical sensor configuration
 	private DigitalInput frontConveyorOpticalSensor;
 	private DigitalInput rearConveyorOpticalSensor;
-		
-	private boolean runSlowConveyor = false;
-	private double slowConveyorStartTime;
+
+	private boolean frontSensor = false;
+	private boolean rearSensor = false;
+
+	private Timer frontSensorDebounceTimer = new Timer();
+	private Timer rearSensorDebounceTimer = new Timer();
+	private final double kDebounceTime = 0.1;
 		
 	private Conveyor() {
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
@@ -35,6 +37,9 @@ public class Conveyor extends StateMachineSystem {
     	
     	frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
 		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
+		
+		frontSensorDebounceTimer.start();
+		rearSensorDebounceTimer.start();
 	}
 	
 	private static Conveyor theSystem;
@@ -46,46 +51,67 @@ public class Conveyor extends StateMachineSystem {
 	}
 	
 	public void init() {
-		rearConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Command>() {
-			Command cmd = new UnloadConveyorCommand();
-			//Command cmd = new ManualGuardRailCommand(GuardRailSystem.kCloseGuardRailSpeed); to be used when the bin stateMachine is implemented 
+		/*
+		rearConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Object>() {
+			private Signal signal = StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor;
 			
-			public Command overridableParamater() {
-				return cmd;
+			public Object overridableParamater() {
+				return null;
 			}
 			
 			@Override
 			protected void interruptFired2(int interruptAssertedMask,
-					Command cmd) {
-				cmd.start();
+					Object object) {
+				signal.raise();
 			}
 			
 		});
 		rearConveyorOpticalSensor.setUpSourceEdge(false, true);
 		rearConveyorOpticalSensor.enableInterrupts();
 		
-		frontConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Conveyor>() {
-			Conveyor conveyor = Conveyor.getInstance();
+		frontConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Object>() {
+			private Signal signal = StateMachine.getInstance().humanPlayerFeed_ThrottleConveyorDescend;
 			
 			@SuppressWarnings("unused")
-			public Conveyor overridablePramater() {
-				return conveyor;
+			public Object overridablePramater() {
+				return null;
 			}
 			
 			@Override
-			protected void interruptFired2(int interruptAssertedMask, Conveyor conveyor) {
-				conveyor.setRunSlowConveyor();
-				new ManualGuardRailCommand(GuardRailSystem.kOpenGuardRailSpeed).start();
-				ToteElevatorSystem.getInstance().setToteElevatorPosition(ToteElevatorSystem.kPickUpPosition);
+			protected void interruptFired2(int interruptAssertedMask, Object object) {
+				signal.raise();
 			}
 		});
 		frontConveyorOpticalSensor.setUpSourceEdge(true, false);
 		frontConveyorOpticalSensor.enableInterrupts();
+		*/
 	}
-
-	public void setRunSlowConveyor() {
-		runSlowConveyor = true;
-		slowConveyorStartTime = StateMachine.getInstance().humanFeedTimer.get();
+	
+	public void updateConveyorSignals() {
+		if(!getFrontSensorRaw()) {
+			if(frontSensor) {
+				frontSensor = !(frontSensorDebounceTimer.get() > kDebounceTime);
+				if(!frontSensor) {
+					StateMachine.getInstance().humanPlayerFeed_ThrottleConveyorDescend.raise();
+				}
+			}
+		}
+		else {
+			frontSensor = false;
+			frontSensorDebounceTimer.reset();
+		}
+		if(getRearSensorRaw()) {
+			if(!rearSensor) {
+				rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;
+				if(rearSensor) {
+					StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor.raise();
+				}
+			}
+		}
+		else {
+			rearSensor = false;
+			rearSensorDebounceTimer.reset();
+		}
 	}
 	
 	public void moveConveyor(double moveValue) {
@@ -94,36 +120,44 @@ public class Conveyor extends StateMachineSystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	setDefaultCommand(new ManualConveyorCommand(1.0));
+    	//setDefaultCommand(new ManualConveyorCommand());
     }
     
-    public boolean getFrontSensor() {
+    public boolean getFrontSensorRaw() {
     	return !frontConveyorOpticalSensor.get();
     }
-    public boolean getRearSensor() {
+    public boolean getRearSensorRaw() {
     	return !rearConveyorOpticalSensor.get();
     }
 
+    public boolean getFrontSensor() {
+    	return frontSensor;
+    }
+    public boolean getRearSensor() {
+    	return rearSensor;
+    }
+    
+
 	@Override
-	public void run(State state) {
+	public void run(State state, double elapsed) {
+    	updateConveyorSignals();
 		switch(state) {
 		case Init:
-			runSlowConveyor = false;
 			break;
 		case Idle:
 			moveConveyor(0.0);
 			break;
-		case HumanFeed:
-			if(runSlowConveyor)
-			{
-				moveConveyor(kSlowForwardConveyorSpeed);
-				if(StateMachine.getInstance().humanFeedTimer.get() - slowConveyorStartTime >= 0.5) {
-					runSlowConveyor = false;
-				}
-			}
-			else {
-				moveConveyor(kForwardConveyorSpeed);
-			}
+		case HumanFeed_RaiseTote:
+			moveConveyor(kForwardConveyorSpeed);
+			break;
+		case HumanFeed_WaitForTote:
+			moveConveyor(kForwardConveyorSpeed);
+			break;
+		case HumanFeed_ToteOnConveyor:
+			moveConveyor(kForwardConveyorSpeed);
+			break;
+		case HumanFeed_ThrottleConveyorDescend:
+			moveConveyor(kSlowForwardConveyorSpeed);
 			break;
 		case GroundFeed:
 			break;
