@@ -2,20 +2,18 @@ package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
-import org.usfirst.frc.team1619.robot.StateMachine.Signal;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.FixedInterruptHandler;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
  */
 public class Conveyor extends StateMachineSystem {
-	private static final double kForwardConveyorSpeed = 0.75;
-	private static final double kSlowForwardConveyorSpeed = 0.2;
+	private static final double kForwardConveyorSpeed = 1.0;
+	private static final double kSlowForwardConveyorSpeed = 0.5;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -97,7 +95,7 @@ public class Conveyor extends StateMachineSystem {
 			}
 		}
 		else {
-			frontSensor = false;
+			frontSensor = true;
 			frontSensorDebounceTimer.reset();
 		}
 		if(getRearSensorRaw()) {

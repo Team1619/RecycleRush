@@ -289,6 +289,9 @@ public class StateMachine {
 		State nextState = currentState.run(this);
 		if(currentState != nextState) {
 			currentState = nextState;
+			
+			System.out.println("Changed State to " + currentState.toString());
+			
 			currentState.init(this);
 			stateTimer.reset();
 			for(StateMachineSystem s : systems)
