@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
-	private State currentState = State.Init;
+	//private State currentState = State.Init;
+	private State currentState = State.Idle;
 	
 	private StateMachine() {	
 	}

@@ -8,18 +8,23 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class ToteElevatorSystem extends StateMachineSystem {
-	public static final double kEncoderTicksPerInch = 173.63;
+	public static final double kEncoderTicksPerInch = -173.63;
+	public static final double kSpeed = Math.abs(20.0*kEncoderTicksPerInch);
 	public static final double kTransitPosition = 3.0;
 	public static final double kFeederPosition = 29.2;
 	public static final double kPickUpPosition = 0.0;
-	public static final double kPositionTolerance = 0.5;
+	public static final double kPositionTolerance = 1.5;
 	public static final double kConstantUpSpeed = -0.25;
 
 
@@ -38,7 +43,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private boolean useFullCurve;
 	private double fullCurveBreakpoint;
 
-
 	private ToteElevatorSystem() {
 		leftStick = OI.getInstance().leftStick;
 
@@ -53,6 +57,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotorSmall.set(RobotMap.toteElevatorMotor);
 		toteElevatorMotorSmall.reverseOutput(true);
 
+		toteElevatorMotor.reverseSensor(true);
+		toteElevatorMotor.changeControlMode(ControlMode.Speed);
+		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		toteElevatorMotor.setPID(0.30, 0.00005, 0, 0.1, 0, 36, 0);
+		
+		
 		toteElevatorSpeed = 0.0;
 		usePosition = false;
 		speedCurve = new GenericLine();
@@ -71,8 +81,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		//setDefaultCommand(new ToteLiftSystemStateMachineCommand());
 	}
 
-	private void moveToteElevator(double percentVBus) {
-		toteElevatorMotor.set(percentVBus);
+	
+	private void moveToteElevator(double speed) {
+		toteElevatorMotor.set(speed*kSpeed);
 	}
 
 	public void setToteElevatorSpeed(double speed) {
@@ -81,10 +92,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 
-	private final double kRampSpeed = -1.0;
-	private final double kStartRampSpeed = -0.5;
+	private final double kRampSpeed = -0.5;
+	private final double kStartRampSpeed = -0.2;
 	private final double kStartRampDistance = 2;
-	private final double kStopRampDistance = 7;
+	private final double kStopRampDistance = 3.5;
 
 	public void setToteElevatorPosition(double position) {  //in inches
 		if(position != moveTo) {
@@ -145,9 +156,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	private void toteElevatorUpdate() {
 		SmartDashboard.putNumber("Set Position Speeed", speedCurve.getValue(getToteElevatorPosition()));
-
+		SmartDashboard.putNumber("toteElevatorMotor.getIZone()",toteElevatorMotor.getIZone());
+		SmartDashboard.putNumber("toteElevatorMotor()",toteElevatorMotor.get());
+		
 		if(Math.abs(leftStick.getY()) > 0.1) {
-			moveToteElevator(leftStick.getY());	
+			moveToteElevator(leftStick.getY());
 			usePosition = false;
 			moveTo = Double.NaN;
 			toteElevatorSpeed = 0.0;
@@ -203,10 +216,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_WaitForTote:
-			setToteElevatorSpeed(kConstantUpSpeed);
+			setToteElevatorPosition(kFeederPosition);
 			break;
 		case HumanFeed_ToteOnConveyor:
-			setToteElevatorSpeed(kConstantUpSpeed);
+			setToteElevatorPosition(kFeederPosition);
 			break;
 		case HumanFeed_ThrottleConveyorDescend:
 			setToteElevatorPosition(kPickUpPosition);
