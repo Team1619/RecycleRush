@@ -99,6 +99,7 @@ public class Robot extends IterativeRobot {
 	
 
     public void autonomousInit() {
+    	//add in Auto stuff thing
     }
 
     /**
