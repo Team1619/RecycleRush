@@ -158,12 +158,11 @@ public class BinElevatorSystem extends StateMachineSystem {
     }
     private void rakerUpdate() {
     	if(rakerOpenManualButton.get())
-    		rakerMotor.set(0.1);
+    		rakerMotor.set(0.4);
     	else if(rakerCloseManualButton.get())
-    		rakerMotor.set(-0.1);
+    		rakerMotor.set(-0.4);
     	else
     		rakerMotor.set(rakerSpeed);
-    	
     }
 
 	@Override
