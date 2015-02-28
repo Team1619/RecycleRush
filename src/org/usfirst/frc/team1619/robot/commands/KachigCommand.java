@@ -14,21 +14,24 @@ public class KachigCommand extends Command {
 	private Timer timer;
 	private double rotationalspeed;
 	private double linearspeed;
+	private double time;
 	
-    public KachigCommand(double linearspeed, double rotationalspeed) {
+    public KachigCommand(double linearspeed, double rotationalspeed, double tim) {
         // Use requires() here to declare subsystem dependencies
     	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
         this.rotationalspeed = rotationalspeed;
         this.linearspeed = linearspeed;
+        this.time = tim;
         
         timer = new Timer();
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	timer.stop();
+    	timer.reset();
     	timer.start();
-    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,7 +41,7 @@ public class KachigCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 0.025;
+        return timer.get() > time;
     }
 
     // Called once after isFinished returns true

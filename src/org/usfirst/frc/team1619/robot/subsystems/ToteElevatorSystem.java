@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,6 +26,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kPickUpPosition = 0.0;
 	public static final double kPositionTolerance = 2.0;
 	public static final double kConstantUpSpeed = -0.25;
+	public static final double kSpeedDeadband = 5;
 
 
 	// Put methods for controlling this subsystem
@@ -39,6 +43,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	private boolean useFullCurve;
 	private double fullCurveBreakpoint;
+	
+	private PIDController toteElevatorController;
 
 	private ToteElevatorSystem() {
 		leftStick = OI.getInstance().leftStick;
@@ -55,10 +61,27 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotorSmall.reverseOutput(true);
 
 		toteElevatorMotor.reverseSensor(true);
+		//toteElevatorMotor.changeControlMode(ControlMode.Speed);
 		toteElevatorMotor.changeControlMode(ControlMode.Speed);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		toteElevatorMotor.setPID(0.30, 0.00005, 0, 0.1, 0, 36, 0);
+		//toteElevatorMotor.setPID(0.10, 0.00005, 0, 0.1, 0, 36, 0);
 		
+		toteElevatorController = new PIDController(0.010, 0.000005, 0,
+		new PIDSource() {
+			@Override
+			public double pidGet() {
+				return toteElevatorMotor.getSpeed();
+			}
+
+		}, new PIDOutput() {
+			@Override
+			public void pidWrite(double output) {
+				if(Math.abs(output) >= kSpeedDeadband)
+					toteElevatorMotor.set(output);
+				else
+					toteElevatorMotor.set(0);
+			}
+		});
 		
 		toteElevatorSpeed = 0.0;
 		usePosition = false;
@@ -80,11 +103,21 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	
 	private void moveToteElevator(double speed) {
-		if(speed < 0 && toteElevatorMotor.isRevLimitSwitchClosed())
-			toteElevatorMotor.ClearIaccum();
-		else if(speed >= 0 && toteElevatorMotor.isFwdLimitSwitchClosed())
-			toteElevatorMotor.ClearIaccum();
-		toteElevatorMotor.set(speed*kSpeed);
+		if(speed < 0 && toteElevatorMotor.isRevLimitSwitchClosed()) {
+			 // Reset accumulator and reenable the controller
+			toteElevatorController.reset();
+			toteElevatorController.enable();
+			//toteElevatorMotor.ClearIaccum();
+		}
+		else if(speed >= 0 && toteElevatorMotor.isFwdLimitSwitchClosed()) {
+			// Reset accumulator and reenable the controller
+			toteElevatorController.reset();
+			toteElevatorController.enable();
+			//toteElevatorMotor.ClearIaccum();
+		}
+		//toteElevatorMotor.set(speed*kSpeed);
+		//toteElevatorMotor.set(speed);
+		toteElevatorController.setSetpoint(speed*kSpeed);
 	}
 
 	public void setToteElevatorSpeed(double speed) {
@@ -95,10 +128,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	private final double kRampSpeed = -1.0;
 	private final double kStartRampSpeed = -0.2;
-	private final double kStartRampDistance = 1;
+	private final double kStartRampDistance = 3.0;
 	private final double kStopRampDistance = 6.0;
 
-	public void setToteElevatorPosition(double position) {  //in inches
+	public void setToteElevatorPosition(double position) {
 		if(position != moveTo) {
 			double currentPosition = getToteElevatorPosition();
 
@@ -107,8 +140,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			double rampSpeed = kRampSpeed*sign;
 			double startRampSpeed = kStartRampSpeed*sign;
 			if(Math.abs(moveDisplacement) < (kStartRampDistance + kStopRampDistance)) {
-				double peakRampDisplacement = Math.min(kStartRampDistance, kStopRampDistance)*sign;
-				double peakRampSpeed = kRampSpeed*(Math.abs(peakRampDisplacement)/(kStartRampDistance + kStopRampDistance));
+				double lerp = Math.abs(moveDisplacement)/(kStartRampDistance + kStopRampDistance);
+				double peakRampDisplacement = kStopRampDistance*sign*lerp;
+				double peakRampSpeed = rampSpeed*lerp;
 				double stopRampDisplacement = kStopRampDistance*sign;
 
 				speedCurve = new GenericLine(currentPosition, startRampSpeed);
@@ -134,16 +168,20 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			moveTo = position;
 			
 			toteElevatorMotor.ClearIaccum();
+			//System.out.println(String.format("Going to %f", moveTo));
+			//System.out.println("GenericLine = " + speedCurve);
 		}
 	}
 
 	public void updateToteElevatorSpeedCurve() {
-		if(!useFullCurve) {
+		if(usePosition && !useFullCurve) {
 			if((moveTo > fullCurveBreakpoint && getToteElevatorPosition() > fullCurveBreakpoint) ||
 					(moveTo < fullCurveBreakpoint && getToteElevatorPosition() < fullCurveBreakpoint)) {
 				speedCurve = new GenericLine(moveTo - kStopRampDistance, kRampSpeed);
 				speedCurve.addPoint(moveTo + kStopRampDistance, -kRampSpeed);
 				useFullCurve = true;
+				//System.out.println(String.format("Going to %f", moveTo));
+				//System.out.println("GenericLine = " + speedCurve);
 			}
 		}
 	}
@@ -212,7 +250,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case Idle:
-			//setToteElevatorPosition(kTransitPosition);
+			setToteElevatorPosition(kTransitPosition);
 			break;
 		case HumanFeed_RaiseTote:
 			setToteElevatorPosition(kFeederPosition);
