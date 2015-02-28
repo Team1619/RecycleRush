@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.TimeZone;
 
 //Lumberjacks are made for logging
 //Use Lumberjacks for logging
@@ -21,7 +22,7 @@ import java.util.Date;
 public class Lumberjack {
 	
 	private static final String logFolderPath = "/home/lvuser/log/";
-	private static final int maxLogs = 10;
+	private static final int maxLogs = 50;
 	private static final ArrayList<Lumberjack> lumberjacks = new ArrayList<Lumberjack>();
 	
 	private static String logGroup = getDateString();
@@ -29,11 +30,12 @@ public class Lumberjack {
 	private FileWriter fileWriter;
 	private String logName;
 	private String[] headers;
+	private long start;
 	
 	public Lumberjack(String logName, String ... headers) {
 		this.logName = new String(logName);
 		this.headers = new String[headers.length + 1];
-		this.headers[0] = "Timestamp";
+		this.headers[0] = "Timestamp [s]";
 		for(int i = 0; i < headers.length; i++) {
 			this.headers[i + 1] = headers[i];
 		}
@@ -73,13 +75,16 @@ public class Lumberjack {
 	}
 	
 	private static String getDateString() {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSS");
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
+		date.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return date.format(new Date());
 	}
 	
-	private static String getHumanReadableDateString() {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-		return date.format(new Date());
+	private String getTimestamp() {
+		//SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
+		//date.setTimeZone(TimeZone.getTimeZone("UTC"));
+		//return date.format(new Date());
+		return String.format("%.3f", (System.currentTimeMillis()-start) / 1000);
 	}
 	
 	public static void changeLogs() {
@@ -97,6 +102,7 @@ public class Lumberjack {
 			if(new File(logFolderPath + logGroup).mkdir()) {
 				fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
 				printHeaders(headers);
+				start = System.currentTimeMillis();
 			}
 			else {
 				System.err.println("Cannot create log folder!");
@@ -111,7 +117,7 @@ public class Lumberjack {
 		if(fileWriter == null)
 			return;
 		try {
-			fileWriter.append(getHumanReadableDateString());
+			fileWriter.append(getTimestamp());
 			for(String s : values) {
 				fileWriter.append(',');
 				fileWriter.append(s);

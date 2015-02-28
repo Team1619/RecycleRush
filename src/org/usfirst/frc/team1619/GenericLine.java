@@ -51,4 +51,19 @@ public class GenericLine implements Line {
 		return points.get(points.size() - 1).y;
 	}
 
+	@Override
+	public String toString() {
+		String s = "{";
+		boolean firstPoint = true;
+		for(Point p : points) {
+			if(!firstPoint) {
+				s += ", ";
+			}
+			else {
+				firstPoint = false;
+			}
+			s += String.format("<%f, %f>", p.x, p.y);
+		}
+		return s + "}";
+	}
 }

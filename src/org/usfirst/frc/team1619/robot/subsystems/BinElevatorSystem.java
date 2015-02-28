@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class BinElevatorSystem extends StateMachineSystem {
     private static final double kEncoderTicksPerInch = (2834.0 + 33.0)/-32.875;
-    public static final double kBinElevatorMaxHeight = 33.0; //very opproximate. Measured from botton limit switch
+    public static final double kBinElevatorMaxHeight = 33.0; //very approximate. Measured from bottom limit switch
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -51,6 +51,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 		binTiltDownManualButton = new JoystickButton(leftStick, RobotMap.binTiltDownManualButtonID);
 		binGripOpenManualButton = new JoystickButton(leftStick, RobotMap.binGripOpenManualButtonID);
 		binGripCloseManualButton = new JoystickButton(leftStick, RobotMap.binGripCloseManualButtonID);
+		
 		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
 		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
 		
@@ -93,6 +94,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	binElevatorSpeed = speed;
     	usePosition = false;
     }
+    
     public void setBinElevatorPosition(double position) {  //in inches
     	/*usePosition = true;
     	
@@ -108,6 +110,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
     	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
     }
+    
     public double getBinElevatorPosition() { //get current position in inches
     	return binElevatorMotor.getPosition()/kEncoderTicksPerInch;
     }
@@ -132,6 +135,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     public void binTilt(double moveValue) {
     	tilterMotorSpeed = moveValue;
     }
+    
     private void binTiltUpdate() {
     	if(binTiltUpManualButton.get())
         	tilterMotor.set(0.75);
@@ -144,6 +148,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     public void moveBinGrip(double moveValue) {
     	binGripSpeed = moveValue;
     }
+    
     private void binGripUpdate() {
     	if(binGripOpenManualButton.get())
         	binGripMotor.set(0.1);
@@ -156,14 +161,14 @@ public class BinElevatorSystem extends StateMachineSystem {
     public void moveRaker(double moveValue) {
     	rakerSpeed = moveValue;
     }
+    
     private void rakerUpdate() {
     	if(rakerOpenManualButton.get())
-    		rakerMotor.set(0.1);
+    		rakerMotor.set(0.4);
     	else if(rakerCloseManualButton.get())
-    		rakerMotor.set(-0.1);
+    		rakerMotor.set(-0.4);
     	else
     		rakerMotor.set(rakerSpeed);
-    	
     }
 
 	@Override
