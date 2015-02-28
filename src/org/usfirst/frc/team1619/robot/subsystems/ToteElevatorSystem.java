@@ -10,9 +10,6 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -24,7 +21,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kTransitPosition = 3.0;
 	public static final double kFeederPosition = 29.2;
 	public static final double kPickUpPosition = 0.0;
-	public static final double kPositionTolerance = 1.5;
+	public static final double kPositionTolerance = 2.0;
 	public static final double kConstantUpSpeed = -0.25;
 
 
@@ -83,6 +80,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	
 	private void moveToteElevator(double speed) {
+		if(speed < 0 && toteElevatorMotor.isRevLimitSwitchClosed())
+			toteElevatorMotor.ClearIaccum();
+		else if(speed >= 0 && toteElevatorMotor.isFwdLimitSwitchClosed())
+			toteElevatorMotor.ClearIaccum();
 		toteElevatorMotor.set(speed*kSpeed);
 	}
 
@@ -92,10 +93,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 
-	private final double kRampSpeed = -0.5;
+	private final double kRampSpeed = -1.0;
 	private final double kStartRampSpeed = -0.2;
-	private final double kStartRampDistance = 2;
-	private final double kStopRampDistance = 3.5;
+	private final double kStartRampDistance = 1;
+	private final double kStopRampDistance = 6.0;
 
 	public void setToteElevatorPosition(double position) {  //in inches
 		if(position != moveTo) {
@@ -131,6 +132,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			useFullCurve = false;
 			usePosition = true;
 			moveTo = position;
+			
+			toteElevatorMotor.ClearIaccum();
 		}
 	}
 
@@ -190,11 +193,13 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	@Override
 	public void run(State state, double elapsed) {
 
+		/*
 		if(OI.getInstance().leftStick.getRawButton(3))
 			setToteElevatorPosition(6);
 		if(OI.getInstance().leftStick.getRawButton(4))
 			setToteElevatorPositionValue(0);
-
+		 */
+		
 		switch(state) {
 		case Init:
 			//should be bottom limit switch
@@ -221,7 +226,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		case HumanFeed_ToteOnConveyor:
 			setToteElevatorPosition(kFeederPosition);
 			break;
-		case HumanFeed_ThrottleConveyorDescend:
+		case HumanFeed_ThrottleConveyorAndDescend:
 			setToteElevatorPosition(kPickUpPosition);
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanPlayerFeed_RaiseTote.raise();	

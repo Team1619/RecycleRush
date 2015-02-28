@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj.CANTalon;
  *
  */
 public class GuardRailSystem extends StateMachineSystem {
-	public static final double kCloseGuardRailSpeed = 0.25;
-	public static final double kOpenGuardRailSpeed = -0.25;
-	public static final double kSlowOpenGuardRailSpeed = -0.25;
-	public static final double kSlowCloseGuardRailSpeed = 0.25;
+	public static final double kCloseGuardRailSpeed = 0.40;
+	public static final double kOpenGuardRailSpeed = -0.40;
+	public static final double kSlowOpenGuardRailSpeed = -0.40;
+	public static final double kSlowCloseGuardRailSpeed = 0.40;
 	
 	
     // Put methods for controlling this subsystem
@@ -69,8 +69,8 @@ public class GuardRailSystem extends StateMachineSystem {
 				moveGuardRail(kSlowCloseGuardRailSpeed);
 			}
 			break;
-		case HumanFeed_ThrottleConveyorDescend:
-			moveGuardRail(kSlowCloseGuardRailSpeed);
+		case HumanFeed_ThrottleConveyorAndDescend:
+			moveGuardRail(kOpenGuardRailSpeed);
 			break;
 		case GroundFeed:
 			break;

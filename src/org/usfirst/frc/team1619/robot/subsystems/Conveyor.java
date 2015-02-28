@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class Conveyor extends StateMachineSystem {
 	private static final double kForwardConveyorSpeed = 1.0;
-	private static final double kSlowForwardConveyorSpeed = 0.5;
+	private static final double kSlowForwardConveyorSpeed = 0.1;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -26,7 +26,7 @@ public class Conveyor extends StateMachineSystem {
 
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
-	private final double kDebounceTime = 0.1;
+	private final double kDebounceTime = 0.05;
 		
 	private Conveyor() {
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
@@ -99,11 +99,9 @@ public class Conveyor extends StateMachineSystem {
 			frontSensorDebounceTimer.reset();
 		}
 		if(getRearSensorRaw()) {
-			if(!rearSensor) {
-				rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;
-				if(rearSensor) {
-					StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor.raise();
-				}
+			rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;
+			if(rearSensor) {
+				StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor.raise();
 			}
 		}
 		else {
@@ -154,7 +152,7 @@ public class Conveyor extends StateMachineSystem {
 		case HumanFeed_ToteOnConveyor:
 			moveConveyor(kForwardConveyorSpeed);
 			break;
-		case HumanFeed_ThrottleConveyorDescend:
+		case HumanFeed_ThrottleConveyorAndDescend:
 			moveConveyor(kSlowForwardConveyorSpeed);
 			break;
 		case GroundFeed:

@@ -190,7 +190,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 		case HumanFeed_ToteOnConveyor:
 			setBinElevatorPosition(0.0); //just move it to top for now
 			break;
-		case HumanFeed_ThrottleConveyorDescend:
+		case HumanFeed_ThrottleConveyorAndDescend:
 			setBinElevatorPosition(0.0); //just move it to top for now
 			break;
 		case GroundFeed:

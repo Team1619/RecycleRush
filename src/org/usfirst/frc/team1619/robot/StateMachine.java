@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
-	//private State currentState = State.Init;
-	private State currentState = State.Idle;
+	private State currentState = State.Init;
+	//private State currentState = State.Idle;
 	
 	private StateMachine() {	
 	}
@@ -120,6 +120,9 @@ public class StateMachine {
 				if(sm.humanPlayerFeed_WaitForTote.check()) {
 					return HumanFeed_WaitForTote;
 				}
+				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
+					return HumanFeed_ToteOnConveyor; 
+				}
 				return this;
 			}
 
@@ -162,7 +165,7 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
-					return HumanFeed_ThrottleConveyorDescend;
+					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
@@ -176,7 +179,7 @@ public class StateMachine {
 			protected void init(StateMachine sm) {
 			}
 		},
-		HumanFeed_ThrottleConveyorDescend {
+		HumanFeed_ThrottleConveyorAndDescend {
 			@Override
 			public State run(StateMachine sm) {
 				if(sm.abortSignal.check()) {
