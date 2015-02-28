@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1619.robot.auto;
 
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,6 +12,9 @@ public class ClawsClose extends Command {
     public ClawsClose() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	
+    	requires (BinElevatorSystem.getInstance());
+    	
     }
 
     // Called just before this Command runs the first time
@@ -18,6 +23,7 @@ public class ClawsClose extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	BinElevatorSystem.getInstance().moveBinGrip(-999);  //TODO
     }
 
     // Make this return true when this Command no longer needs to run execute()

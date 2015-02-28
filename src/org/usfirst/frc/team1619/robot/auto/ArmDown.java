@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class ArmDown extends Command {
-
+	
     public ArmDown() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -19,10 +19,12 @@ public class ArmDown extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	BinElevatorSystem.getInstance().binTilt(-999);  //TODO 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()

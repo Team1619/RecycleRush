@@ -19,6 +19,7 @@ public class ArmUp extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	BinElevatorSystem.getInstance().binTilt(999);  //TODO
     }
 
     // Called repeatedly when this Command is scheduled to run

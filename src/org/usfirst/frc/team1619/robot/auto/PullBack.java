@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1619.robot.auto;
 
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -10,6 +13,10 @@ public class PullBack extends Command {
     public PullBack() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	
+    	requires(Drivetrain.getInstance());
+    	new LinearDriveCommand(-999);  //TODO
+    	
     }
 
     // Called just before this Command runs the first time

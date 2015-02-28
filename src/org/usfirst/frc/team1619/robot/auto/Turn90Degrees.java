@@ -1,15 +1,19 @@
 package org.usfirst.frc.team1619.robot.auto;
 
+import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
 public class Turn90Degrees extends Command {
-
+	
     public Turn90Degrees() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	
+    	new TurnCommand(90); //in degrees
+    	
     }
 
     // Called just before this Command runs the first time
@@ -18,11 +22,11 @@ public class Turn90Degrees extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    }
+      }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
