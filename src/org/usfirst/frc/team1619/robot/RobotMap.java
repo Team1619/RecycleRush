@@ -60,6 +60,7 @@ public class RobotMap {
 	public static final int binTiltDownManualButtonID = 6;
 	public static final int binGripOpenManualButtonID = 10;
 	public static final int binGripCloseManualButtonID = 5;
+	
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
 	

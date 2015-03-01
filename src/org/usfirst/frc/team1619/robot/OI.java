@@ -79,10 +79,10 @@ public class OI {
 		 * whenPressed = function that when a button is pressed, it starts and doesn't stop when released
 		 * whileHeld = function that only operates when a button is pressed and held, and stops when released
 		 */
-		kachigLeft.whenPressed(new KachigCommand(0, -1));
-		kachigRight.whenPressed(new KachigCommand(0, 1));
-		kachigForward.whenPressed(new KachigCommand(1, 0));
-		kachigBackward.whenPressed(new KachigCommand(-1, 0));
+		kachigLeft.whenPressed(new KachigCommand(0, -1, 0.075));
+		kachigRight.whenPressed(new KachigCommand(0, 1, 0.075));
+		kachigForward.whenPressed(new KachigCommand(1, 0, 0.05));
+		kachigBackward.whenPressed(new KachigCommand(-1, 0, 0.05));
 		
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());

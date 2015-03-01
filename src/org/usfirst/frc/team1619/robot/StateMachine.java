@@ -11,7 +11,10 @@ public class StateMachine {
 	private State currentState = State.Init;
 	//private State currentState = State.Idle;
 	
-	private StateMachine() {	
+	private int numberTotes;
+	
+	private StateMachine() {
+		numberTotes = 0;
 	}
 	
 	private static StateMachine stateMachine;
@@ -186,6 +189,11 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanPlayerFeed_RaiseTote.check()) {
+					sm.numberTotes++;
+					SmartDashboard.putNumber("Number of Totes", sm.numberTotes);
+					if(sm.numberTotes == 5) {
+						return Idle;
+					}
 					return HumanFeed_RaiseTote;
 				}
 				return this;

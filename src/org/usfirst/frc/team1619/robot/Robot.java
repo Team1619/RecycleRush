@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	
+
 	//create a singleton robot
 	private static Robot robot;
 	public Robot() {
@@ -37,22 +37,22 @@ public class Robot extends IterativeRobot {
 
 	public PowerDistributionPanel pdpCAN;
 	private Lumberjack lumberjack;
-	private Timer timer;
+	private Timer pdpLogTimer;
 
-    /**
-     * This function is run when the robot is first started up and should be
-     * used for any initialization code.
-     */
-    public void robotInit() {
-    	OI.getInstance().init();
-    	GyroSystem.getInstance().calibrate();
-    	Camera.getInstance();
-    	BinElevatorSystem.getInstance();
-    	ToteElevatorSystem.getInstance();
-    	Conveyor.getInstance().init();
-    	pdpCAN = new PowerDistributionPanel();
-		timer = new Timer();
-		
+	/**
+	 * This function is run when the robot is first started up and should be
+	 * used for any initialization code.
+	 */
+	public void robotInit() {
+		OI.getInstance().init();
+		GyroSystem.getInstance().calibrate();
+		Camera.getInstance();
+		BinElevatorSystem.getInstance();
+		ToteElevatorSystem.getInstance();
+		Conveyor.getInstance().init();
+		pdpCAN = new PowerDistributionPanel();
+		pdpLogTimer = new Timer();
+
 		//switchSubsystem = new LimitSwitch();
 		lumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
@@ -76,67 +76,95 @@ public class Robot extends IterativeRobot {
 				"PDP Temperature", 
 				"PDP Total Power", 
 				"PDP Total Energy"
-		);
-    }
-    
-    /**
-     * Smart Dashboard
-     */
-    public void sharedPeriodic() {
-    	SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
-    	SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
-    	SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
-    	SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
-    	SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
-    	SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
-    	SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
-    	SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
-    	SmartDashboard.putBoolean("chute door", true);
-    	SmartDashboard.putNumber("Tote Lift Encoder Position", ToteElevatorSystem.getInstance().getToteElevatorPosition());
-    	Accelerometer.getInstance().display();
-    	OI.getInstance().updateKachig();
-    }
+				);
+	}
+
+	/**
+	 * Smart Dashboard
+	 */
+	public void sharedPeriodic() {
+		SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
+		SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
+		SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
+		SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
+		SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
+		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
+		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
+		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
+		SmartDashboard.putBoolean("chute door", true);
+		SmartDashboard.putNumber("Tote Lift Encoder Position", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		Accelerometer.getInstance().display();
+		OI.getInstance().updateKachig();
+
+		if (pdpLogTimer.get() >= 1) {
+			lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
+					Double.toString(pdpCAN.getCurrent(0)),
+					Double.toString(pdpCAN.getCurrent(1)),
+					Double.toString(pdpCAN.getCurrent(2)),
+					Double.toString(pdpCAN.getCurrent(3)),
+					Double.toString(pdpCAN.getCurrent(4)),
+					Double.toString(pdpCAN.getCurrent(5)),
+					Double.toString(pdpCAN.getCurrent(6)),
+					Double.toString(pdpCAN.getCurrent(7)),
+					Double.toString(pdpCAN.getCurrent(8)),
+					Double.toString(pdpCAN.getCurrent(9)),
+					Double.toString(pdpCAN.getCurrent(10)),
+					Double.toString(pdpCAN.getCurrent(11)),
+					Double.toString(pdpCAN.getCurrent(12)),
+					Double.toString(pdpCAN.getCurrent(13)),
+					Double.toString(pdpCAN.getCurrent(14)),
+					Double.toString(pdpCAN.getCurrent(15)),
+					Double.toString(pdpCAN.getVoltage()), 
+					Double.toString(pdpCAN.getTemperature()), 
+					Double.toString(pdpCAN.getTotalPower()), 
+					Double.toString(pdpCAN.getTotalEnergy())
+					);
+			pdpLogTimer.reset();
+		}
+	}
+
+
+	public void autonomousInit() {
+		//add in Auto stuff thing
+	}
+
+	/**
+	 * This function is called periodically during autonomous
+	 */
+	public void autonomousPeriodic() {
+		Scheduler.getInstance().run();
+		sharedPeriodic();
+	}
+
+
+
+	/**
+	 * This function is called when the disabled button is hit.
+	 * You can use it to reset subsystems before shutting down.
+	 */
+
+	private Timer gyroInitTimer = new Timer();
+	private boolean gyroInitTimerRunning;
+	private boolean gyroInitTimerFinished;
 	
+	public void disabledInit(){
+		pdpLogTimer.start();
+		Lumberjack.changeLogs();
+		gyroInitTimer.start();
+		gyroInitTimerRunning = false;
+		gyroInitTimerFinished = true;
+	}
 
-    public void autonomousInit() {
-    	//add in Auto stuff thing
-    }
-
-    /**
-     * This function is called periodically during autonomous
-     */
-    public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-        sharedPeriodic();
-    }
-
-    
-
-    /**
-     * This function is called when the disabled button is hit.
-     * You can use it to reset subsystems before shutting down.
-     */
-    
-    private Timer gyroInitTimer = new Timer();
-    private boolean gyroInitTimerRunning;
-    private boolean gyroInitTimerFinished;
-    public void disabledInit(){
-    	Lumberjack.changeLogs();
-    	gyroInitTimer.start();
-    	gyroInitTimerRunning = false;
-    	gyroInitTimerFinished = true;
-    }
-    
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
-		
+
 		/*if(OI.getInstance().rightStick.getRawButton(RobotMap.calibrateGyroButton)) {
 			gyroInitTimerFinished = false;
 			SmartDashboard.putString("Gyro status", "");
 		}
-		*/
-		
+		 */
+
 		/**
 		 * Gyro Timer to recalibrate
 		 */
@@ -147,7 +175,7 @@ public class Robot extends IterativeRobot {
 					gyroInitTimer.start();
 					SmartDashboard.putString("Gyro status", "stabilizing");
 				}
-				
+
 				if(gyroInitTimer.hasPeriodPassed(3.0)) {
 					gyroInitTimer.stop();
 					SmartDashboard.putString("Gyro status", "stabilized and calibrating");
@@ -167,54 +195,27 @@ public class Robot extends IterativeRobot {
 		}
 	}
 
-    /**
-     * This function is called periodically during operator control
-     */
-    
-	
-   public void teleopInit() {
-	   timer.start();
-	   
-    }
-    
-    public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-        sharedPeriodic();
-        StateMachine.getInstance().run();
+	/**
+	 * This function is called periodically during operator control
+	 */
 
-        if (timer.get() >= 1) {
-            lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
-            		Double.toString(pdpCAN.getCurrent(0)),
-            		Double.toString(pdpCAN.getCurrent(1)),
-            		Double.toString(pdpCAN.getCurrent(2)),
-            		Double.toString(pdpCAN.getCurrent(3)),
-            		Double.toString(pdpCAN.getCurrent(4)),
-            		Double.toString(pdpCAN.getCurrent(5)),
-            		Double.toString(pdpCAN.getCurrent(6)),
-            		Double.toString(pdpCAN.getCurrent(7)),
-            		Double.toString(pdpCAN.getCurrent(8)),
-            		Double.toString(pdpCAN.getCurrent(9)),
-            		Double.toString(pdpCAN.getCurrent(10)),
-            		Double.toString(pdpCAN.getCurrent(11)),
-            		Double.toString(pdpCAN.getCurrent(12)),
-            		Double.toString(pdpCAN.getCurrent(13)),
-            		Double.toString(pdpCAN.getCurrent(14)),
-            		Double.toString(pdpCAN.getCurrent(15)),
-            		Double.toString(pdpCAN.getVoltage()), 
-            		Double.toString(pdpCAN.getTemperature()), 
-            		Double.toString(pdpCAN.getTotalPower()), 
-            		Double.toString(pdpCAN.getTotalEnergy())
-            );
-            timer.reset();
-        }
-    }
-    
-    
-    /**
-     * This function is called periodically during test mode
-     */
-    public void testPeriodic() {
-        LiveWindow.run();
-        sharedPeriodic();
-    }
+
+	public void teleopInit() {
+		StateMachine.getInstance().abortSignal.raise();
+	}
+
+	public void teleopPeriodic() {
+		Scheduler.getInstance().run();
+		sharedPeriodic();
+		StateMachine.getInstance().run();
+	}
+
+
+	/**
+	 * This function is called periodically during test mode
+	 */
+	public void testPeriodic() {
+		LiveWindow.run();
+		sharedPeriodic();
+	}
 }
