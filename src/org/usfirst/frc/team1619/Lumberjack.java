@@ -84,7 +84,7 @@ public class Lumberjack {
 		//SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
 		//date.setTimeZone(TimeZone.getTimeZone("UTC"));
 		//return date.format(new Date());
-		return String.format("%.3f", (System.currentTimeMillis()-start) / 1000);
+		return String.format("%.3f", (double)(System.currentTimeMillis()-start) / 1000);
 	}
 	
 	public static void changeLogs() {

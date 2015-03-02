@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -93,6 +95,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
 		SmartDashboard.putNumber("Tote Lift Encoder Position", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		
 		Accelerometer.getInstance().display();
 		OI.getInstance().updateKachig();
 

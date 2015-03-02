@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -26,6 +27,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public final CANTalon toteElevatorMotorSmall;
 
 	private final Joystick leftStick;
+	
+	private final JoystickButton toteElevatorManualButton;
 
 	private double toteElevatorSpeed; // will be %vbus 
 	private boolean usePosition;
@@ -35,6 +38,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	private ToteElevatorSystem() {
 		leftStick = OI.getInstance().leftStick;
+		
+		toteElevatorManualButton = new JoystickButton(leftStick, RobotMap.toteElevatorManualButtonID);
 
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
 		toteElevatorMotor.enableLimitSwitch(true, true);
@@ -42,8 +47,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseSensor(false);
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		toteElevatorMotor.setPID(0.30, 0.00005, 0, 0.0001, 0, 24/0.750, 0);
-
+		toteElevatorMotor.setPID(0.55, 0.0015, 0, 0.0001, 500, 24/0.250, 0);
+		
 		toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
 		toteElevatorMotorSmall.enableBrakeMode(true);
@@ -52,11 +57,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotorSmall.reverseOutput(true);
 	}
 
-	private static ToteElevatorSystem theSystem;
+	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
 
 	public static ToteElevatorSystem getInstance() {
-		if(theSystem == null)
-			theSystem = new ToteElevatorSystem();
 		return theSystem;
 	}
 
@@ -86,9 +89,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	private void toteElevatorUpdate() {
 
-		
 		double joystickY = leftStick.getY();
-		if(Math.abs(joystickY) > 0.1) {
+		if(toteElevatorManualButton.get()) {
 			toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 			toteElevatorMotor.set(joystickY);
 			usePosition = false;
@@ -103,7 +105,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 				}
 				else {
 					toteElevatorMotor.changeControlMode(ControlMode.Position);
-					toteElevatorMotor.set(moveTo);
+					toteElevatorMotor.set(moveTo*kEncoderTicksPerInch);
 				}
 			}
 			else {
@@ -133,14 +135,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	@Override
 	public void run(State state, double elapsed) {
-
-		/*
-		if(OI.getInstance().leftStick.getRawButton(3))
-			setToteElevatorPosition(6);
-		if(OI.getInstance().leftStick.getRawButton(4))
-			setToteElevatorPositionValue(0);
-		 */
 		
+		
+
 		switch(state) {
 		case Init:
 			//should be bottom limit switch
