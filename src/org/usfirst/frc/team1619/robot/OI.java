@@ -1,12 +1,10 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
-import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.TurnCommand;
 import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -31,8 +29,6 @@ public class OI {
 	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton resetDriveEncodersButton;
-	private final JoystickButton driveForwardButton;
-	private final JoystickButton turnRightButton;
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
 	private final JoystickButton guardRailOpenButton;
@@ -53,9 +49,6 @@ public class OI {
 		
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
-		
-		driveForwardButton = new JoystickButton(rightStick, RobotMap.driveForwardButtonID);
-		turnRightButton = new JoystickButton(rightStick, RobotMap.turnButtonID);
 		
 		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
@@ -84,9 +77,6 @@ public class OI {
 		
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
-		
-		driveForwardButton.whenPressed(new LinearDriveCommand(LinearDriveCommand.kMoveForwardDistance));
-		turnRightButton.whenPressed(new TurnCommand(TurnCommand.kTurnAngle));
 		
 		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Start));
 		
