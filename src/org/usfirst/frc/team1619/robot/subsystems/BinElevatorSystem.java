@@ -91,15 +91,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
 		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
 		
-		binElevatorMotor.setPID(
-    			Preferences.getNumber("binP", 2.5),
-    			Preferences.getNumber("binI", 0.00001),
-    			Preferences.getNumber("binD", 0),
-    			Preferences.getNumber("binF", 0.0001),
-    			500,
-    			24/0.250,
-    			0
-    			);
+		binElevatorMotor.setPID(2.5, 0.00001, 0, 0.0001, 500, 24/0.250, 0);
     	
 //		Preferences.addTableListener(new ITableListener() {
 //			@Override
