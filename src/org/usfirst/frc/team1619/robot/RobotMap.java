@@ -7,9 +7,6 @@ package org.usfirst.frc.team1619.robot;
  * floating around.
  */
 public class RobotMap {
-	// For example to map the left and right motors, you could define the
-	// following variables to use with your drivetrain subsystem.
-
 	/**
 	 * Motor Identification
 	 */
@@ -49,6 +46,7 @@ public class RobotMap {
 	public static final int startHumanFeedButtonID = 16;
 
 	public static final int calibrateGyroButton = 2; //used in disabled
+	public static final int testBinElevatorButton = 2;
 
 	//Left Stick
 	public static final int guardrailCloseManualButtonID = 13;
@@ -62,24 +60,10 @@ public class RobotMap {
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
 
-
-
 	public static final int unstickToteButtonID = 2;
 
 
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1
 	public static final int gyroRateAnalogID = 0;//rate - analog 2
 
-
-
-	//public static final int opticalSensorID = 1;
-
-	//public static final int sonarAnalogInputID = 0;
-
-	//public static final int switchSubsystemID = 0;
-
-	// If you are using multiple modules, make sure to define both the port
-	// number and the module. For example you with a rangefinder:
-	// public static int rangefinderPort = 1;
-	// public static int rangefinderModule = 1;
 }

@@ -19,7 +19,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 173.63;
 	public static final double kTransitPosition = 3.0;
 	public static final double kFeederPosition = 29.2;
-	public static final double kPickUpPosition = 0.0;
+	public static final double kPickUpPosition = -2.0;
 	public static final double kPositionTolerance = 2.0;
 	public static final double kInitSpeed = -0.2;
 
@@ -104,8 +104,14 @@ public class ToteElevatorSystem extends StateMachineSystem {
 					toteElevatorMotor.set(0);
 				}
 				else {
-					toteElevatorMotor.changeControlMode(ControlMode.Position);
-					toteElevatorMotor.set(moveTo*kEncoderTicksPerInch);
+					if(Math.abs(moveTo - getToteElevatorPosition()) < kPositionTolerance) {
+						toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+						toteElevatorMotor.set(0);
+					}
+					else {
+						toteElevatorMotor.changeControlMode(ControlMode.Position);
+						toteElevatorMotor.set(moveTo*kEncoderTicksPerInch);
+					}
 				}
 			}
 			else {

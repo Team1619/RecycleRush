@@ -104,6 +104,7 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanPlayerFeed_Start.check()) {
+					sm.numberTotes = 0;
 					return HumanFeed_RaiseTote;
 				}
 				return Idle;
@@ -190,7 +191,6 @@ public class StateMachine {
 				}
 				if(sm.humanPlayerFeed_RaiseTote.check()) {
 					sm.numberTotes++;
-					SmartDashboard.putNumber("Number of Totes", sm.numberTotes);
 					if(sm.numberTotes == 5) {
 						return Idle;
 					}
@@ -291,8 +291,6 @@ public class StateMachine {
 	}
 	
 	public void run() {
-		SmartDashboard.putString("CurrentState", currentState.toString());
-		
 		double elapsed = stateTimer.get();
 		for(StateMachineSystem sms: systems) {
 			sms.superSecretSpecialSatanRun(currentState, elapsed);
@@ -313,5 +311,10 @@ public class StateMachine {
 		for(Signal sig : signals) {
 			sig.clear();
 		}
+	}
+	
+	public void display() {
+		SmartDashboard.putNumber("Number of Totes", numberTotes);
+		SmartDashboard.putString("CurrentState", currentState.toString());
 	}
 }
