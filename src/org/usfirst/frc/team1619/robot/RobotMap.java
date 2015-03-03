@@ -44,9 +44,10 @@ public class RobotMap {
 	public static final int liftResetButtonID = 12;	
 
 	public static final int startHumanFeedButtonID = 16;
+	public static final int stopHumanFeedButtonID = 15; //last tote on conveyor or ground (before tote elevator has active conrtol of tote)
 
-	public static final int calibrateGyroButton = 2; //used in disabled
-	public static final int testBinElevatorButton = 2;
+	// public static final int calibrateGyroButtonID = 2; //used in disabled
+	public static final int testBinElevatorButtonID = 2;
 
 	//Left Stick
 	public static final int guardrailCloseManualButtonID = 13;
@@ -59,8 +60,10 @@ public class RobotMap {
 
 	public static final int rakerOpenManualButtonID = 11;
 	public static final int rakerCloseManualButtonID = 16;
+	
+	public static final int incrementNumberTotesButtonID = 2;
 
-	public static final int unstickToteButtonID = 2;
+	// public static final int unstickToteButtonID = 2;
 
 
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1

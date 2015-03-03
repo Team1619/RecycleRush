@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
 import org.usfirst.frc.team1619.robot.RobotMap;
+import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -70,7 +71,12 @@ public class GuardRailSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
-			moveGuardRail(kOpenGuardRailSpeed);
+			if(StateMachine.getInstance().getToStopHumanFeed()) {
+				moveGuardRail(0.0);
+			}
+			else {
+				moveGuardRail(kOpenGuardRailSpeed);	
+			}
 			break;
 		case GroundFeed:
 			break;

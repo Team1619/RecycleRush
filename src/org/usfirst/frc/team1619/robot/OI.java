@@ -5,7 +5,6 @@ import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
-import org.usfirst.frc.team1619.robot.commands.UnstickToteCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.InternalButton;
@@ -33,9 +32,10 @@ public class OI {
 	private final JoystickButton liftResetButton;
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
-	private final JoystickButton unstickToteButton;
+	// private final JoystickButton unstickToteButton;
 	//private final JoystickButton unloadConveyorButton;
 	private final JoystickButton startHumanFeedButton;
+	private final JoystickButton stopHumanFeedButton;
 		
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -54,6 +54,7 @@ public class OI {
 		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
 		
 		startHumanFeedButton = new JoystickButton(rightStick, RobotMap.startHumanFeedButtonID);
+		stopHumanFeedButton = new JoystickButton(rightStick, RobotMap.stopHumanFeedButtonID);
 		
 		//unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
@@ -61,8 +62,7 @@ public class OI {
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
 		
-
-		unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
+		// unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
 	}
 	
 	public void init() {
@@ -79,11 +79,12 @@ public class OI {
 		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
 		
 		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Start));
+		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Stop));
 		
 		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
 		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
 		
-		unstickToteButton.whileHeld(new UnstickToteCommand());
+		// unstickToteButton.whileHeld(new UnstickToteCommand());
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));

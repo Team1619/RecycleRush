@@ -153,7 +153,12 @@ public class Conveyor extends StateMachineSystem {
 			moveConveyor(kForwardConveyorSpeed);
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
-			moveConveyor(kSlowForwardConveyorSpeed);
+			if(StateMachine.getInstance().getToStopHumanFeed()) {
+				moveConveyor(0.0);
+			}
+			else {
+				moveConveyor(kSlowForwardConveyorSpeed);	
+			}
 			break;
 		case GroundFeed:
 			break;

@@ -4,17 +4,32 @@ import java.util.ArrayList;
 
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
 	private State currentState = State.Init;
 	//private State currentState = State.Idle;
 	
+	private final Joystick leftStick;
+	
 	private int numberTotes;
+	private final JoystickButton incrementNumberTotesButton;
+	private boolean incrementNumberTotes;
+	
+	private boolean toStopHumanFeed;
+	public boolean getToStopHumanFeed() {
+		return toStopHumanFeed;
+	}
 	
 	private StateMachine() {
+		leftStick = OI.getInstance().leftStick;
 		numberTotes = 0;
+		incrementNumberTotesButton = new JoystickButton(leftStick, RobotMap.incrementNumberTotesButtonID);
+		incrementNumberTotes = false;
+		toStopHumanFeed = false;
 	}
 	
 	private static StateMachine stateMachine;
@@ -60,6 +75,7 @@ public class StateMachine {
 	public final Signal humanPlayerFeed_WaitForTote = new Signal();
 	public final Signal humanPlayerFeed_ToteOnConveyor = new Signal();
 	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
+	public final Signal humanPlayerFeed_Stop = new Signal();
 	public final Signal dropoffSignal = new Signal();
 	public final Signal groundFeedSignal = new Signal(); 
 	
@@ -96,6 +112,7 @@ public class StateMachine {
 		Idle {
 			@Override
 			protected void init(StateMachine sm) {
+				sm.toStopHumanFeed = false;
 			}
 			
 			@Override
@@ -127,6 +144,9 @@ public class StateMachine {
 				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
 					return HumanFeed_ToteOnConveyor; 
 				}
+				if(sm.humanPlayerFeed_Stop.check()) {
+					sm.toStopHumanFeed = true;
+				}
 				return this;
 			}
 
@@ -138,7 +158,6 @@ public class StateMachine {
 			@Override
 			protected void init(StateMachine sm) {
 			}
-			
 		},
 		HumanFeed_WaitForTote {
 			@Override
@@ -153,6 +172,9 @@ public class StateMachine {
 				}
 				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
 					return HumanFeed_ToteOnConveyor;
+				}
+				if(sm.humanPlayerFeed_Stop.check()) {
+					sm.toStopHumanFeed = true;
 				}
 				return this;
 			}
@@ -170,6 +192,9 @@ public class StateMachine {
 				}
 				if(sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
+				}
+				if(sm.humanPlayerFeed_Stop.check()) {
+					sm.toStopHumanFeed = true;
 				}
 				return this;
 			}
@@ -190,11 +215,14 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanPlayerFeed_RaiseTote.check()) {
-					sm.numberTotes++;
-					if(sm.numberTotes == 5) {
+					sm.numberTotes++;					
+					if(sm.numberTotes == 5 || sm.toStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
+				}
+				if(sm.humanPlayerFeed_Stop.check()) {
+					sm.toStopHumanFeed = true;
 				}
 				return this;
 			}
@@ -306,6 +334,16 @@ public class StateMachine {
 			stateTimer.reset();
 			for(StateMachineSystem s : systems)
 				s.init(currentState);
+		}
+		
+		if (incrementNumberTotesButton.get()) {
+			if (!incrementNumberTotes) {
+				numberTotes = (numberTotes++)%6;
+				incrementNumberTotes = true;
+			}
+		}
+		else {
+			incrementNumberTotes = false;
 		}
 		
 		for(Signal sig : signals) {
