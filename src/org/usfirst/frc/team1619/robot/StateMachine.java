@@ -338,7 +338,7 @@ public class StateMachine {
 		
 		if (incrementNumberTotesButton.get()) {
 			if (!incrementNumberTotes) {
-				numberTotes = (numberTotes++)%6;
+				numberTotes = (numberTotes++)%7;
 				incrementNumberTotes = true;
 			}
 		}

@@ -1,10 +1,13 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  *
@@ -15,15 +18,24 @@ public class GuardRailSystem extends StateMachineSystem {
 	public static final double kSlowOpenGuardRailSpeed = -0.30;
 	public static final double kSlowCloseGuardRailSpeed = 0.30;
 	
+	private final JoystickButton guardRailOpenButton;
+	private final JoystickButton guardRailCloseButton;
+	
+	private final Joystick leftStick;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	private CANTalon guardRailMotor; //overdrive slightly
 	
 	private GuardRailSystem() {
+		leftStick = OI.getInstance().leftStick;
+		
     	guardRailMotor = new CANTalon(RobotMap.guardRailMotor);
     	guardRailMotor.enableLimitSwitch(false, false);
     	guardRailMotor.enableBrakeMode(false);
+    	
+    	guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
+		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
 	}
 	
 	private static GuardRailSystem theSystem;
@@ -34,9 +46,18 @@ public class GuardRailSystem extends StateMachineSystem {
 		return theSystem;
 	}
 
-	public void moveGuardRail(double speed)
-	{
-		guardRailMotor.set(speed);
+	private double guardRailSpeed = 0.0;
+	
+	private void updateGuardRail() {
+		if(guardRailOpenButton.get()) {
+			guardRailMotor.set(kOpenGuardRailSpeed);
+		}
+		else if(guardRailCloseButton.get()) {
+			guardRailMotor.set(kCloseGuardRailSpeed);
+		}
+		else {
+			guardRailMotor.set(guardRailSpeed);
+		}
 	}
 	
     public void initDefaultCommand() {
@@ -53,29 +74,29 @@ public class GuardRailSystem extends StateMachineSystem {
 			break;
 		case HumanFeed_RaiseTote:
 			if(elapsed <= 0.25) { //just at beginning
-				moveGuardRail(kOpenGuardRailSpeed);
+				guardRailSpeed = kOpenGuardRailSpeed;
 			}
 			else {
-				moveGuardRail(kSlowOpenGuardRailSpeed);
+				guardRailSpeed = kSlowOpenGuardRailSpeed;
 			}
 			break;
 		case HumanFeed_WaitForTote:
-			moveGuardRail(kSlowOpenGuardRailSpeed);
+			guardRailSpeed = kSlowOpenGuardRailSpeed;
 			break;
 		case HumanFeed_ToteOnConveyor:
 			if(elapsed <= 1) {
-				moveGuardRail(kCloseGuardRailSpeed);
+				guardRailSpeed = kCloseGuardRailSpeed;
 			}
 			else {
-				moveGuardRail(kSlowCloseGuardRailSpeed);
+				guardRailSpeed = kSlowCloseGuardRailSpeed;
 			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			if(StateMachine.getInstance().getToStopHumanFeed()) {
-				moveGuardRail(0.0);
+				guardRailSpeed = 0.0;
 			}
 			else {
-				moveGuardRail(kOpenGuardRailSpeed);	
+				guardRailSpeed = kOpenGuardRailSpeed;	
 			}
 			break;
 		case GroundFeed:
@@ -85,11 +106,13 @@ public class GuardRailSystem extends StateMachineSystem {
 		case BinPickup:
 			break;
 		case Abort:	
-			moveGuardRail(0.0);
+			guardRailSpeed = 0.0;
 			break;
 		default:
 			break;
 		}
+		
+		updateGuardRail();
 	}
 }
 

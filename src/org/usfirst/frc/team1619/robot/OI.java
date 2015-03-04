@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
-import org.usfirst.frc.team1619.robot.commands.ManualGuardRailCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
 import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
@@ -26,12 +25,16 @@ public class OI {
 	 * pairs functions together that use the same button
 	 */
 	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
+	public final InternalButton binElevatorUp, binElevatorDown;
+	
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton resetDriveEncodersButton;
 	private final JoystickButton liftAbortButton;
 	private final JoystickButton liftResetButton;
-	private final JoystickButton guardRailOpenButton;
-	private final JoystickButton guardRailCloseButton;
+	
+	public final JoystickButton closeClawButton;
+	public final JoystickButton openClawButton;
+	
 	// private final JoystickButton unstickToteButton;
 	//private final JoystickButton unloadConveyorButton;
 	private final JoystickButton startHumanFeedButton;
@@ -47,6 +50,9 @@ public class OI {
 		kachigForward = new InternalButton();
 		kachigBackward = new InternalButton();
 		
+		binElevatorUp = new InternalButton();
+		binElevatorDown = new InternalButton();
+		
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
 		
@@ -59,8 +65,8 @@ public class OI {
 		//unloadConveyorButton = new JoystickButton(rightStick, RobotMap.unloadConveyorButtonID);
 		
 		//Left stick
-		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
-		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+		closeClawButton = new JoystickButton(leftStick, RobotMap.closeClawButtonID);
+		openClawButton = new JoystickButton(leftStick, RobotMap.openClawButtonID);
 		
 		// unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
 	}
@@ -81,9 +87,6 @@ public class OI {
 		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Start));
 		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Stop));
 		
-		guardRailOpenButton.whileHeld(new ManualGuardRailCommand(0.15));
-		guardRailCloseButton.whileHeld(new ManualGuardRailCommand(-0.25));
-		
 		// unstickToteButton.whileHeld(new UnstickToteCommand());
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
@@ -92,11 +95,15 @@ public class OI {
 	}
 	
 	public void updateKachig() {
-		int pov = rightStick.getPOV();
-		kachigRight.setPressed(pov == 90);
-		kachigForward.setPressed(pov == 0);
-		kachigLeft.setPressed(pov == 270);
-		kachigBackward.setPressed(pov == 180);
+		int povLeft = rightStick.getPOV();
+		kachigRight.setPressed(povLeft == 90);
+		kachigForward.setPressed(povLeft == 0);
+		kachigLeft.setPressed(povLeft == 270);
+		kachigBackward.setPressed(povLeft == 180);
+		
+		int povRight = leftStick.getPOV();
+		binElevatorUp.setPressed(povRight == 0);
+		binElevatorDown.setPressed(povRight == 180);
 	}
 	
 	private static OI oi = new OI();

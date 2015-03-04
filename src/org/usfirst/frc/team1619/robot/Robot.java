@@ -7,6 +7,7 @@ import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team1619.robot.subsystems.GuardRailSystem;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 
@@ -36,8 +37,10 @@ public class Robot extends IterativeRobot {
 	}
 
 	public PowerDistributionPanel pdpCAN;
-	private Lumberjack lumberjack;
+	private Lumberjack pdpLumberjack;
+	private Lumberjack elevatorLumberjack;
 	private Timer pdpLogTimer;
+	private Timer elevatorLogTimer;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -50,11 +53,13 @@ public class Robot extends IterativeRobot {
 		BinElevatorSystem.getInstance().init();
 		ToteElevatorSystem.getInstance();
 		Conveyor.getInstance().init();
+		GuardRailSystem.getInstance();
 		pdpCAN = new PowerDistributionPanel();
 		pdpLogTimer = new Timer();
+		elevatorLogTimer = new Timer();
 
 		//switchSubsystem = new LimitSwitch();
-		lumberjack = new Lumberjack("PDP.csv",
+		pdpLumberjack = new Lumberjack("PDP.csv",
 				"PDP Total Current", 
 				"Current 0", 
 				"Current 1", 
@@ -76,6 +81,16 @@ public class Robot extends IterativeRobot {
 				"PDP Temperature", 
 				"PDP Total Power", 
 				"PDP Total Energy"
+				);
+		
+		elevatorLumberjack = new Lumberjack(
+				"Elevators.csv", 
+				"Tote Voltage 1", 
+				"Tote Voltage 2",
+				"Bin Voltage", 
+				"Tote Current 1", 
+				"Tote Current 2", 
+				"Bin Current"
 				);
 	}
 
@@ -99,7 +114,7 @@ public class Robot extends IterativeRobot {
 		OI.getInstance().updateKachig();
 
 		if (pdpLogTimer.get() >= 1) {
-			lumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
+			pdpLumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
 					Double.toString(pdpCAN.getCurrent(0)),
 					Double.toString(pdpCAN.getCurrent(1)),
 					Double.toString(pdpCAN.getCurrent(2)),
@@ -122,6 +137,18 @@ public class Robot extends IterativeRobot {
 					Double.toString(pdpCAN.getTotalEnergy())
 					);
 			pdpLogTimer.reset();
+		} //25.0 fish
+		
+		
+		if (elevatorLogTimer.get() >= 0.1) {
+			elevatorLumberjack.log(
+					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage()),
+					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputVoltage()),
+					Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage()),
+					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent()),
+					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputCurrent()),
+					Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent())
+					);
 		}
 	}
 

@@ -19,8 +19,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 173.63;
 	public static final double kTransitPosition = 3.0;
 	public static final double kFeederPosition = 29.2;
-	public static final double kPickUpPosition = -2.0;
-	public static final double kPositionTolerance = 2.0;
+	public static final double kPickUpPosition = 0.0;
+	public static final double kPositionTolerance = 1.0;
 	public static final double kInitSpeed = -0.2;
 
 	public final CANTalon toteElevatorMotor;
@@ -87,6 +87,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		return toteElevatorMotor.getPosition()/kEncoderTicksPerInch;
 	}
 
+	private boolean wasManual = false;
 	private void toteElevatorUpdate() {
 
 		double joystickY = leftStick.getY();
@@ -96,8 +97,14 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			usePosition = false;
 			moveTo = Double.NaN;
 			toteElevatorSpeed = 0.0;
+			wasManual = true;
 		}
 		else {
+			if(wasManual) {
+				setToteElevatorPosition(getToteElevatorPosition());
+				wasManual = false;
+				useStatePosition = false;
+			}
 			if(usePosition) {
 				if(Double.isNaN(moveTo)) {
 					toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
@@ -125,10 +132,14 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		SmartDashboard.putNumber("toteElevatorMotor.get()",toteElevatorMotor.get());
 	}
 
+	boolean useStatePosition = true;
+	
 	public void init(State state) {
 		usePosition = false;
 		toteElevatorSpeed = 0;
 		moveTo = Double.NaN;
+		
+		useStatePosition = true;
 		
 		switch(state) {
 		case Init:
@@ -141,9 +152,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	@Override
 	public void run(State state, double elapsed) {
-		
-		
-
 		switch(state) {
 		case Init:
 			//should be bottom limit switch
@@ -157,22 +165,32 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case Idle:
-			setToteElevatorPosition(kTransitPosition);
+			if(useStatePosition) {
+				setToteElevatorPosition(kTransitPosition);		
+			}
 			break;
 		case HumanFeed_RaiseTote:
-			setToteElevatorPosition(kFeederPosition);
+			if(useStatePosition) {
+				setToteElevatorPosition(kFeederPosition);
+			}
 			if(Math.abs(getToteElevatorPosition() - kFeederPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanPlayerFeed_WaitForTote.raise();
 			}
 			break;
 		case HumanFeed_WaitForTote:
-			setToteElevatorPosition(kFeederPosition);
+			if(useStatePosition) {
+				setToteElevatorPosition(kFeederPosition);
+			}
 			break;
 		case HumanFeed_ToteOnConveyor:
-			setToteElevatorPosition(kFeederPosition);
+			if(useStatePosition) {
+				setToteElevatorPosition(kFeederPosition);
+			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
-			setToteElevatorPosition(kPickUpPosition);
+			if(useStatePosition) {
+				setToteElevatorPosition(kPickUpPosition);
+			}
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanPlayerFeed_RaiseTote.raise();	
 			}

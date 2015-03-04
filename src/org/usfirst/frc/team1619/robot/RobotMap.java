@@ -52,6 +52,9 @@ public class RobotMap {
 	//Left Stick
 	public static final int guardrailCloseManualButtonID = 13;
 	public static final int guardrailOpenManualButtonID = 14;
+	
+	public static final int coneyorFowardButtonID = 12;
+	public static final int coneyorBackButtonID = 15;
 
 	public static final int binGripManualButtonID = 5;
 	public static final int binTiltManualButtonID = 6;
@@ -62,6 +65,9 @@ public class RobotMap {
 	public static final int rakerCloseManualButtonID = 16;
 	
 	public static final int incrementNumberTotesButtonID = 2;
+	
+	public static final int closeClawButtonID = 1;
+	public static final int openClawButtonID = 3;
 
 	// public static final int unstickToteButtonID = 2;
 

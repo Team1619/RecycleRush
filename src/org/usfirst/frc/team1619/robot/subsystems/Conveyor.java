@@ -1,12 +1,15 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  *
@@ -14,6 +17,8 @@ import edu.wpi.first.wpilibj.Timer;
 public class Conveyor extends StateMachineSystem {
 	private static final double kForwardConveyorSpeed = 1.0;
 	private static final double kSlowForwardConveyorSpeed = 0.1;
+	private static final double kManualForwardConveyorSpeed = 0.5;
+	private static final double kManualBackConveyorSpeed = -0.5;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -27,6 +32,11 @@ public class Conveyor extends StateMachineSystem {
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
 	private final double kDebounceTime = 0.05;
+	
+	private Joystick leftStick;
+	
+	private final JoystickButton conveyorForwardButton;
+	private final JoystickButton conveyorBackButton;
 		
 	private Conveyor() {
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
@@ -35,6 +45,11 @@ public class Conveyor extends StateMachineSystem {
     	
     	frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
 		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
+		
+		leftStick = OI.getInstance().leftStick;
+		
+		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.coneyorFowardButtonID);
+		conveyorBackButton = new JoystickButton(leftStick, RobotMap.coneyorBackButtonID);
 		
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();
@@ -109,10 +124,7 @@ public class Conveyor extends StateMachineSystem {
 			rearSensorDebounceTimer.reset();
 		}
 	}
-	
-	public void moveConveyor(double moveValue) {
-		conveyorMotor.set(moveValue);
-	}
+	private double conveyorSpeed = 0.0;
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
@@ -133,6 +145,17 @@ public class Conveyor extends StateMachineSystem {
     	return rearSensor;
     }
     
+    private void updateConveyor() {
+    	if(conveyorForwardButton.get()) {
+			conveyorMotor.set(kManualForwardConveyorSpeed);
+		}
+		else if(conveyorBackButton.get()) {
+			conveyorMotor.set(kManualBackConveyorSpeed);
+		}
+		else {
+			conveyorMotor.set(conveyorSpeed);	
+		}
+	}
 
 	@Override
 	public void run(State state, double elapsed) {
@@ -141,23 +164,23 @@ public class Conveyor extends StateMachineSystem {
 		case Init:
 			break;
 		case Idle:
-			moveConveyor(0.0);
+			conveyorSpeed = 0.0;
 			break;
 		case HumanFeed_RaiseTote:
-			moveConveyor(kForwardConveyorSpeed);
+			conveyorSpeed = kForwardConveyorSpeed;
 			break;
 		case HumanFeed_WaitForTote:
-			moveConveyor(kForwardConveyorSpeed);
+			conveyorSpeed = kForwardConveyorSpeed;
 			break;
 		case HumanFeed_ToteOnConveyor:
-			moveConveyor(kForwardConveyorSpeed);
+			conveyorSpeed = kForwardConveyorSpeed;
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			if(StateMachine.getInstance().getToStopHumanFeed()) {
-				moveConveyor(0.0);
+				conveyorSpeed = 0.0;
 			}
 			else {
-				moveConveyor(kSlowForwardConveyorSpeed);	
+				conveyorSpeed = kSlowForwardConveyorSpeed;	
 			}
 			break;
 		case GroundFeed:
@@ -167,11 +190,13 @@ public class Conveyor extends StateMachineSystem {
 		case BinPickup:
 			break;
 		case Abort:	
-			moveConveyor(0.0);
+			conveyorSpeed = 0.0;
 			break;
 		default:
 			break;
 		}
+		
+		updateConveyor();
 	}
 }
 
