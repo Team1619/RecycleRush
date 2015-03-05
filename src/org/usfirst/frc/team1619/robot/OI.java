@@ -35,6 +35,8 @@ public class OI {
 	public final JoystickButton closeClawButton;
 	public final JoystickButton openClawButton;
 	
+	public final JoystickButton presentBinButton;
+	
 	// private final JoystickButton unstickToteButton;
 	//private final JoystickButton unloadConveyorButton;
 	private final JoystickButton startHumanFeedButton;
@@ -68,6 +70,7 @@ public class OI {
 		closeClawButton = new JoystickButton(leftStick, RobotMap.closeClawButtonID);
 		openClawButton = new JoystickButton(leftStick, RobotMap.openClawButtonID);
 		
+		presentBinButton = new JoystickButton(leftStick, RobotMap.presentClawButtonID);
 		// unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
 	}
 	

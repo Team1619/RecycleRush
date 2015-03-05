@@ -16,11 +16,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class ToteElevatorSystem extends StateMachineSystem {
-	public static final double kEncoderTicksPerInch = 173.63;
-	public static final double kTransitPosition = 3.0;
-	public static final double kFeederPosition = 29.2;
+	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
+	public static final double kTransitPosition = 2.1;
+	public static final double kFeederPosition = 20.8;
 	public static final double kPickUpPosition = 0.0;
-	public static final double kPositionTolerance = 1.0;
+	public static final double kPositionTolerance = 1.5;
+	public static final double kDeadZone = 1.0;
 	public static final double kInitSpeed = -0.2;
 
 	public final CANTalon toteElevatorMotor;
@@ -88,12 +89,19 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 	private boolean wasManual = false;
+	
 	private void toteElevatorUpdate() {
-
+		boolean noGoUp = !BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch();
 		double joystickY = leftStick.getY();
+		
 		if(toteElevatorManualButton.get()) {
 			toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-			toteElevatorMotor.set(joystickY);
+			if(joystickY > 0.0 && noGoUp) {
+				toteElevatorMotor.set(0.0);
+			}
+			else {
+				toteElevatorMotor.set(joystickY);
+			}
 			usePosition = false;
 			moveTo = Double.NaN;
 			toteElevatorSpeed = 0.0;
@@ -111,19 +119,31 @@ public class ToteElevatorSystem extends StateMachineSystem {
 					toteElevatorMotor.set(0);
 				}
 				else {
-					if(Math.abs(moveTo - getToteElevatorPosition()) < kPositionTolerance) {
+					if(Math.abs(moveTo - getToteElevatorPosition()) < kDeadZone) {
 						toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-						toteElevatorMotor.set(0);
+						toteElevatorMotor.set(0.0);
 					}
 					else {
 						toteElevatorMotor.changeControlMode(ControlMode.Position);
-						toteElevatorMotor.set(moveTo*kEncoderTicksPerInch);
+						if(moveTo > getToteElevatorPosition() && noGoUp) {
+							toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+							toteElevatorMotor.set(0.0);
+						}
+						else {
+							toteElevatorMotor.changeControlMode(ControlMode.Position);
+							toteElevatorMotor.set(moveTo*kEncoderTicksPerInch);	
+						}
 					}
 				}
 			}
 			else {
 				toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-				toteElevatorMotor.set(toteElevatorSpeed);
+				if(toteElevatorSpeed > 0.0 && noGoUp) {
+					toteElevatorMotor.set(0.0);
+				}
+				else {
+					toteElevatorMotor.set(toteElevatorSpeed);
+				}
 			}
 		}
 

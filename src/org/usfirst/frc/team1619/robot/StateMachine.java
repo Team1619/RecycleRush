@@ -2,6 +2,7 @@ package org.usfirst.frc.team1619.robot;
 
 import java.util.ArrayList;
 
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -76,6 +77,7 @@ public class StateMachine {
 	public final Signal humanPlayerFeed_ToteOnConveyor = new Signal();
 	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanPlayerFeed_Stop = new Signal();
+	public final Signal presentBinSignal = new Signal();
 	public final Signal dropoffSignal = new Signal();
 	public final Signal groundFeedSignal = new Signal(); 
 	
@@ -122,7 +124,16 @@ public class StateMachine {
 				}
 				if(sm.humanPlayerFeed_Start.check()) {
 					sm.numberTotes = 0;
-					return HumanFeed_RaiseTote;
+					
+					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+						return HumanFeed_RaiseTote;
+					}
+					else {
+						return Idle;
+					}
+				}
+				if(sm.presentBinSignal.check()) {
+					return PresentBin;
 				}
 				return Idle;
 			}
@@ -230,6 +241,21 @@ public class StateMachine {
 			@Override
 			public String toString() {
 				return "HumanFeed_ThrottleConveyorDescend";
+			}
+
+			@Override
+			protected void init(StateMachine sm) {
+			}
+		},
+		PresentBin {
+			@Override
+			public State run(StateMachine sm) {
+				return null;
+			}
+
+			@Override
+			public String toString() {
+				return "PresentBin";
 			}
 
 			@Override
