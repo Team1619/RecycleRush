@@ -149,6 +149,7 @@ public class Robot extends IterativeRobot {
 					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputCurrent()),
 					Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent())
 					);
+			elevatorLogTimer.reset();
 		}
 	}
 
@@ -177,7 +178,10 @@ public class Robot extends IterativeRobot {
 	private boolean gyroInitTimerFinished;
 	
 	public void disabledInit(){
+		pdpLogTimer.reset();
 		pdpLogTimer.start();
+		elevatorLogTimer.reset();
+		elevatorLogTimer.start();
 		Lumberjack.changeLogs();
 		gyroInitTimer.start();
 		gyroInitTimerRunning = false;

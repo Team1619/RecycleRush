@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
+import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -47,13 +48,11 @@ public class StateMachine {
 		systems.add(sms);
 	}
 	
-	private ArrayList<Signal> signals = new ArrayList<Signal>(); 
 	public class Signal {
 		private boolean hasRisen;
 		
 		public Signal() {
 			hasRisen = false;
-			signals.add(this);
 		}
 		
 		public boolean check() {
@@ -69,17 +68,24 @@ public class StateMachine {
 		}
 	}
 
-	public final Signal abortSignal = new Signal();
-	public final Signal resetSignal = new Signal();
-	public final Signal humanPlayerFeed_Start = new Signal();
-	public final Signal humanPlayerFeed_RaiseTote = new Signal();
-	public final Signal humanPlayerFeed_WaitForTote = new Signal();
-	public final Signal humanPlayerFeed_ToteOnConveyor = new Signal();
+	private ArrayList<Signal> autoClearSignals = new ArrayList<Signal>(); 
+	public class AutoClearSignal extends Signal {
+		public AutoClearSignal() {
+			autoClearSignals.add(this);
+		}
+	}
+
+	public final Signal abortSignal = new AutoClearSignal();
+	public final Signal resetSignal = new AutoClearSignal();
+	public final Signal humanPlayerFeed_Start = new AutoClearSignal();
+	public final Signal humanPlayerFeed_RaiseTote = new AutoClearSignal();
+	public final Signal humanPlayerFeed_WaitForTote = new AutoClearSignal();
+	public final Signal humanPlayerFeed_ToteOnConveyor = new AutoClearSignal();
 	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
-	public final Signal humanPlayerFeed_Stop = new Signal();
-	public final Signal presentBinSignal = new Signal();
-	public final Signal dropoffSignal = new Signal();
-	public final Signal groundFeedSignal = new Signal(); 
+	public final Signal humanPlayerFeed_Stop = new AutoClearSignal();
+	public final Signal presentBinSignal = new AutoClearSignal();
+	public final Signal dropoffSignal = new AutoClearSignal();
+	public final Signal groundFeedSignal = new AutoClearSignal(); 
 	
 	private final Timer stateTimer = new Timer();
 	
@@ -126,6 +132,8 @@ public class StateMachine {
 					sm.numberTotes = 0;
 					
 					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+						sm.humanPlayerFeed_ToteOnConveyor.clear();
+						sm.humanPlayerFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;
 					}
 					else {
@@ -152,9 +160,6 @@ public class StateMachine {
 				if(sm.humanPlayerFeed_WaitForTote.check()) {
 					return HumanFeed_WaitForTote;
 				}
-				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
-					return HumanFeed_ToteOnConveyor; 
-				}
 				if(sm.humanPlayerFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
 				}
@@ -168,6 +173,7 @@ public class StateMachine {
 
 			@Override
 			protected void init(StateMachine sm) {
+				sm.humanPlayerFeed_ThrottleConveyorDescend.clear();
 			}
 		},
 		HumanFeed_WaitForTote {
@@ -181,7 +187,9 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanPlayerFeed_ToteOnConveyor.check()) {
+				if(Conveyor.getInstance().getRearSensor() ||
+						Conveyor.getInstance().getFrontSensor() ||
+						sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ToteOnConveyor;
 				}
 				if(sm.humanPlayerFeed_Stop.check()) {
@@ -372,7 +380,7 @@ public class StateMachine {
 			incrementNumberTotes = false;
 		}
 		
-		for(Signal sig : signals) {
+		for(Signal sig : autoClearSignals) {
 			sig.clear();
 		}
 	}

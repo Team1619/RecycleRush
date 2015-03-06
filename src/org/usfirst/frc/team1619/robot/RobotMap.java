@@ -68,6 +68,12 @@ public class RobotMap {
 	public static final int openClawButtonID = 3;
 	
 	public static final int presentClawButtonID = 4;
+	
+	public static final int moveClawForBinPickupButtonID = 4;
+	
+	public static final int moveClawForNoodleInsertionButtonID = 2;
+	
+	
 
 	// public static final int unstickToteButtonID = 2;
 

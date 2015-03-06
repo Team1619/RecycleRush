@@ -98,14 +98,15 @@ public class Lumberjack {
 		try {
 			if (fileWriter != null)
 					fileWriter.close();
-			
-			if(new File(logFolderPath + logGroup).mkdir()) {
+			File logDir = new File(logFolderPath + logGroup);
+			logDir.mkdir();
+			if(logDir.exists()) {
 				fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
 				printHeaders(headers);
 				start = System.currentTimeMillis();
 			}
 			else {
-				System.err.println("Cannot create log folder!");
+				System.err.println("Cannot create log folder " + logName);
 				fileWriter = null;
 			}
 		} catch (IOException e) {

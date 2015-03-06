@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
@@ -11,6 +12,8 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.tables.ITable;
+import edu.wpi.first.wpilibj.tables.ITableListener;
 
 /**
  *
@@ -19,8 +22,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
 	public static final double kTransitPosition = 2.1;
 	public static final double kFeederPosition = 20.8;
-	public static final double kPickUpPosition = 0.0;
-	public static final double kPositionTolerance = 1.5;
+	public static final double kPickUpPosition = -2.0;
+	public static final double kPositionTolerance = 3.0;
 	public static final double kDeadZone = 1.0;
 	public static final double kInitSpeed = -0.2;
 
@@ -48,7 +51,40 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseSensor(false);
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		toteElevatorMotor.setPID(0.55, 0.0015, 0, 0.0001, 500, 24/0.250, 0);
+		toteElevatorMotor.setPID(0.55, 0.40, 0, 0.0001, 300, 24/0.250, 0);
+
+		Preferences.putNumber("toteP", toteElevatorMotor.getP());
+		Preferences.putNumber("toteI", toteElevatorMotor.getI());
+		Preferences.putNumber("toteD", toteElevatorMotor.getD());
+		Preferences.putNumber("toteF", toteElevatorMotor.getF());
+		Preferences.putNumber("toteIZone", toteElevatorMotor.getIZone());
+		Preferences.addTableListener(new ITableListener() {
+			
+			@Override
+			public void valueChanged(ITable source, String key, Object value, boolean isNew) {
+				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
+						key, value.toString(), Boolean.toString(isNew)));
+				
+				switch(key) {
+				case "toteP":
+					toteElevatorMotor.setP(Double.parseDouble((String)value));
+					break;
+				case "toteI":
+					toteElevatorMotor.setI(Double.parseDouble((String)value));
+					break;
+				case "toteD":
+					toteElevatorMotor.setD(Double.parseDouble((String)value));
+					break;
+				case "toteF":
+					toteElevatorMotor.setF(Double.parseDouble((String)value));
+					break;
+				case "toteIZone":
+					toteElevatorMotor.setIZone(Integer.parseInt((String)value));
+					break;
+				}
+			}
+			
+		});
 		
 		toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
@@ -147,8 +183,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 		}
 
+		SmartDashboard.putNumber("toteElevatorMotor.getIZone()", toteElevatorMotor.getIZone());
 		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()",toteElevatorMotor.getEncPosition());
 		SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()",toteElevatorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", toteElevatorMotor.getOutputCurrent());
 		SmartDashboard.putNumber("toteElevatorMotor.get()",toteElevatorMotor.get());
 	}
 
@@ -234,4 +272,3 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		return bInitFinished;
 	}
 }
-

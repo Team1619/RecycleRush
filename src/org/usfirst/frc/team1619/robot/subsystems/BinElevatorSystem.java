@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
  *
  */
 public class BinElevatorSystem extends StateMachineSystem {
-	public static final double kEncoderTicksPerInch = 2043 / 32.0;
+	public static final double kEncoderTicksPerInch = 2043 / 32.0; //fish
 	public static final double kOutOfTheWayPosition = -2.0;
 	public static final double kTransitPosition = 0.0;
 	public static final double kFeederPosition = 0.0;
@@ -36,6 +36,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kBinElevatorHeightModifier = -6.0; //fish, accounts for bottom of bin gripper being below the "binElevatorPosition"
 	public static final double kDistanceBetweenLifts = 45.0; //catfinches
 	public static final double kSafetyTolerance = 1.0;
+	public static final double kBinPickupPosition = -8.427; //catfinches
+	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
 	
 	public static final double kToteElevatorSafetyForTilt = 5.5; //fish
 	
@@ -61,7 +63,9 @@ public class BinElevatorSystem extends StateMachineSystem {
 	private JoystickButton openClawButton;
 	private JoystickButton closeClawButton;
 	
-	
+	private JoystickButton moveClawForBinPickupButton;
+	private JoystickButton moveClawForNoodleInsertionButton;
+
 	private double binElevatorSpeed; // will be %vbus 
 	private boolean usePosition;
 	private double moveTo;
@@ -115,6 +119,9 @@ public class BinElevatorSystem extends StateMachineSystem {
 		
 		openClawButton = OI.getInstance().openClawButton;
 		closeClawButton = OI.getInstance().closeClawButton;
+		
+		moveClawForBinPickupButton = OI.getInstance().moveClawForBinPickupButton;
+		moveClawForNoodleInsertionButton = OI.getInstance().moveClawForNoodleInsertionButton;
 		
 		binElevatorMotor.setPID(2.5, 0.00001, 0, 0.0001, 500, 24/0.250, 0);
     	
@@ -192,8 +199,8 @@ public class BinElevatorSystem extends StateMachineSystem {
     		finalMoveTo = moveTo;
     	}
     	
-    	System.out.println(bottonOfBinElevator);
-    	System.out.println(topOfToteElevator);
+    	//System.out.println(bottonOfBinElevator);
+    	//System.out.println(topOfToteElevator);
     	
 		if(binElevatorUp.get()) {
 			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
@@ -215,6 +222,14 @@ public class BinElevatorSystem extends StateMachineSystem {
 			moveTo = Double.NaN;
 			binElevatorSpeed = 0.0;
 			wasManual = true;
+		}
+		else if(moveClawForBinPickupButton.get()) {
+			setBinElevatorPosition(kBinPickupPosition);
+			useStatePostion = false;
+		}
+		else if(moveClawForNoodleInsertionButton.get()) {
+			setBinElevatorPosition(kBinNoodleInsertionPosition);
+			useStatePostion = false;
 		}
 		else {
 			if(wasManual) {

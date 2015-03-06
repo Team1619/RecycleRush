@@ -41,6 +41,9 @@ public class OI {
 	//private final JoystickButton unloadConveyorButton;
 	private final JoystickButton startHumanFeedButton;
 	private final JoystickButton stopHumanFeedButton;
+	
+	public final JoystickButton moveClawForBinPickupButton;
+	public final JoystickButton moveClawForNoodleInsertionButton;
 		
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -72,6 +75,9 @@ public class OI {
 		
 		presentBinButton = new JoystickButton(leftStick, RobotMap.presentClawButtonID);
 		// unstickToteButton = new JoystickButton(leftStick, RobotMap.unstickToteButtonID);
+		
+		moveClawForBinPickupButton = new JoystickButton(leftStick, RobotMap.moveClawForBinPickupButtonID);
+		moveClawForNoodleInsertionButton = new JoystickButton(leftStick, RobotMap.moveClawForNoodleInsertionButtonID);
 	}
 	
 	public void init() {
@@ -94,7 +100,7 @@ public class OI {
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
+		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));		
 	}
 	
 	public void updateKachig() {
