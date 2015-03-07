@@ -240,16 +240,9 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		//StateMachine.getInstance().abortSignal.raise();
-		boolean closedFlag = false;
 		if(ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed()) {
 			ToteElevatorSystem.getInstance().setToteElevatorPositionValue(0.0);
-			closedFlag = true;
-		}
-		if(BinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed()) {
-			BinElevatorSystem.getInstance().setBinElevatorPositionValue(0.0);
-			if(closedFlag) {
-				StateMachine.getInstance().initialized.raise();
-			}
+			StateMachine.getInstance().initialized.raise();
 		}
 		
 		StateMachine.getInstance().init();
