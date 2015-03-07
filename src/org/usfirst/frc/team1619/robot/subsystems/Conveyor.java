@@ -7,7 +7,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -33,8 +32,6 @@ public class Conveyor extends StateMachineSystem {
 	private Timer rearSensorDebounceTimer = new Timer();
 	private final double kDebounceTime = 0.05;
 	
-	private Joystick leftStick;
-	
 	private final JoystickButton conveyorForwardButton;
 	private final JoystickButton conveyorBackButton;
 		
@@ -45,11 +42,9 @@ public class Conveyor extends StateMachineSystem {
     	
     	frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
 		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
-		
-		leftStick = OI.getInstance().leftStick;
-		
-		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.coneyorFowardButtonID);
-		conveyorBackButton = new JoystickButton(leftStick, RobotMap.coneyorBackButtonID);
+
+		conveyorForwardButton = OI.getInstance().conveyorForwardButton;
+		conveyorBackButton = OI.getInstance().conveyorBackButton;
 		
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();

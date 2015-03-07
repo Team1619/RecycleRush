@@ -43,7 +43,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private ToteElevatorSystem() {
 		leftStick = OI.getInstance().leftStick;
 		
-		toteElevatorManualButton = new JoystickButton(leftStick, RobotMap.toteElevatorManualButtonID);
+		toteElevatorManualButton = OI.getInstance().toteElevatorManualButton;
 
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
 		toteElevatorMotor.enableLimitSwitch(true, true);

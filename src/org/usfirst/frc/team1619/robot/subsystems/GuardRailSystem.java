@@ -6,7 +6,6 @@ import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
@@ -21,21 +20,17 @@ public class GuardRailSystem extends StateMachineSystem {
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
 	
-	private final Joystick leftStick;
-	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	private CANTalon guardRailMotor; //overdrive slightly
 	
 	private GuardRailSystem() {
-		leftStick = OI.getInstance().leftStick;
-		
     	guardRailMotor = new CANTalon(RobotMap.guardRailMotor);
     	guardRailMotor.enableLimitSwitch(false, false);
     	guardRailMotor.enableBrakeMode(false);
     	
-    	guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
-		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+    	guardRailOpenButton = OI.getInstance().guardRailOpenButton;
+		guardRailCloseButton = OI.getInstance().guardRailCloseButton;
 	}
 	
 	private static GuardRailSystem theSystem;
