@@ -4,7 +4,6 @@ package org.usfirst.frc.team1619.robot;
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
-import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GuardRailSystem;
@@ -106,7 +105,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
 		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
 		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
-		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
+//		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
 		SmartDashboard.putNumber("Tote Lift Encoder Position", ToteElevatorSystem.getInstance().getToteElevatorPosition());
 		StateMachine.getInstance().display();

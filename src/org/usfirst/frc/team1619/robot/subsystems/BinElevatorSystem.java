@@ -124,32 +124,32 @@ public class BinElevatorSystem extends StateMachineSystem {
 		moveClawForBinPickupButton = OI.getInstance().moveClawForBinPickupButton;
 		moveClawForNoodleInsertionButton = OI.getInstance().moveClawForNoodleInsertionButton;
 		
-		binElevatorMotor.setPID(2.5, 0.00001, 0, 0.0001, 500, 24/0.250, 0);
+		//binElevatorMotor.setPID(2.5, 0.00001, 0, 0.0001, 500, 24/0.250, 0);
     	
-		Preferences.addTableListener(new ITableListener() {
-			@Override
-			public void valueChanged(ITable source, String key, Object value,
-					boolean isNew) {
-				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
-						key, value.toString(), Boolean.toString(isNew)));
-				
-				switch(key) {
-				case "binP":
-					binElevatorMotor.setP(Double.parseDouble((String)value));
-					break;
-				case "binI":
-					binElevatorMotor.setI(Double.parseDouble((String)value));
-					break;
-				case "binD":
-					binElevatorMotor.setD(Double.parseDouble((String)value));
-					break;
-				case "binF":
-					binElevatorMotor.setF(Double.parseDouble((String)value));
-					break;
-				}
-			}
-			
-		}, true);
+//		Preferences.addTableListener(new ITableListener() {
+//			@Override
+//			public void valueChanged(ITable source, String key, Object value,
+//					boolean isNew) {
+//				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
+//						key, value.toString(), Boolean.toString(isNew)));
+//				
+//				switch(key) {
+//				case "binP":
+//					binElevatorMotor.setP(Double.parseDouble((String)value));
+//					break;
+//				case "binI":
+//					binElevatorMotor.setI(Double.parseDouble((String)value));
+//					break;
+//				case "binD":
+//					binElevatorMotor.setD(Double.parseDouble((String)value));
+//					break;
+//				case "binF":
+//					binElevatorMotor.setF(Double.parseDouble((String)value));
+//					break;
+//				}
+//			}
+//			
+//		}, true);
 	}
 	
 	private final static BinElevatorSystem theSystem = new BinElevatorSystem();
@@ -168,104 +168,105 @@ public class BinElevatorSystem extends StateMachineSystem {
     	usePosition = false;
     }
     
-    public void setBinElevatorPosition(double position) {  //in inches
-    	moveTo = position;
-    	usePosition = true;
-    }
+//    public void setBinElevatorPosition(double position) {  //in inches
+//    	moveTo = position;
+//    	usePosition = true;
+//    }
     
-    private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
-    	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
-    }
-    
-    public double getBinElevatorPosition() { //get current position in inches
-    	return binElevatorMotor.getPosition()/kEncoderTicksPerInch;
-    }
-    
-    private boolean wasManual = false;
-    private double toToteElevatorPosition(double binElevatorPosition) {
-    	return binElevatorPosition + kTotalHeight;
-    }
-    private double toBinElevatorPosition(double binElevatorPosition) {
-    	return binElevatorPosition - kTotalHeight;
-    }
+//    private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
+//    	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
+//    }
+//    
+//    public double getBinElevatorPosition() { //get current position in inches
+//    	return binElevatorMotor.getPosition()/kEncoderTicksPerInch;
+//    }
+//    
+//    private boolean wasManual = false;
+//    private double toToteElevatorPosition(double binElevatorPosition) {
+//    	return binElevatorPosition + kTotalHeight;
+//    }
+//    private double toBinElevatorPosition(double binElevatorPosition) {
+//    	return binElevatorPosition - kTotalHeight;
+//    }
     private void binElevatorUpdate() {  
-    	boolean inInit = StateMachine.getInstance().getState() == StateMachine.State.Init;
-    	double bottomOfBinElevator = toToteElevatorPosition(getBinElevatorPosition()) + kBinElevatorHeightModifier;
-    	double topOfToteElevator = ToteElevatorSystem.getInstance().getToteElevatorPosition() + kToteElevatorHeightModifier + kSafetyTolerance;
-    	double finalMoveTo;
-    	if(bottomOfBinElevator <= topOfToteElevator) {
-    		finalMoveTo = toBinElevatorPosition(topOfToteElevator - kBinElevatorHeightModifier);
-    	}
-    	else {
-    		finalMoveTo = moveTo;
-    	}
-    	
-    	//System.out.println(bottonOfBinElevator);
-    	//System.out.println(topOfToteElevator);
-    	
+//    	boolean inInit = StateMachine.getInstance().getState() == StateMachine.State.Init;
+//    	double bottomOfBinElevator = toToteElevatorPosition(getBinElevatorPosition()) + kBinElevatorHeightModifier;
+//    	double topOfToteElevator = ToteElevatorSystem.getInstance().getToteElevatorPosition() + kToteElevatorHeightModifier + kSafetyTolerance;
+//    	double finalMoveTo;
+//    	if(bottomOfBinElevator <= topOfToteElevator) {
+//    		finalMoveTo = toBinElevatorPosition(topOfToteElevator - kBinElevatorHeightModifier);
+//    	}
+//    	else {
+//    		finalMoveTo = moveTo;
+//    	}
+//    	
+//    	//System.out.println(bottonOfBinElevator);
+//    	//System.out.println(topOfToteElevator);
+//    	
 		if(binElevatorUp.get()) {
 			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 			binElevatorMotor.set(kBinElevatorUpSpeed);
 			usePosition = false;
 			moveTo = Double.NaN;
 			binElevatorSpeed = 0.0;
-			wasManual = true;
+//			wasManual = true;
 		}
-		else if(binElevatorDown.get()) {
-			if((bottomOfBinElevator > topOfToteElevator) || inInit) {
+//		else 
+		if(binElevatorDown.get()) {
+//			if((bottomOfBinElevator > topOfToteElevator) || inInit) {
 				binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 				binElevatorMotor.set(kBinElevatorDownSpeed);
-			}
-			else {
-				binElevatorMotor.changeControlMode(ControlMode.Position);
-				binElevatorMotor.set(finalMoveTo);	
-			}
+//			}
+//			else {
+//				binElevatorMotor.changeControlMode(ControlMode.Position);
+//				binElevatorMotor.set(finalMoveTo);	
+//			}
 			usePosition = false;
 			moveTo = Double.NaN;
 			binElevatorSpeed = 0.0;
-			wasManual = true;
+//			wasManual = true;
 		}
-		else if(moveClawForBinPickupButton.get()) {
-			setBinElevatorPosition(kBinPickupPosition);
-			useStatePostion = false;
-		}
-		else if(moveClawForNoodleInsertionButton.get()) {
-			setBinElevatorPosition(kBinNoodleInsertionPosition);
-			useStatePostion = false;
-		}
-		else {
-			if(wasManual) {
-				setBinElevatorPosition(getBinElevatorPosition());
-				wasManual = false;
-				useStatePostion = false;
-			}
-			if(usePosition) {
-				if(Double.isNaN(moveTo)) {
-					binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-					binElevatorMotor.set(0);
-				}
-				else  {
-//					if(Math.abs(moveTo - getBinElevatorPosition()) < kPositionTolerance) {
-//						binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-//						binElevatorMotor.set(0);
-//					}
-//					else {
-					binElevatorMotor.changeControlMode(ControlMode.Position);
-					binElevatorMotor.set(finalMoveTo *kEncoderTicksPerInch);
-//					}
-				}
-			}
-			else {
-				if((bottomOfBinElevator > topOfToteElevator || binElevatorSpeed < 0) || inInit) {
-					binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-					binElevatorMotor.set(binElevatorSpeed);
-				}
-				else {
-					binElevatorMotor.changeControlMode(ControlMode.Position);
-					binElevatorMotor.set(finalMoveTo);	
-				}
-			}
-		}
+//		else if(moveClawForBinPickupButton.get()) {
+//			setBinElevatorPosition(kBinPickupPosition);
+//			useStatePostion = false;
+//		}
+//		else if(moveClawForNoodleInsertionButton.get()) {
+//			setBinElevatorPosition(kBinNoodleInsertionPosition);
+//			useStatePostion = false;
+//		}
+//		else {
+//			if(wasManual) {
+//				setBinElevatorPosition(getBinElevatorPosition());
+//				wasManual = false;
+//				useStatePostion = false;
+//			}
+//			if(usePosition) {
+//				if(Double.isNaN(moveTo)) {
+//					binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+//					binElevatorMotor.set(0);
+//				}
+//				else  {
+////					if(Math.abs(moveTo - getBinElevatorPosition()) < kPositionTolerance) {
+////						binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+////						binElevatorMotor.set(0);
+////					}
+////					else {
+//					binElevatorMotor.changeControlMode(ControlMode.Position);
+//					binElevatorMotor.set(finalMoveTo *kEncoderTicksPerInch);
+////					}
+//				}
+//			}
+//			else {
+//				if((bottomOfBinElevator > topOfToteElevator || binElevatorSpeed < 0) || inInit) {
+//					binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+//					binElevatorMotor.set(binElevatorSpeed);
+//				}
+//				else {
+//					binElevatorMotor.changeControlMode(ControlMode.Position);
+//					binElevatorMotor.set(finalMoveTo);	
+//				}
+//			}
+//		}
 
 		SmartDashboard.putNumber("binElevatorMotor.getEncPosition()",binElevatorMotor.getEncPosition());
 		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()",binElevatorMotor.getOutputVoltage());
@@ -351,7 +352,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 			bInitFinished = false;
 			break;
 		case Idle:
-			setBinElevatorPosition(getBinElevatorPosition());
+//			setBinElevatorPosition(getBinElevatorPosition());
 			break;
 		case HumanFeed_RaiseTote:
 			ableToTilt = false;
@@ -381,7 +382,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 			}
 			else {
 				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
-					setBinElevatorPositionValue(-27.881);
+//					setBinElevatorPositionValue(-27.881);
 					setBinElevatorSpeed(0.0);
 					bInitFinished = true;
 				}
@@ -395,23 +396,23 @@ public class BinElevatorSystem extends StateMachineSystem {
 			break;
 		case HumanFeed_RaiseTote:
 			if(useStatePostion) {
-				setBinElevatorPosition(kOutOfTheWayPosition);	
+//				setBinElevatorPosition(kOutOfTheWayPosition);	
 			}
 			break;
 		case HumanFeed_WaitForTote:
 			if(useStatePostion) {
-				setBinElevatorPosition(kOutOfTheWayPosition);	
+//				setBinElevatorPosition(kOutOfTheWayPosition);	
 			}
 			break;
 		case HumanFeed_ToteOnConveyor:
-			if(useStatePostion) {
-				setBinElevatorPosition(kOutOfTheWayPosition);	
-			}
+//			if(useStatePostion) {
+//				setBinElevatorPosition(kOutOfTheWayPosition);	
+//			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
-			if(useStatePostion) {
-				setBinElevatorPosition(kOutOfTheWayPosition);	
-			}
+//			if(useStatePostion) {
+//				setBinElevatorPosition(kOutOfTheWayPosition);	
+//			}
 			break;
 		case GroundFeed:
 			break;
