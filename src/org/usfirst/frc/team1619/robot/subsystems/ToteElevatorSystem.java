@@ -24,7 +24,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kFeederPosition = 20.8;
 	public static final double kPickUpPosition = -2.0;
 	public static final double kPositionTolerance = 3.0;
-	public static final double kDeadZone = 1.0;
+	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.2;
 
 	public final CANTalon toteElevatorMotor;
@@ -51,7 +51,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseSensor(false);
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		toteElevatorMotor.setPID(0.55, 0.40, 0, 0.0001, 300, 24/0.250, 0);
+		toteElevatorMotor.setPID(0.55, 0.005, 0, 0.0001, 800, 24/0.250, 0);
 
 		Preferences.putNumber("toteP", toteElevatorMotor.getP());
 		Preferences.putNumber("toteI", toteElevatorMotor.getI());

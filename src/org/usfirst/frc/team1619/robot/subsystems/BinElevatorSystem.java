@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
  */
 public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 2043 / 32.0; //fish
-	public static final double kOutOfTheWayPosition = -2.0;
+	public static final double kOutOfTheWayPosition = 0.0;
 	public static final double kTransitPosition = 0.0;
 	public static final double kFeederPosition = 0.0;
 	public static final double kPickUpPosition = 0.0;
