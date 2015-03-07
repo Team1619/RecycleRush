@@ -111,7 +111,7 @@ public class Robot extends IterativeRobot {
 		StateMachine.getInstance().display();
 		
 		Accelerometer.getInstance().display();
-		OI.getInstance().updateKachig();
+		OI.getInstance().updatePOV();
 
 		if (pdpLogTimer.get() >= 1) {
 			pdpLumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
