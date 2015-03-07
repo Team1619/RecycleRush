@@ -172,7 +172,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	usePosition = true;
     }
     
-    private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
+    public void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
     	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
     }
     

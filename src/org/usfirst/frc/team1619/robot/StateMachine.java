@@ -81,6 +81,7 @@ public class StateMachine {
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
+	public final Signal initialized = new Signal();
 	
 	private final Timer stateTimer = new Timer();
 	
