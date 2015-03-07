@@ -264,6 +264,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			break;
 		case BinPickup:
 			break;
+		case TotePickup:
+			if(useStatePosition) {
+				setToteElevatorPosition(kPickUpPosition);
+			}
+			break;
 		case Abort:
 			break;
 		default:

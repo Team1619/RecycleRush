@@ -137,7 +137,7 @@ public class StateMachine {
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check())
 				{
-					return HumanFeed_ThrottleConveyorAndDescend;
+					return TotePickup;
 				}
 				return this;
 			}
@@ -319,6 +319,36 @@ public class StateMachine {
 			@Override
 			public String toString() {
 				return "Bin Pickup";
+			}
+		},
+		TotePickup {
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanFeed_Start.check()) {
+					sm.numberTotes = 0;
+					
+					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+						sm.humanFeed_ToteOnConveyor.clear();
+						sm.humanFeed_ThrottleConveyorDescend.clear();
+						return HumanFeed_RaiseTote;
+					}
+					else {
+						return Idle;
+					}
+				}
+				return Idle;
+			}
+			
+			@Override
+			public String toString() {
+				return "Tote Pickup";
 			}
 		},
 		Abort {
