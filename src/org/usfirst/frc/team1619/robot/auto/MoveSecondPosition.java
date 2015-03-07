@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1619.robot.auto;
 
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.commands.TurnCommand;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -9,10 +12,10 @@ public class MoveSecondPosition extends CommandGroup {
     
     public  MoveSecondPosition() {
        
-    	addSequential(new MoveForward());
-    	addSequential(new Turn90Degrees());
-    	addSequential(new MoveForward());
-    	addSequential(new Turn90Degrees());
+    	addSequential(new LinearDriveCommand(1));
+    	addSequential(new TurnCommand(-90));
+    	addSequential(new LinearDriveCommand(1));
+    	addSequential(new TurnCommand(-90));
     	
     	addParallel(new ClawsClose());
     	

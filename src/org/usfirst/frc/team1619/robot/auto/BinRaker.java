@@ -12,10 +12,10 @@ public class BinRaker extends CommandGroup {
     public  BinRaker() {
     	
     	addSequential(new PrepareRake());
-    	addSequential(new PullBack());
+    	addSequential(new LinearDriveCommand(-1));
     	addSequential(new MoveSecondPosition());
     	addSequential(new PrepareRake());
-    	addSequential(new PullBack());
+    	addSequential(new LinearDriveCommand(-1));
     	addSequential(new LinearDriveCommand(10)); //moves to the autozone
     	
     }
