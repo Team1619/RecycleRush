@@ -15,7 +15,7 @@ public class Drivetrain extends Subsystem {
 	public static final double kWheelDiameter = 6 * (2.54/100); //in meters
 	public static final int kPulsesPerRev = 512;
 	public static final double kDistancePerPulse = kWheelDiameter*Math.PI / kPulsesPerRev;
-	
+	public static final double kCorrection = 1.175/1.00;
 	public static final double kTwistScalar = 1.0;
 	
 	private RobotDrive drive;	
@@ -24,11 +24,9 @@ public class Drivetrain extends Subsystem {
     private CANTalon rightMotor1;
     private CANTalon rightMotor2;
 
-    private static Drivetrain theSystem;
+    private static Drivetrain theSystem = new Drivetrain();
 	
 	public static Drivetrain getInstance() {
-		if(theSystem == null)
-			theSystem = new Drivetrain();
 		return theSystem;
 	}
 
@@ -86,11 +84,11 @@ public class Drivetrain extends Subsystem {
 	 * @return
 	 */
 	public double getLeftEncoderPosition() {
-		return -kDistancePerPulse*leftMotor1.getEncPosition();
+		return -kDistancePerPulse*leftMotor1.getEncPosition() * kCorrection;
 	}
 	
 	public double getRightEncoderPosition() {
-		return kDistancePerPulse*rightMotor1.getEncPosition();
+		return kDistancePerPulse*rightMotor1.getEncPosition() * kCorrection;
 	}
 	
 	public int getRawRightEncoderPosition() {
@@ -104,6 +102,22 @@ public class Drivetrain extends Subsystem {
 	public void resetEncoders() {
 		leftMotor1.setPosition(0.0);
 		rightMotor1.setPosition(0.0);
+	}
+	
+	public void setBrakeMode(boolean enabled) {
+		leftMotor1.enableBrakeMode(enabled);
+		rightMotor1.enableBrakeMode(enabled);
+		leftMotor2.enableBrakeMode(enabled);
+		rightMotor2.enableBrakeMode(enabled);
+	}
+	
+	public void autoMode() {
+		setBrakeMode(true);
+	}
+	
+	public void teleopMode() {
+		setBrakeMode(false);
+	
 	}
 }
 

@@ -2,6 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
@@ -156,6 +157,8 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		//add in Auto stuff thing
+		Drivetrain.getInstance().autoMode();
+		new LinearDriveCommand(1).start();
 	}
 
 	/**
@@ -235,6 +238,7 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		//StateMachine.getInstance().abortSignal.raise();
+		Drivetrain.getInstance().teleopMode();
 	}
 
 	public void teleopPeriodic() {
