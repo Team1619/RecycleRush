@@ -11,9 +11,9 @@ public class PrepareRake extends CommandGroup {
     
     public  PrepareRake() {
         
-    	addParallel(new ArmDown());
-    	addParallel(new ClawsOpen());
+    	addSequential(new ArmDown());
     	addParallel(new LinearDriveCommand(1));
+    	addSequential(new RakerOpen());
     	
     	// Add Commands here:
         // e.g. addSequential(new Command1());

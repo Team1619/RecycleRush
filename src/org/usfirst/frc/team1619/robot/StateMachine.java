@@ -126,7 +126,7 @@ public class StateMachine {
 				if(sm.humanFeed_Start.check()) {
 					sm.numberTotes = 0;
 					
-					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+					if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
 						sm.humanFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;

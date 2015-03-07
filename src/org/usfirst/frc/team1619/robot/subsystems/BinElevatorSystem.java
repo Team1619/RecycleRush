@@ -95,7 +95,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	
     	tilterMotor = new CANTalon(RobotMap.tilterMotor);
     	tilterMotor.enableLimitSwitch(true, true);
-    	tilterMotor.enableBrakeMode(false);
+    	tilterMotor.enableBrakeMode(true);
     	tilterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
     	tilterMotor.ConfigRevLimitSwitchNormallyOpen(true);
     	
@@ -294,11 +294,11 @@ public class BinElevatorSystem extends StateMachineSystem {
     	tilterMotorSpeed = moveValue;
     }
     
-    private void binTiltUpdate() {
+    public void binTiltUpdate() {
     	if(ableToTilt) {
     		double toteElevatorPosition = ToteElevatorSystem.getInstance().getToteElevatorPosition();
     		double joystickY = leftStick.getY();
-    		if(!toteElevatorManualButton.get()) {
+    		if(Math.abs(joystickY) > 0.1 && !toteElevatorManualButton.get()) {
     			if(joystickY < 0 && toteElevatorPosition >= kToteElevatorSafetyForTilt) {
         			tilterMotor.set(0.0);
         		} 
@@ -331,8 +331,12 @@ public class BinElevatorSystem extends StateMachineSystem {
     	}
     }
     
-    public boolean getTilterMotorFwdLimitSwitch() {
+    public boolean getTilterBackLimitSwitch() {
     	return tilterMotor.isFwdLimitSwitchClosed();
+    }
+    
+    public boolean getTilterFowardLimitSwtich() {
+    	return tilterMotor.isRevLimitSwitchClosed();
     }
     
     public void moveBinGrip(double moveValue) {
@@ -351,10 +355,16 @@ public class BinElevatorSystem extends StateMachineSystem {
     	}
     }
     
+    public boolean getOpenedLimitSwitch() {
+    	return rakerMotor.isFwdLimitSwitchClosed();
+    }
+    public boolean getClosedLimitSwitch() {
+    	return rakerMotor.isRevLimitSwitchClosed();
+    }
+    
     public void moveRaker(double moveValue) {
     	rakerSpeed = moveValue;
     }
-    
     private void rakerUpdate() {
     	if(rakerOpenManualButton.get())
     		rakerMotor.set(0.4);

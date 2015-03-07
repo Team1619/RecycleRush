@@ -124,9 +124,13 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 	private boolean wasManual = false;
+	boolean noGoUp = true;
 	
 	private void toteElevatorUpdate() {
-		boolean noGoUp = !BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch();
+		if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch() && noGoUp) {
+			toteElevatorMotor.ClearIaccum();
+		}
+		noGoUp = !BinElevatorSystem.getInstance().getTilterBackLimitSwitch();
 		double joystickY = leftStick.getY(); //make negative for back on joystick to be down
 		
 		if(toteElevatorManualButton.get()) {
@@ -163,6 +167,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 						if(moveTo > getToteElevatorPosition() && noGoUp) {
 							toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 							toteElevatorMotor.set(0.0);
+							toteElevatorMotor.ClearIaccum();
 						}
 						else {
 							toteElevatorMotor.changeControlMode(ControlMode.Position);
