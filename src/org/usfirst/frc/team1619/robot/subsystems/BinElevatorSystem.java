@@ -375,6 +375,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 			else {
 				setBinElevatorSpeed(kInitSpeed);
 			}
+			if(elapsed < 1.0)
+			{
+				moveRaker(0.4);
+			}
 			break;
 		case Idle:
 			//setBinElevatorPosition(0.0); //just move it to top for now

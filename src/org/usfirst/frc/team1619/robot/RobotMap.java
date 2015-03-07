@@ -62,6 +62,7 @@ public class RobotMap {
 	public static final int moveClawForBinPickupButtonID = 4;
 	public static final int moveClawForNoodleInsertionButtonID = 2;
 	
+	public static final int pickUpToteButtonID = 9;
 
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1
 	public static final int gyroRateAnalogID = 0;//rate - analog 2
