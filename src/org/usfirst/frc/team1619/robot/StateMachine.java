@@ -29,6 +29,16 @@ public class StateMachine {
 		toStopHumanFeed = false;
 	}
 	
+	public void init() {
+		if(initialized.check()) {
+			currentState = State.Idle;
+			initialized.clear();
+		}
+		else {
+			currentState = State.Init;
+		}
+	}
+	
 	private static StateMachine stateMachine;
 	public static StateMachine getInstance() {
 		if(stateMachine == null) {
@@ -81,6 +91,7 @@ public class StateMachine {
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
+	public final Signal initialized = new Signal();
 	
 	private final Timer stateTimer = new Timer();
 	
