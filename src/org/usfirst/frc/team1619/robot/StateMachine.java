@@ -83,7 +83,6 @@ public class StateMachine {
 	public final Signal humanPlayerFeed_ToteOnConveyor = new AutoClearSignal();
 	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanPlayerFeed_Stop = new AutoClearSignal();
-	public final Signal presentBinSignal = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
 	
@@ -139,9 +138,6 @@ public class StateMachine {
 					else {
 						return Idle;
 					}
-				}
-				if(sm.presentBinSignal.check()) {
-					return PresentBin;
 				}
 				return Idle;
 			}
@@ -249,21 +245,6 @@ public class StateMachine {
 			@Override
 			public String toString() {
 				return "HumanFeed_ThrottleConveyorDescend";
-			}
-
-			@Override
-			protected void init(StateMachine sm) {
-			}
-		},
-		PresentBin {
-			@Override
-			public State run(StateMachine sm) {
-				return null;
-			}
-
-			@Override
-			public String toString() {
-				return "PresentBin";
 			}
 
 			@Override
