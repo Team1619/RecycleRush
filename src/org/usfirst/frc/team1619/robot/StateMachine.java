@@ -29,7 +29,7 @@ public class StateMachine {
 	private StateMachine() {
 		leftStick = OI.getInstance().leftStick;
 		numberTotes = 0;
-		incrementNumberTotesButton = new JoystickButton(leftStick, RobotMap.incrementNumberTotesButtonID);
+		incrementNumberTotesButton = OI.getInstance().incrementNumberTotesButton;
 		incrementNumberTotes = false;
 		toStopHumanFeed = false;
 	}

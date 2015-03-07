@@ -112,10 +112,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 		binElevatorDown = OI.getInstance().binElevatorDown;
 		
 		//left stick
-		binTiltManualButton = new JoystickButton(leftStick, RobotMap.binTiltManualButtonID);
+		binTiltManualButton = OI.getInstance().binTiltManualButton;
 		
-		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
-		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
+		rakerOpenManualButton = OI.getInstance().rakerOpenManualButton;
+		rakerCloseManualButton = OI.getInstance().rakerCloseManualButton;
 		
 		openClawButton = OI.getInstance().openClawButton;
 		closeClawButton = OI.getInstance().closeClawButton;
