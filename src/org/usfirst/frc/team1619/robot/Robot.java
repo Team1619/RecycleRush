@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		OI.getInstance().init();
 		GyroSystem.getInstance().calibrate();
-		Camera.getInstance();
+		//Camera.getInstance();
 		BinElevatorSystem.getInstance().init();
 		ToteElevatorSystem.getInstance();
 		GuardRailSystem.getInstance();
@@ -91,6 +91,8 @@ public class Robot extends IterativeRobot {
 				"Tote Current 2", 
 				"Bin Current"
 				);
+		
+		StateMachine.State.Init.init(StateMachine.getInstance());
 	}
 
 	/**

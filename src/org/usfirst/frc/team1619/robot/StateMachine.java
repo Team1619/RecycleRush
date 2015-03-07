@@ -386,4 +386,8 @@ public class StateMachine {
 		SmartDashboard.putNumber("Number of Totes", numberTotes);
 		SmartDashboard.putString("CurrentState", currentState.toString());
 	}
+	
+	public State getState() {
+		return currentState;
+	}
 }

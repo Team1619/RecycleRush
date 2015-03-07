@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.subsystems;
 import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
+import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -25,7 +26,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kFeederPosition = 0.0;
 	public static final double kPickUpPosition = 0.0;
 	public static final double kPositionTolerance = 1.0;
-	public static final double kInitSpeed = -0.2;
+	public static final double kInitSpeed = 0.2;
 	public static final double kBinElevatorUpSpeed = -0.4;
 	public static final double kBinElevatorDownSpeed = 0.4;
 	
@@ -35,7 +36,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kToteElevatorHeightModifier = 10.0; //fish, accounts for the plastic fins on elevator being above the "toteElevatorPosition" 
 	public static final double kBinElevatorHeightModifier = -6.0; //fish, accounts for bottom of bin gripper being below the "binElevatorPosition"
 	public static final double kDistanceBetweenLifts = 45.0; //catfinches
-	public static final double kSafetyTolerance = 1.0;
+	public static final double kSafetyTolerance = 12.0;
 	public static final double kBinPickupPosition = -8.427; //catfinches
 	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
 	
@@ -188,12 +189,12 @@ public class BinElevatorSystem extends StateMachineSystem {
     	return binElevatorPosition - kTotalHeight;
     }
     private void binElevatorUpdate() {  
-    	double bottonOfBinElevator = toToteElevatorPosition(moveTo) + kBinElevatorHeightModifier;
+    	boolean inInit = StateMachine.getInstance().getState() == StateMachine.State.Init;
+    	double bottomOfBinElevator = toToteElevatorPosition(getBinElevatorPosition()) + kBinElevatorHeightModifier;
     	double topOfToteElevator = ToteElevatorSystem.getInstance().getToteElevatorPosition() + kToteElevatorHeightModifier + kSafetyTolerance;
     	double finalMoveTo;
-    	if(bottonOfBinElevator <= topOfToteElevator) {
-    		bottonOfBinElevator = topOfToteElevator;
-    		finalMoveTo = toBinElevatorPosition(bottonOfBinElevator - kBinElevatorHeightModifier);
+    	if(bottomOfBinElevator <= topOfToteElevator) {
+    		finalMoveTo = toBinElevatorPosition(topOfToteElevator - kBinElevatorHeightModifier);
     	}
     	else {
     		finalMoveTo = moveTo;
@@ -211,12 +212,13 @@ public class BinElevatorSystem extends StateMachineSystem {
 			wasManual = true;
 		}
 		else if(binElevatorDown.get()) {
-			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-			if(bottonOfBinElevator <= topOfToteElevator) {
-				binElevatorMotor.set(0.0);	
+			if((bottomOfBinElevator > topOfToteElevator) || inInit) {
+				binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+				binElevatorMotor.set(kBinElevatorDownSpeed);
 			}
 			else {
-				binElevatorMotor.set(kBinElevatorDownSpeed);
+				binElevatorMotor.changeControlMode(ControlMode.Position);
+				binElevatorMotor.set(finalMoveTo);	
 			}
 			usePosition = false;
 			moveTo = Double.NaN;
@@ -254,8 +256,14 @@ public class BinElevatorSystem extends StateMachineSystem {
 				}
 			}
 			else {
-				binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-				binElevatorMotor.set(binElevatorSpeed);
+				if((bottomOfBinElevator > topOfToteElevator || binElevatorSpeed < 0) || inInit) {
+					binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+					binElevatorMotor.set(binElevatorSpeed);
+				}
+				else {
+					binElevatorMotor.changeControlMode(ControlMode.Position);
+					binElevatorMotor.set(finalMoveTo);	
+				}
 			}
 		}
 
@@ -331,9 +339,9 @@ public class BinElevatorSystem extends StateMachineSystem {
     private boolean useStatePostion = true;
     
     public void init(State state) {
-		usePosition = false;
-		binElevatorSpeed = 0;
-		moveTo = Double.NaN;
+//		usePosition = false;
+//		binElevatorSpeed = 0;
+//		moveTo = Double.NaN;
 		
 		useStatePostion = true;
 		ableToTilt = true;
@@ -363,21 +371,23 @@ public class BinElevatorSystem extends StateMachineSystem {
 	}
     
 	@Override
-	public void run(State state, double elapsed) {		
+	public void run(State state, double elapsed) {	
+		moveRaker(0);
+		
 		switch(state) {
 		case Init:
-			//should be top limit switch
-			if(binElevatorMotor.isRevLimitSwitchClosed()) {
-				setBinElevatorPositionValue(0.0);
-				setBinElevatorSpeed(0.0);
-				bInitFinished = true;
+			if(bInitFinished) {
+				setBinElevatorSpeed(0);
 			}
 			else {
-				setBinElevatorSpeed(kInitSpeed);
-			}
-			if(elapsed < 1.0)
-			{
-				moveRaker(0.4);
+				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
+					setBinElevatorPositionValue(-27.881);
+					setBinElevatorSpeed(0.0);
+					bInitFinished = true;
+				}
+				else {
+					setBinElevatorSpeed(kInitSpeed);
+				}
 			}
 			break;
 		case Idle:
