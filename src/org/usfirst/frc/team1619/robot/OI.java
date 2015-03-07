@@ -64,9 +64,6 @@ public class OI {
 		kachigForward = new InternalButton();
 		kachigBackward = new InternalButton();
 		
-		binElevatorUp = new InternalButton();
-		binElevatorDown = new InternalButton();
-		
 		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
 		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
 		
@@ -79,6 +76,9 @@ public class OI {
 		incrementNumberTotesButton = new JoystickButton(rightStick, RobotMap.incrementNumberTotesButtonID);
 		
 		//Left stick
+		binElevatorUp = new InternalButton();
+		binElevatorDown = new InternalButton();
+		
 		closeClawButton = new JoystickButton(leftStick, RobotMap.closeClawButtonID);
 		openClawButton = new JoystickButton(leftStick, RobotMap.openClawButtonID);
 		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
@@ -94,8 +94,6 @@ public class OI {
 		
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
-		
-		
 	}
 	
 	public void init() {
