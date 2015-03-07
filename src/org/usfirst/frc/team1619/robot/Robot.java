@@ -52,7 +52,6 @@ public class Robot extends IterativeRobot {
 		Camera.getInstance();
 		BinElevatorSystem.getInstance().init();
 		ToteElevatorSystem.getInstance();
-		Conveyor.getInstance().init();
 		GuardRailSystem.getInstance();
 		pdpCAN = new PowerDistributionPanel();
 		pdpLogTimer = new Timer();

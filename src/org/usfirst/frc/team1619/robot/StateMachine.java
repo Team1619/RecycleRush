@@ -6,7 +6,6 @@ import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,8 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StateMachine {
 	private State currentState = State.Init;
 	//private State currentState = State.Idle;
-	
-	private final Joystick leftStick;
 	
 	private int numberTotes;
 	private final JoystickButton incrementNumberTotesButton;
@@ -27,7 +24,6 @@ public class StateMachine {
 	}
 	
 	private StateMachine() {
-		leftStick = OI.getInstance().leftStick;
 		numberTotes = 0;
 		incrementNumberTotesButton = OI.getInstance().incrementNumberTotesButton;
 		incrementNumberTotes = false;

@@ -94,7 +94,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	
     	binGripMotor = new CANTalon(RobotMap.binGripMotor);
     	binGripMotor.enableLimitSwitch(false, false);
-    	binGripMotor.enableBrakeMode(false);
+    	binGripMotor.enableBrakeMode(true);
     	
     	rakerMotor = new CANTalon(RobotMap.rakerMotor);
     	rakerMotor.enableLimitSwitch(true, true);

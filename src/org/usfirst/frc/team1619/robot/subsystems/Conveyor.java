@@ -58,43 +58,6 @@ public class Conveyor extends StateMachineSystem {
 		return theSystem;
 	}
 	
-	public void init() {
-		/*
-		rearConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Object>() {
-			private Signal signal = StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor;
-			
-			public Object overridableParamater() {
-				return null;
-			}
-			
-			@Override
-			protected void interruptFired2(int interruptAssertedMask,
-					Object object) {
-				signal.raise();
-			}
-			
-		});
-		rearConveyorOpticalSensor.setUpSourceEdge(false, true);
-		rearConveyorOpticalSensor.enableInterrupts();
-		
-		frontConveyorOpticalSensor.requestInterrupts(new FixedInterruptHandler<Object>() {
-			private Signal signal = StateMachine.getInstance().humanPlayerFeed_ThrottleConveyorDescend;
-			
-			@SuppressWarnings("unused")
-			public Object overridablePramater() {
-				return null;
-			}
-			
-			@Override
-			protected void interruptFired2(int interruptAssertedMask, Object object) {
-				signal.raise();
-			}
-		});
-		frontConveyorOpticalSensor.setUpSourceEdge(true, false);
-		frontConveyorOpticalSensor.enableInterrupts();
-		*/
-	}
-	
 	public void updateConveyorSignals() {
 		if(!getFrontSensorRaw()) {
 			if(frontSensor) {

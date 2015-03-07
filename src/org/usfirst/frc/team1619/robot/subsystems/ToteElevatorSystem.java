@@ -59,7 +59,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		Preferences.putNumber("toteF", toteElevatorMotor.getF());
 		Preferences.putNumber("toteIZone", toteElevatorMotor.getIZone());
 		Preferences.addTableListener(new ITableListener() {
-			
 			@Override
 			public void valueChanged(ITable source, String key, Object value, boolean isNew) {
 				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
