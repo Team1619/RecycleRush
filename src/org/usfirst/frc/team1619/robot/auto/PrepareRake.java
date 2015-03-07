@@ -1,5 +1,7 @@
 package org.usfirst.frc.team1619.robot.auto;
 
+import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -9,9 +11,9 @@ public class PrepareRake extends CommandGroup {
     
     public  PrepareRake() {
         
-    	addParallel(new ArmDown());
-    	addParallel(new ClawsOpen());
-    	addParallel(new MoveForward());
+    	addSequential(new ArmDown());
+    	addParallel(new LinearDriveCommand(1));
+    	addSequential(new RakerOpen());
     	
     	// Add Commands here:
         // e.g. addSequential(new Command1());

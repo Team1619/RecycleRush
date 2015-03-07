@@ -33,7 +33,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private final Joystick leftStick;
 	
 	private final JoystickButton toteElevatorManualButton;
-	private final JoystickButton pickUpToteButton;
 
 	private double toteElevatorSpeed; // will be %vbus 
 	private boolean usePosition;
@@ -45,7 +44,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		leftStick = OI.getInstance().leftStick;
 		
 		toteElevatorManualButton = OI.getInstance().toteElevatorManualButton;
-		pickUpToteButton = OI.getInstance().pickUpToteButton;
 
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
 		toteElevatorMotor.enableLimitSwitch(true, true);
@@ -126,15 +124,15 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 	private boolean wasManual = false;
+	boolean noGoUp = true;
 	
 	private void toteElevatorUpdate() {
-		boolean noGoUp = !BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch();
-		double joystickY = leftStick.getY();
-		
-		if(pickUpToteButton.get())
-		{
-			StateMachine.getInstance().humanFeed_EndCurrentStateAndDescend.raise();
+		if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch() && noGoUp) {
+			toteElevatorMotor.ClearIaccum();
 		}
+		noGoUp = !BinElevatorSystem.getInstance().getTilterBackLimitSwitch();
+		double joystickY = leftStick.getY(); //make negative for back on joystick to be down
+		
 		if(toteElevatorManualButton.get()) {
 			toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 			if(joystickY > 0.0 && noGoUp) {
@@ -169,6 +167,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 						if(moveTo > getToteElevatorPosition() && noGoUp) {
 							toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 							toteElevatorMotor.set(0.0);
+							toteElevatorMotor.ClearIaccum();
 						}
 						else {
 							toteElevatorMotor.changeControlMode(ControlMode.Position);
@@ -258,17 +257,15 @@ public class ToteElevatorSystem extends StateMachineSystem {
 				StateMachine.getInstance().humanFeed_RaiseTote.raise();	
 			}
 			break;
-		case GroundFeed:
-			break;
-		case Dropoff:
-			break;
-		case BinPickup:
-			break;
 		case TotePickup:
 			if(useStatePosition) {
 				setToteElevatorPosition(kPickUpPosition);
 			}
 			break;
+//		case GroundFeed:
+//			break;
+//		case Dropoff:
+//			break;
 		case Abort:
 			break;
 		default:

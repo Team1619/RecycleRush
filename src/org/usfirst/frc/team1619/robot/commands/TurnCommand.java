@@ -22,7 +22,7 @@ public class TurnCommand extends Command {
         // eg. requires(chassis);
     	drivetrain = Drivetrain.getInstance();
     	requires(drivetrain);
-    	distance = turnAngle * kTurnRadius;
+    	distance = turnAngle * kTurnRadius * Math.PI/180;
     }
 
     // Called just before this Command runs the first time

@@ -2,9 +2,9 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
+import org.usfirst.frc.team1619.robot.auto.PrepareRake;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
-import org.usfirst.frc.team1619.robot.subsystems.Camera;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GuardRailSystem;
@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		OI.getInstance().init();
 		GyroSystem.getInstance().calibrate();
-		Camera.getInstance();
+		//Camera.getInstance();
 		BinElevatorSystem.getInstance().init();
 		ToteElevatorSystem.getInstance();
 		GuardRailSystem.getInstance();
@@ -91,6 +91,8 @@ public class Robot extends IterativeRobot {
 				"Tote Current 2", 
 				"Bin Current"
 				);
+		
+		StateMachine.State.Init.init(StateMachine.getInstance());
 	}
 
 	/**
@@ -105,6 +107,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
 		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
 		SmartDashboard.putNumber("BinLiftPositionValue", BinElevatorSystem.getInstance().getBinElevatorPosition());
+//		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
 		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
 		StateMachine.getInstance().display();
@@ -155,6 +158,8 @@ public class Robot extends IterativeRobot {
 
 	public void autonomousInit() {
 		//add in Auto stuff thing
+		Drivetrain.getInstance().autoMode();
+		new PrepareRake().start();
 	}
 
 	/**
@@ -163,6 +168,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
+		BinElevatorSystem.getInstance().binTiltUpdate();
 	}
 
 
@@ -247,6 +253,7 @@ public class Robot extends IterativeRobot {
 		}
 		
 		StateMachine.getInstance().init();
+		Drivetrain.getInstance().teleopMode();
 	}
 
 	public void teleopPeriodic() {

@@ -93,6 +93,9 @@ public class StateMachine {
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
 	public final Signal initialized = new Signal();
 	
+//	public final Signal dropoffSignal = new AutoClearSignal();
+//	public final Signal groundFeedSignal = new AutoClearSignal(); 
+//	public final Signal groundFeedSignal_Descend = new AutoClearSignal();
 	private final Timer stateTimer = new Timer();
 	
 	public enum State {
@@ -137,7 +140,7 @@ public class StateMachine {
 				if(sm.humanFeed_Start.check()) {
 					sm.numberTotes = 0;
 					
-					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+					if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
 						sm.humanFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;
@@ -345,7 +348,7 @@ public class StateMachine {
 				if(sm.humanFeed_Start.check()) {
 					sm.numberTotes = 0;
 					
-					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
+					if(BinElevatorSystem.getInstance().getTilterFowardLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
 						sm.humanFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;
@@ -362,6 +365,64 @@ public class StateMachine {
 				return "Tote Pickup";
 			}
 		},
+//		GroundFeed_Raise {
+//			@Override
+//			protected void init(StateMachine sm) {
+//			}
+//			
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				if(sm.groundFeedSignal_Descend.check()) {
+//					return GroundFeed_Descend;
+//				}
+//				return this;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "GroundFeed_Raise";
+//			}
+//		},
+//		GroundFeed_Descend {
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				return this;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "GroundFeed_Descend";
+//			}
+//
+//			@Override
+//			protected void init(StateMachine sm) {
+//				
+//			}
+//		},
+//		Dropoff {
+//			@Override
+//			protected void init(StateMachine sm) {
+//			}
+//			
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				return Idle;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "Dropoff";
+//			}
+//		},
 		Abort {
 			@Override
 			protected void init(StateMachine sm) {
@@ -426,5 +487,9 @@ public class StateMachine {
 	public void display() {
 		SmartDashboard.putNumber("Number of Totes", numberTotes);
 		SmartDashboard.putString("CurrentState", currentState.toString());
+	}
+	
+	public State getState() {
+		return currentState;
 	}
 }

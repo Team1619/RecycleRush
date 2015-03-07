@@ -1,23 +1,19 @@
 package org.usfirst.frc.team1619.robot.auto;
 
-import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
-import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class MoveForward extends Command {
+public class RakerOpen extends Command {
 
-	
-	
-    public MoveForward() {
+    public RakerOpen() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	
-    	requires(Drivetrain.getInstance());
-    	new LinearDriveCommand(999); //in meters //TODO
+    	requires (BinElevatorSystem.getInstance());
     	
     }
 
@@ -27,11 +23,12 @@ public class MoveForward extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	BinElevatorSystem.getInstance().moveRaker(0.4); 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        return BinElevatorSystem.getInstance().getOpenedLimitSwitch();
     }
 
     // Called once after isFinished returns true

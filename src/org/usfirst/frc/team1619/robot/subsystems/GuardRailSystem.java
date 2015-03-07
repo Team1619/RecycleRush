@@ -94,12 +94,10 @@ public class GuardRailSystem extends StateMachineSystem {
 				guardRailSpeed = kOpenGuardRailSpeed;	
 			}
 			break;
-		case GroundFeed:
-			break;
-		case Dropoff:
-			break;
-		case BinPickup:
-			break;
+//		case GroundFeed:
+//			break;
+//		case Dropoff:
+//			break;
 		case Abort:	
 			guardRailSpeed = 0.0;
 			break;
