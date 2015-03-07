@@ -1,20 +1,20 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import org.usfirst.frc.team1619.Preferences;
+//import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
-import org.usfirst.frc.team1619.robot.StateMachine;
+//import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+//import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.InternalButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.tables.ITable;
-import edu.wpi.first.wpilibj.tables.ITableListener;
+//import edu.wpi.first.wpilibj.tables.ITable;
+//import edu.wpi.first.wpilibj.tables.ITableListener;
 
 /**
  *
@@ -29,6 +29,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kInitSpeed = 0.2;
 	public static final double kBinElevatorUpSpeed = -0.4;
 	public static final double kBinElevatorDownSpeed = 0.4;
+	public static final double kBinTiltSpeed = 0.5;
 	
 	public static final double kTotalHeight = 62.0; //fish
 	public static final double kToteElevatorHeight = 25.0; //fish
@@ -55,8 +56,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 	
 	private InternalButton binElevatorUp;
 	private InternalButton binElevatorDown;
+//	private InternalButton binTiltUpButton;
+//	private InternalButton binTiltDownButton;
 	
-	private JoystickButton binTiltManualButton;
+//	private JoystickButton binTiltManualButton;
 	
 	private JoystickButton rakerOpenManualButton;
 	private JoystickButton rakerCloseManualButton;
@@ -64,18 +67,20 @@ public class BinElevatorSystem extends StateMachineSystem {
 	private JoystickButton openClawButton;
 	private JoystickButton closeClawButton;
 	
-	private JoystickButton moveClawForBinPickupButton;
-	private JoystickButton moveClawForNoodleInsertionButton;
+	private JoystickButton toteElevatorManualButton;
+	
+//	private JoystickButton moveClawForBinPickupButton;
+//	private JoystickButton moveClawForNoodleInsertionButton;
 
 	private double binElevatorSpeed; // will be %vbus 
-	private boolean usePosition;
-	private double moveTo;
+//	private boolean usePosition;
+//	private double moveTo;
 	
 	private double binGripSpeed = 0.0;
 	private double rakerSpeed = 0.0;
 	private double tilterMotorSpeed = 0.0;
 	
-	private boolean bInitFinished = false;
+//	private boolean bInitFinished = true;
 	
 	private boolean ableToTilt = true;
 	
@@ -111,9 +116,11 @@ public class BinElevatorSystem extends StateMachineSystem {
 		//internal buttons
 		binElevatorUp = OI.getInstance().binElevatorUp;
 		binElevatorDown = OI.getInstance().binElevatorDown;
+//		binTiltUpButton = OI.getInstance().binTiltUpButton;
+//		binTiltDownButton = OI.getInstance().binTiltDownButton;
 		
 		//left stick
-		binTiltManualButton = OI.getInstance().binTiltManualButton;
+//		binTiltManualButton = OI.getInstance().binTiltManualButton;
 		
 		rakerOpenManualButton = OI.getInstance().rakerOpenManualButton;
 		rakerCloseManualButton = OI.getInstance().rakerCloseManualButton;
@@ -121,8 +128,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 		openClawButton = OI.getInstance().openClawButton;
 		closeClawButton = OI.getInstance().closeClawButton;
 		
-		moveClawForBinPickupButton = OI.getInstance().moveClawForBinPickupButton;
-		moveClawForNoodleInsertionButton = OI.getInstance().moveClawForNoodleInsertionButton;
+		toteElevatorManualButton = OI.getInstance().toteElevatorManualButton;
+		
+//		moveClawForBinPickupButton = OI.getInstance().moveClawForBinPickupButton;
+//		moveClawForNoodleInsertionButton = OI.getInstance().moveClawForNoodleInsertionButton;
 		
 		//binElevatorMotor.setPID(2.5, 0.00001, 0, 0.0001, 500, 24/0.250, 0);
     	
@@ -165,7 +174,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     
     public void setBinElevatorSpeed(double speed) {
     	binElevatorSpeed = speed;
-    	usePosition = false;
+//    	usePosition = false;
     }
     
 //    public void setBinElevatorPosition(double position) {  //in inches
@@ -203,28 +212,34 @@ public class BinElevatorSystem extends StateMachineSystem {
 //    	//System.out.println(bottonOfBinElevator);
 //    	//System.out.println(topOfToteElevator);
 //    	
+    	
 		if(binElevatorUp.get()) {
-			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+//			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 			binElevatorMotor.set(kBinElevatorUpSpeed);
-			usePosition = false;
-			moveTo = Double.NaN;
-			binElevatorSpeed = 0.0;
+//			usePosition = false;
+//			moveTo = Double.NaN;
+//			binElevatorSpeed = 0.0;
 //			wasManual = true;
 		}
-//		else 
-		if(binElevatorDown.get()) {
+		else if(binElevatorDown.get()) {
 //			if((bottomOfBinElevator > topOfToteElevator) || inInit) {
-				binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-				binElevatorMotor.set(kBinElevatorDownSpeed);
+//			binElevatorMotor.changeControlMode(ControlMode.PercentVbus);
+			binElevatorMotor.set(kBinElevatorDownSpeed);
 //			}
 //			else {
 //				binElevatorMotor.changeControlMode(ControlMode.Position);
 //				binElevatorMotor.set(finalMoveTo);	
 //			}
-			usePosition = false;
-			moveTo = Double.NaN;
-			binElevatorSpeed = 0.0;
+//			usePosition = false;
+//			moveTo = Double.NaN;
+//			binElevatorSpeed = 0.0;
 //			wasManual = true;
+		}
+//    	if(!toteElevatorManualButton.get()) {
+//    		binElevatorMotor.set(leftStick.getY());
+//    	}
+    	else {
+			binElevatorMotor.set(binElevatorSpeed);
 		}
 //		else if(moveClawForBinPickupButton.get()) {
 //			setBinElevatorPosition(kBinPickupPosition);
@@ -281,15 +296,26 @@ public class BinElevatorSystem extends StateMachineSystem {
     private void binTiltUpdate() {
     	if(ableToTilt) {
     		double toteElevatorPosition = ToteElevatorSystem.getInstance().getToteElevatorPosition();
-        	if(binTiltManualButton.get()) {
-        		double manualSpeed = leftStick.getY();
-        		if(manualSpeed < 0.0 && toteElevatorPosition >= kToteElevatorSafetyForTilt) {
+    		double joystickY = leftStick.getY();
+    		if(!toteElevatorManualButton.get()) {
+    			if(joystickY < 0 && toteElevatorPosition >= kToteElevatorSafetyForTilt) {
         			tilterMotor.set(0.0);
         		} 
         		else {
-        			tilterMotor.set(manualSpeed);
+        			tilterMotor.set(joystickY);
         		}
-        	}
+    		}
+//        	if(binTiltDownButton.get()) {
+//        		if(toteElevatorPosition >= kToteElevatorSafetyForTilt) {
+//        			tilterMotor.set(0.0);
+//        		} 
+//        		else {
+//        			tilterMotor.set(-kBinTiltSpeed);
+//        		}
+//        	}
+//        	else if(binTiltUpButton.get()) {
+//        		tilterMotor.set(kBinTiltSpeed);
+//        	}
         	else {
         		if(tilterMotorSpeed < 0.0 && toteElevatorPosition >= kToteElevatorSafetyForTilt) {
         			tilterMotor.set(0.0);
@@ -337,19 +363,19 @@ public class BinElevatorSystem extends StateMachineSystem {
     		rakerMotor.set(rakerSpeed);
     }
 
-    private boolean useStatePostion = true;
+//    private boolean useStatePostion = true;
     
     public void init(State state) {
 //		usePosition = false;
-//		binElevatorSpeed = 0;
+		setBinElevatorSpeed(0.0);
 //		moveTo = Double.NaN;
 		
-		useStatePostion = true;
+//		useStatePostion = true;
 		ableToTilt = true;
 		
 		switch(state) {
 		case Init:
-			bInitFinished = false;
+//			bInitFinished = true;
 			break;
 		case Idle:
 //			setBinElevatorPosition(getBinElevatorPosition());
@@ -377,32 +403,31 @@ public class BinElevatorSystem extends StateMachineSystem {
 		
 		switch(state) {
 		case Init:
-			if(bInitFinished) {
-				setBinElevatorSpeed(0);
-			}
-			else {
-				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
-//					setBinElevatorPositionValue(-27.881);
-					setBinElevatorSpeed(0.0);
-					bInitFinished = true;
-				}
-				else {
-					setBinElevatorSpeed(kInitSpeed);
-				}
-			}
+//			if(bInitFinished) {
+//			}
+//			else {
+//				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
+////					setBinElevatorPositionValue(-27.881);
+//					setBinElevatorSpeed(0.0);
+//					bInitFinished = true;
+//				}
+//				else {
+//					setBinElevatorSpeed(kInitSpeed);
+//				}
+//			}
 			break;
 		case Idle:
 			//setBinElevatorPosition(0.0); //just move it to top for now
 			break;
 		case HumanFeed_RaiseTote:
-			if(useStatePostion) {
+//			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
-			}
+//			}
 			break;
 		case HumanFeed_WaitForTote:
-			if(useStatePostion) {
+//			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
-			}
+//			}
 			break;
 		case HumanFeed_ToteOnConveyor:
 //			if(useStatePostion) {
@@ -414,12 +439,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
 //			}
 			break;
-		case GroundFeed:
-			break;
-		case Dropoff:
-			break;
-		case BinPickup:
-			break;
+//		case GroundFeed:
+//			break;
+//		case Dropoff:
+//			break;
 		case Abort:
 			break;
 		default:
@@ -439,7 +462,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 	}
 	
 	public boolean initFinished() {
-		return bInitFinished;
+//		return bInitFinished;
+		return true;
 	}
 }
 

@@ -141,12 +141,10 @@ public class Conveyor extends StateMachineSystem {
 				conveyorSpeed = kSlowForwardConveyorSpeed;	
 			}
 			break;
-		case GroundFeed:
-			break;
-		case Dropoff:
-			break;
-		case BinPickup:
-			break;
+//		case GroundFeed:
+//			break;
+//		case Dropoff:
+//			break;
 		case Abort:	
 			conveyorSpeed = 0.0;
 			break;

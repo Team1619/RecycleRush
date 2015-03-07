@@ -79,9 +79,9 @@ public class StateMachine {
 	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
-	public final Signal dropoffSignal = new AutoClearSignal();
-	public final Signal groundFeedSignal = new AutoClearSignal(); 
-	
+//	public final Signal dropoffSignal = new AutoClearSignal();
+//	public final Signal groundFeedSignal = new AutoClearSignal(); 
+//	public final Signal groundFeedSignal_Descend = new AutoClearSignal();
 	private final Timer stateTimer = new Timer();
 	
 	public enum State {
@@ -267,60 +267,64 @@ public class StateMachine {
 			protected void init(StateMachine sm) {
 			}
 		},
-		GroundFeed {
-			@Override
-			protected void init(StateMachine sm) {
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-
-			@Override
-			public String toString() {
-				return "Ground Feed";
-			}
-		},
-		Dropoff {
-			@Override
-			protected void init(StateMachine sm) {
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-
-			@Override
-			public String toString() {
-				return "Dropoff";
-			}
-		},
-		BinPickup {
-			@Override
-			protected void init(StateMachine sm) {				
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-
-			@Override
-			public String toString() {
-				return "Bin Pickup";
-			}
-		},
+//		GroundFeed_Raise {
+//			@Override
+//			protected void init(StateMachine sm) {
+//			}
+//			
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				if(sm.groundFeedSignal_Descend.check()) {
+//					return GroundFeed_Descend;
+//				}
+//				return this;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "GroundFeed_Raise";
+//			}
+//		},
+//		GroundFeed_Descend {
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				return this;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "GroundFeed_Descend";
+//			}
+//
+//			@Override
+//			protected void init(StateMachine sm) {
+//				
+//			}
+//		},
+//		Dropoff {
+//			@Override
+//			protected void init(StateMachine sm) {
+//			}
+//			
+//			@Override
+//			public State run(StateMachine sm) {
+//				if(sm.abortSignal.check()) {
+//					return Abort;
+//				}
+//				return Idle;
+//			}
+//
+//			@Override
+//			public String toString() {
+//				return "Dropoff";
+//			}
+//		},
 		Abort {
 			@Override
 			protected void init(StateMachine sm) {
