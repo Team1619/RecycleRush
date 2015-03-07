@@ -53,6 +53,8 @@ public class OI {
 	public final JoystickButton guardRailOpenButton;
 	public final JoystickButton guardRailCloseButton;
 	
+	public final JoystickButton pickUpToteButton;
+	
 	public final JoystickButton incrementNumberTotesButton;
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -94,6 +96,8 @@ public class OI {
 		
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+		
+		pickUpToteButton = new JoystickButton(leftStick, RobotMap.pickUpToteButtonID);
 	}
 	
 	public void init() {
@@ -109,8 +113,8 @@ public class OI {
 		resetGyroButton.whenPressed(new ResetGyroCommand());
 		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
 		
-		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Start));
-		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanPlayerFeed_Stop));
+		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Start));
+		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Stop));
 		
 		// unstickToteButton.whileHeld(new UnstickToteCommand());
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());

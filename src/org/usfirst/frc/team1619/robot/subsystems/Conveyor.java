@@ -63,7 +63,7 @@ public class Conveyor extends StateMachineSystem {
 			if(frontSensor) {
 				frontSensor = !(frontSensorDebounceTimer.get() > kDebounceTime);
 				if(!frontSensor) {
-					StateMachine.getInstance().humanPlayerFeed_ThrottleConveyorDescend.raise();
+					StateMachine.getInstance().humanFeed_ThrottleConveyorDescend.raise();
 				}
 			}
 		}
@@ -74,7 +74,7 @@ public class Conveyor extends StateMachineSystem {
 		if(getRearSensorRaw()) {
 			rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;
 			if(rearSensor) {
-				StateMachine.getInstance().humanPlayerFeed_ToteOnConveyor.raise();
+				StateMachine.getInstance().humanFeed_ToteOnConveyor.raise();
 			}
 		}
 		else {

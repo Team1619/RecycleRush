@@ -12,8 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
 	private State currentState = State.Init;
-	//private State currentState = State.Idle;
-	
+
 	private int numberTotes;
 	private final JoystickButton incrementNumberTotesButton;
 	private boolean incrementNumberTotes;
@@ -73,12 +72,13 @@ public class StateMachine {
 
 	public final Signal abortSignal = new AutoClearSignal();
 	public final Signal resetSignal = new AutoClearSignal();
-	public final Signal humanPlayerFeed_Start = new AutoClearSignal();
-	public final Signal humanPlayerFeed_RaiseTote = new AutoClearSignal();
-	public final Signal humanPlayerFeed_WaitForTote = new AutoClearSignal();
-	public final Signal humanPlayerFeed_ToteOnConveyor = new AutoClearSignal();
-	public final Signal humanPlayerFeed_ThrottleConveyorDescend = new Signal();
-	public final Signal humanPlayerFeed_Stop = new AutoClearSignal();
+	public final Signal humanFeed_Stop = new AutoClearSignal();
+	public final Signal humanFeed_Start = new AutoClearSignal();
+	public final Signal humanFeed_RaiseTote = new AutoClearSignal();
+	public final Signal humanFeed_WaitForTote = new AutoClearSignal();
+	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
+	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
+	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
 	
@@ -123,19 +123,23 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanPlayerFeed_Start.check()) {
+				if(sm.humanFeed_Start.check()) {
 					sm.numberTotes = 0;
 					
 					if(BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch()) {
-						sm.humanPlayerFeed_ToteOnConveyor.clear();
-						sm.humanPlayerFeed_ThrottleConveyorDescend.clear();
+						sm.humanFeed_ToteOnConveyor.clear();
+						sm.humanFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;
 					}
 					else {
 						return Idle;
 					}
 				}
-				return Idle;
+				if(sm.humanFeed_EndCurrentStateAndDescend.check())
+				{
+					return HumanFeed_ThrottleConveyorAndDescend;
+				}
+				return this;
 			}
 
 			@Override
@@ -149,11 +153,15 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanPlayerFeed_WaitForTote.check()) {
+				if(sm.humanFeed_WaitForTote.check()) {
 					return HumanFeed_WaitForTote;
 				}
-				if(sm.humanPlayerFeed_Stop.check()) {
+				if(sm.humanFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
+				}
+				if(sm.humanFeed_EndCurrentStateAndDescend.check())
+				{
+					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
@@ -165,7 +173,7 @@ public class StateMachine {
 
 			@Override
 			protected void init(StateMachine sm) {
-				sm.humanPlayerFeed_ThrottleConveyorDescend.clear();
+				sm.humanFeed_ThrottleConveyorDescend.clear();
 			}
 		},
 		HumanFeed_WaitForTote {
@@ -181,11 +189,15 @@ public class StateMachine {
 				}
 				if(Conveyor.getInstance().getRearSensor() ||
 						Conveyor.getInstance().getFrontSensor() ||
-						sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
+						sm.humanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ToteOnConveyor;
 				}
-				if(sm.humanPlayerFeed_Stop.check()) {
+				if(sm.humanFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
+				}
+				if(sm.humanFeed_EndCurrentStateAndDescend.check())
+				{
+					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
@@ -201,11 +213,15 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanPlayerFeed_ThrottleConveyorDescend.check()) {
+				if(sm.humanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if(sm.humanPlayerFeed_Stop.check()) {
+				if(sm.humanFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
+				}
+				if(sm.humanFeed_EndCurrentStateAndDescend.check())
+				{
+					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
@@ -225,15 +241,19 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanPlayerFeed_RaiseTote.check()) {
+				if(sm.humanFeed_RaiseTote.check()) {
 					sm.numberTotes++;					
 					if(sm.numberTotes == 5 || sm.toStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
 				}
-				if(sm.humanPlayerFeed_Stop.check()) {
+				if(sm.humanFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
+				}
+				if(sm.humanFeed_EndCurrentStateAndDescend.check())
+				{
+					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}

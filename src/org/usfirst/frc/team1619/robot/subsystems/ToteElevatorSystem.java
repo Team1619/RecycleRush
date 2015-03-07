@@ -24,7 +24,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kFeederPosition = 20.8;
 	public static final double kPickUpPosition = -2.0;
 	public static final double kPositionTolerance = 3.0;
-	public static final double kDeadZone = 1.0;
+	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.2;
 
 	public final CANTalon toteElevatorMotor;
@@ -33,6 +33,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private final Joystick leftStick;
 	
 	private final JoystickButton toteElevatorManualButton;
+	private final JoystickButton pickUpToteButton;
 
 	private double toteElevatorSpeed; // will be %vbus 
 	private boolean usePosition;
@@ -44,6 +45,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		leftStick = OI.getInstance().leftStick;
 		
 		toteElevatorManualButton = OI.getInstance().toteElevatorManualButton;
+		pickUpToteButton = OI.getInstance().pickUpToteButton;
 
 		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
 		toteElevatorMotor.enableLimitSwitch(true, true);
@@ -51,7 +53,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseSensor(false);
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
-		toteElevatorMotor.setPID(0.55, 0.40, 0, 0.0001, 300, 24/0.250, 0);
+		toteElevatorMotor.setPID(0.55, 0.005, 0, 0.0001, 800, 24/0.250, 0);
 
 		Preferences.putNumber("toteP", toteElevatorMotor.getP());
 		Preferences.putNumber("toteI", toteElevatorMotor.getI());
@@ -129,6 +131,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		boolean noGoUp = !BinElevatorSystem.getInstance().getTilterMotorFwdLimitSwitch();
 		double joystickY = leftStick.getY();
 		
+		if(pickUpToteButton.get())
+		{
+			StateMachine.getInstance().humanFeed_EndCurrentStateAndDescend.raise();
+		}
 		if(toteElevatorManualButton.get()) {
 			toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 			if(joystickY > 0.0 && noGoUp) {
@@ -231,7 +237,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 				setToteElevatorPosition(kFeederPosition);
 			}
 			if(Math.abs(getToteElevatorPosition() - kFeederPosition) <= kPositionTolerance) {
-				StateMachine.getInstance().humanPlayerFeed_WaitForTote.raise();
+				StateMachine.getInstance().humanFeed_WaitForTote.raise();
 			}
 			break;
 		case HumanFeed_WaitForTote:
@@ -249,7 +255,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 				setToteElevatorPosition(kPickUpPosition);
 			}
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
-				StateMachine.getInstance().humanPlayerFeed_RaiseTote.raise();	
+				StateMachine.getInstance().humanFeed_RaiseTote.raise();	
 			}
 			break;
 		case GroundFeed:
