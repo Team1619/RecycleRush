@@ -106,7 +106,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
 		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
 		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
-		SmartDashboard.putNumber("BinLiftPositionValue", BinElevatorSystem.getInstance().getBinElevatorPosition());
+//		SmartDashboard.putNumber("BinLiftPositionValue", BinElevatorSystem.getInstance().getBinElevatorPosition());
 //		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
 		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
