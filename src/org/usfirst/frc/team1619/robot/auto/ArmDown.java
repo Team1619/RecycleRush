@@ -28,7 +28,7 @@ public class ArmDown extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return BinElevatorSystem.getInstance().getTilterFowardLimitSwtich();
+        return BinElevatorSystem.getInstance().getTilterFowardLimitSwitch();
     }
 
     // Called once after isFinished returns true

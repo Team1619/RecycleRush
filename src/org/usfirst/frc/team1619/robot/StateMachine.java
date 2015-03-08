@@ -29,6 +29,16 @@ public class StateMachine {
 		toStopHumanFeed = false;
 	}
 	
+	public void init() {
+		if(initialized.check()) {
+			currentState = State.Idle;
+			initialized.clear();
+		}
+		else {
+			currentState = State.Init;
+		}
+	}
+	
 	private static StateMachine stateMachine;
 	public static StateMachine getInstance() {
 		if(stateMachine == null) {
@@ -79,6 +89,10 @@ public class StateMachine {
 	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
+	public final Signal dropoffSignal = new AutoClearSignal();
+	public final Signal groundFeedSignal = new AutoClearSignal(); 
+	public final Signal initialized = new Signal();
+	
 //	public final Signal dropoffSignal = new AutoClearSignal();
 //	public final Signal groundFeedSignal = new AutoClearSignal(); 
 //	public final Signal groundFeedSignal_Descend = new AutoClearSignal();
@@ -137,7 +151,7 @@ public class StateMachine {
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check())
 				{
-					return HumanFeed_ThrottleConveyorAndDescend;
+					return TotePickup;
 				}
 				return this;
 			}
@@ -265,6 +279,90 @@ public class StateMachine {
 
 			@Override
 			protected void init(StateMachine sm) {
+			}
+		},
+		GroundFeed {
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				return Idle;
+			}
+
+			@Override
+			public String toString() {
+				return "Ground Feed";
+			}
+		},
+		Dropoff {
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				return Idle;
+			}
+
+			@Override
+			public String toString() {
+				return "Dropoff";
+			}
+		},
+		BinPickup {
+			@Override
+			protected void init(StateMachine sm) {				
+			}
+			
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				return Idle;
+			}
+
+			@Override
+			public String toString() {
+				return "Bin Pickup";
+			}
+		},
+		TotePickup {
+			@Override
+			protected void init(StateMachine sm) {
+			}
+			
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanFeed_Start.check()) {
+					sm.numberTotes = 0;
+					
+					if(BinElevatorSystem.getInstance().getTilterFowardLimitSwitch()) {
+						sm.humanFeed_ToteOnConveyor.clear();
+						sm.humanFeed_ThrottleConveyorDescend.clear();
+						return HumanFeed_RaiseTote;
+					}
+					else {
+						return Idle;
+					}
+				}
+				return Idle;
+			}
+			
+			@Override
+			public String toString() {
+				return "Tote Pickup";
 			}
 		},
 //		GroundFeed_Raise {

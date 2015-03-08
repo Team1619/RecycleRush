@@ -183,6 +183,21 @@ public class BinElevatorSystem extends StateMachineSystem {
 //    	usePosition = true;
 //    }
     
+    public void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
+    	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
+    }
+    
+    public double getBinElevatorPosition() { //get current position in inches
+    	return binElevatorMotor.getPosition()/kEncoderTicksPerInch;
+    }
+    
+    private boolean wasManual = false;
+    private double toToteElevatorPosition(double binElevatorPosition) {
+    	return binElevatorPosition + kTotalHeight;
+    }
+    private double toBinElevatorPosition(double binElevatorPosition) {
+    	return binElevatorPosition - kTotalHeight;
+    }
 //    private void setBinElevatorPositionValue(double position) { //set position in inches, not move motor. Only use for calibration
 //    	binElevatorMotor.setPosition(position*kEncoderTicksPerInch);
 //    }
@@ -335,7 +350,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	return tilterMotor.isFwdLimitSwitchClosed();
     }
     
-    public boolean getTilterFowardLimitSwtich() {
+    public boolean getTilterFowardLimitSwitch() {
     	return tilterMotor.isRevLimitSwitchClosed();
     }
     

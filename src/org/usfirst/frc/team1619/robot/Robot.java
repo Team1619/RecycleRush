@@ -106,9 +106,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
 		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
 		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
+		SmartDashboard.putNumber("BinLiftPositionValue", BinElevatorSystem.getInstance().getBinElevatorPosition());
 //		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
-		SmartDashboard.putNumber("Tote Lift Encoder Position", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
 		StateMachine.getInstance().display();
 		
 		Accelerometer.getInstance().display();
@@ -241,6 +242,12 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		//StateMachine.getInstance().abortSignal.raise();
+		if(ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed()) {
+			ToteElevatorSystem.getInstance().setToteElevatorPositionValue(0.0);
+			StateMachine.getInstance().initialized.raise();
+		}
+		
+		StateMachine.getInstance().init();
 		Drivetrain.getInstance().teleopMode();
 	}
 

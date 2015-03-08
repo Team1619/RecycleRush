@@ -113,7 +113,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 
 	//set position in inches, not move motor. Only use for calibration
-	private void setToteElevatorPositionValue(double position) { 
+	public void setToteElevatorPositionValue(double position) { 
 		toteElevatorMotor.setPosition(position*kEncoderTicksPerInch);
 		moveTo = Double.NaN;
 	}
@@ -255,6 +255,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanFeed_RaiseTote.raise();	
+			}
+			break;
+		case TotePickup:
+			if(useStatePosition) {
+				setToteElevatorPosition(kPickUpPosition);
 			}
 			break;
 //		case GroundFeed:
