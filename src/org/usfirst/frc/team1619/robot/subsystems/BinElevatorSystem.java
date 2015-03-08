@@ -343,7 +343,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	binGripSpeed = moveValue;
     }
     
-    private void binGripUpdate() {
+    public void binGripUpdate() {
     	if(openClawButton.get()) {
     		binGripMotor.set(0.5);
     	}
@@ -365,7 +365,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     public void moveRaker(double moveValue) {
     	rakerSpeed = moveValue;
     }
-    private void rakerUpdate() {
+    public void rakerUpdate() {
     	if(rakerOpenManualButton.get())
     		rakerMotor.set(0.4);
     	else if(rakerCloseManualButton.get())

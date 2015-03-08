@@ -14,17 +14,16 @@ public class ArmDown extends Command {
         // eg. requires(chassis);
     	
     	requires (BinElevatorSystem.getInstance());
-    	
+    	setInterruptible(true);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	BinElevatorSystem.getInstance().binTilt(-1);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	BinElevatorSystem.getInstance().binTilt(-0.4);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -34,10 +33,12 @@ public class ArmDown extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
+    	BinElevatorSystem.getInstance().binTilt(0.0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	BinElevatorSystem.getInstance().binTilt(0.0);
     }
 }

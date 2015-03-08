@@ -27,6 +27,7 @@ public class LinearDriveCommand extends Command {
         requires(drivetrain);
         distance = moveDistance;
         turnVal = 0.0;
+        setInterruptible(true);
     }
 
     // Called just before this Command runs the first time
@@ -65,5 +66,6 @@ public class LinearDriveCommand extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	drivetrain.stop();
     }
 }

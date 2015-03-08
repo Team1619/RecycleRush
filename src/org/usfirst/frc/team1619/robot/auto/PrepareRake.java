@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.auto;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  *
@@ -10,10 +11,15 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class PrepareRake extends CommandGroup {
     
     public  PrepareRake() {
-        
-    	addSequential(new ArmDown());
-    	addParallel(new LinearDriveCommand(1));
+    	
+    	addParallel(new LinearDriveCommand(0.5));
+//    	addParallel(new ClawsOpen());
+    	addParallel(new ArmDown());
+    	addSequential(new WaitCommand(1.5));
     	addSequential(new RakerOpen());
+    	addSequential(new WaitCommand(1));
+    	addSequential(new LinearDriveCommand(-0.5));
+    	
     	
     	// Add Commands here:
         // e.g. addSequential(new Command1());

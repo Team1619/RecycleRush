@@ -77,7 +77,7 @@ public class OI {
 		stopHumanFeedButton = new JoystickButton(rightStick, RobotMap.stopHumanFeedButtonID);
 		
 		incrementNumberTotesButton = new JoystickButton(rightStick, RobotMap.incrementNumberTotesButtonID);
-		pickUpToteButton = new JoystickButton(leftStick, RobotMap.pickUpToteButtonID);
+		pickUpToteButton = new JoystickButton(rightStick, RobotMap.pickUpToteButtonID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();

@@ -6,16 +6,18 @@ import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class GuardRailSystem extends StateMachineSystem {
-	public static final double kCloseGuardRailSpeed = 0.75;
-	public static final double kOpenGuardRailSpeed = -0.40;
-	public static final double kSlowOpenGuardRailSpeed = -0.30;
-	public static final double kSlowCloseGuardRailSpeed = 0.30;
+	public static final double kCloseGuardRailSpeed = -0.75;
+	public static final double kOpenGuardRailSpeed = 0.40;
+	public static final double kSlowOpenGuardRailSpeed = 0.30;
+	public static final double kSlowCloseGuardRailSpeed = -0.30;
 	
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
@@ -26,6 +28,7 @@ public class GuardRailSystem extends StateMachineSystem {
 	
 	private GuardRailSystem() {
     	guardRailMotor = new CANTalon(RobotMap.guardRailMotor);
+    	guardRailMotor.changeControlMode(ControlMode.PercentVbus);
     	guardRailMotor.enableLimitSwitch(false, false);
     	guardRailMotor.enableBrakeMode(false);
     	
@@ -53,6 +56,9 @@ public class GuardRailSystem extends StateMachineSystem {
 		else {
 			guardRailMotor.set(guardRailSpeed);
 		}
+		
+		SmartDashboard.putNumber("guardRail.getOutputCurrent()", guardRailMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("guardRail.getOutputVoltage()", guardRailMotor.getOutputVoltage());
 	}
 	
     public void initDefaultCommand() {

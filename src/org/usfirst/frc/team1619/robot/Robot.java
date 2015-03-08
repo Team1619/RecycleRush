@@ -168,6 +168,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
 		BinElevatorSystem.getInstance().binTiltUpdate();
+		BinElevatorSystem.getInstance().rakerUpdate();
+		BinElevatorSystem.getInstance().binGripUpdate();
 	}
 
 
