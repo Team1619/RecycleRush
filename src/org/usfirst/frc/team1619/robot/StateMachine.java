@@ -255,9 +255,8 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(sm.humanFeed_RaiseTote.check()) {
-					sm.numberTotes++;					
-					if(sm.numberTotes == 5 || sm.toStopHumanFeed) {
+				if(sm.humanFeed_RaiseTote.check()) {				
+					if(sm.toStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
@@ -279,6 +278,10 @@ public class StateMachine {
 
 			@Override
 			protected void init(StateMachine sm) {
+				sm.numberTotes++;
+				if(sm.numberTotes == 5) {
+					sm.toStopHumanFeed = true;
+				}
 			}
 		},
 		GroundFeed {

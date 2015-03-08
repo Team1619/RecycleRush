@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GuardRailSystem extends StateMachineSystem {
 	public static final double kCloseGuardRailSpeed = -0.75;
 	public static final double kOpenGuardRailSpeed = 0.40;
-	public static final double kSlowOpenGuardRailSpeed = 0.30;
+	public static final double kSlowOpenGuardRailSpeed = 0.10;
 	public static final double kSlowCloseGuardRailSpeed = -0.30;
 	
 	private final JoystickButton guardRailOpenButton;
@@ -66,12 +66,17 @@ public class GuardRailSystem extends StateMachineSystem {
     	//setDefaultCommand(new ManualGuardRailCommand(0.0));
     }
 
+    public void init(State state) {
+    	guardRailSpeed = 0;
+    }
+    
 	@Override
 	public void run(State state, double elapsed) {
 		switch(state) {
 		case Init:
 			break;
 		case Idle:
+			guardRailSpeed = 0.0;
 			break;
 		case HumanFeed_RaiseTote:
 			if(elapsed <= 0.25) { //just at beginning
@@ -85,7 +90,7 @@ public class GuardRailSystem extends StateMachineSystem {
 			guardRailSpeed = kSlowOpenGuardRailSpeed;
 			break;
 		case HumanFeed_ToteOnConveyor:
-			if(elapsed <= 1) {
+			if(elapsed <= 1.0) {
 				guardRailSpeed = kCloseGuardRailSpeed;
 			}
 			else {
