@@ -27,7 +27,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kFeederPosition = 0.0;
 	public static final double kPickUpPosition = 0.0;
 	public static final double kPositionTolerance = 1.0;
-	public static final double kInitSpeed = 0.2;
+	public static final double kInitSpeed = -0.4;
 	public static final double kBinElevatorUpSpeed = -0.4;
 	public static final double kBinElevatorDownSpeed = 0.4;
 	public static final double kBinTiltSpeed = 0.5;
@@ -426,41 +426,46 @@ public class BinElevatorSystem extends StateMachineSystem {
 	@Override
 	public void run(State state, double elapsed) {	
 		moveRaker(0);
-		
 		switch(state) {
 		case Init:
-//			if(bInitFinished) {
-//			}
-//			else {
-//				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
-////					setBinElevatorPositionValue(-27.881);
-//					setBinElevatorSpeed(0.0);
-//					bInitFinished = true;
-//				}
-//				else {
-//					setBinElevatorSpeed(kInitSpeed);
-//				}
-//			}
+				if(binElevatorMotor.isFwdLimitSwitchClosed()) {
+					setBinElevatorSpeed(0.0);
+				}
+				else {
+					setBinElevatorSpeed(kInitSpeed);
+				}
 			break;
 		case Idle:
+			
+			if(!getTilterBackLimitSwitch()) {
+				setBinElevatorSpeed(0.0);
+			} 
+			else {
+				setBinElevatorSpeed(-0.2);
+			}
+			
 			//setBinElevatorPosition(0.0); //just move it to top for now
 			break;
 		case HumanFeed_RaiseTote:
+			setBinElevatorSpeed(-0.2);
 //			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
 //			}
 			break;
 		case HumanFeed_WaitForTote:
+			setBinElevatorSpeed(-0.2);
 //			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
 //			}
 			break;
 		case HumanFeed_ToteOnConveyor:
+			setBinElevatorSpeed(-0.2);
 //			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
 //			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
+			setBinElevatorSpeed(-0.2);
 //			if(useStatePostion) {
 //				setBinElevatorPosition(kOutOfTheWayPosition);	
 //			}
@@ -470,6 +475,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 //		case Dropoff:
 //			break;
 		case Abort:
+			setBinElevatorSpeed(0.0);
 			break;
 		default:
 			break;

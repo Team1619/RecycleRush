@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StateMachine {
 	private State currentState = State.Init;
 
-	private int numberTotes;
+	public int numberTotes;
 	private final JoystickButton incrementNumberTotesButton;
 	private boolean incrementNumberTotes;
 	
@@ -193,11 +193,13 @@ public class StateMachine {
 		HumanFeed_WaitForTote {
 			@Override
 			protected void init(StateMachine sm) {
-				
 			}
 			
 			@Override
 			public State run(StateMachine sm) {
+				if(sm.toStopHumanFeed) {
+					return Idle;
+				}
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
@@ -438,6 +440,19 @@ public class StateMachine {
 				}
 				if(sm.resetSignal.check()) {
 					return Init;
+				}
+				if(sm.humanFeed_Start.check()){
+					if(sm.humanFeed_Start.check()) {
+						sm.numberTotes = 0;
+						if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
+							sm.humanFeed_ToteOnConveyor.clear();
+							sm.humanFeed_ThrottleConveyorDescend.clear();
+							return HumanFeed_RaiseTote;
+						}
+						else {
+							return Abort;
+						}
+					}
 				}
 				return Abort;
 			}

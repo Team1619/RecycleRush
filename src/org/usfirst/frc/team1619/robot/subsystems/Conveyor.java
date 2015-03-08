@@ -16,10 +16,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Conveyor extends StateMachineSystem {
-	private static final double kForwardConveyorSpeed = -1.0;
-	private static final double kSlowForwardConveyorSpeed = -0.1;
+	private static final double kForwardConveyorSpeed = -0.7;
 	private static final double kManualForwardConveyorSpeed = -0.5;
 	private static final double kManualBackConveyorSpeed = 0.5;
+	private static final double kConveyorDelayTime = 0.25;
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -32,6 +32,7 @@ public class Conveyor extends StateMachineSystem {
 
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
+	private Timer frontSensorFedDelay = new Timer();
 	private final double kDebounceTime = 0.05;
 	
 	private final JoystickButton conveyorForwardButton;
@@ -51,6 +52,7 @@ public class Conveyor extends StateMachineSystem {
 		
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();
+		frontSensorFedDelay.start();
 	}
 	
 	private static Conveyor theSystem;
@@ -119,34 +121,46 @@ public class Conveyor extends StateMachineSystem {
     	
     	SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", conveyorMotor.getOutputCurrent());
     	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", conveyorMotor.getOutputVoltage());
-	}
+    }
 
-	@Override
-	public void run(State state, double elapsed) {
+    @Override
+    public void init(State state) {
+    	switch (state) {
+    	case HumanFeed_ThrottleConveyorAndDescend:
+    		frontSensorFedDelay.reset();
+    		break;
+    	default:
+    		break;
+    	}
+    };
+
+    @Override
+    public void run(State state, double elapsed) {
     	updateConveyorSignals();
-		switch(state) {
-		case Init:
-			break;
-		case Idle:
-			conveyorSpeed = 0.0;
-			break;
-		case HumanFeed_RaiseTote:
-			conveyorSpeed = kForwardConveyorSpeed;
-			break;
-		case HumanFeed_WaitForTote:
-			conveyorSpeed = kForwardConveyorSpeed;
-			break;
-		case HumanFeed_ToteOnConveyor:
-			conveyorSpeed = kForwardConveyorSpeed;
-			break;
-		case HumanFeed_ThrottleConveyorAndDescend:
-			if(StateMachine.getInstance().getToStopHumanFeed()) {
-				conveyorSpeed = 0.0;
-			}
-			else {
-				conveyorSpeed = kSlowForwardConveyorSpeed;	
-			}
-			break;
+    	switch(state) {
+    	case Init:
+    		conveyorSpeed = 0.0;
+    		break;
+    	case Idle:
+    		conveyorSpeed = 0.0;
+    		break;
+    	case HumanFeed_RaiseTote:
+    		conveyorSpeed = kForwardConveyorSpeed;
+    		break;
+    	case HumanFeed_WaitForTote:
+    		conveyorSpeed = kForwardConveyorSpeed;
+    		break;
+    	case HumanFeed_ToteOnConveyor:
+    		conveyorSpeed = kForwardConveyorSpeed;
+    		break;
+    	case HumanFeed_ThrottleConveyorAndDescend:
+    		if(frontSensorFedDelay.get() >= kConveyorDelayTime && StateMachine.getInstance().getToStopHumanFeed()) {
+    			conveyorSpeed = 0.0;
+    		}
+    		else {
+    			conveyorSpeed = kForwardConveyorSpeed;
+    		}
+    		break;
 //		case GroundFeed:
 //			break;
 //		case Dropoff:

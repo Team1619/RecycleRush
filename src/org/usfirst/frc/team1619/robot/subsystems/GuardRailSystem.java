@@ -7,6 +7,7 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -16,8 +17,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class GuardRailSystem extends StateMachineSystem {
 	public static final double kCloseGuardRailSpeed = -0.75;
 	public static final double kOpenGuardRailSpeed = 0.40;
-	public static final double kSlowOpenGuardRailSpeed = 0.10;
-	public static final double kSlowCloseGuardRailSpeed = -0.30;
+	public static final double kSlowOpenGuardRailSpeed = 0.00;
+	public static final double kSlowCloseGuardRailSpeed = -0.10;
+	
+	private Timer humanFeedCloseTimer = new Timer();
+	private boolean closeInHumanFeed = false;
 	
 	private final JoystickButton guardRailOpenButton;
 	private final JoystickButton guardRailCloseButton;
@@ -31,6 +35,8 @@ public class GuardRailSystem extends StateMachineSystem {
     	guardRailMotor.changeControlMode(ControlMode.PercentVbus);
     	guardRailMotor.enableLimitSwitch(false, false);
     	guardRailMotor.enableBrakeMode(false);
+    	
+    	humanFeedCloseTimer.start();
     	
     	guardRailOpenButton = OI.getInstance().guardRailOpenButton;
 		guardRailCloseButton = OI.getInstance().guardRailCloseButton;
@@ -67,7 +73,16 @@ public class GuardRailSystem extends StateMachineSystem {
     }
 
     public void init(State state) {
-    	guardRailSpeed = 0;
+    	guardRailSpeed = 0.0;
+    	switch(state) {
+    	case Init:
+    		break;
+    	case HumanFeed_RaiseTote:
+    		closeInHumanFeed = true;
+    		break;
+    	default:
+    		break;
+    	}
     }
     
 	@Override
@@ -79,12 +94,26 @@ public class GuardRailSystem extends StateMachineSystem {
 			guardRailSpeed = 0.0;
 			break;
 		case HumanFeed_RaiseTote:
-			if(elapsed <= 0.25) { //just at beginning
-				guardRailSpeed = kOpenGuardRailSpeed;
+			if(!Conveyor.getInstance().getRearSensor()) {
+				if(elapsed <= 0.25) { //just at beginning
+					guardRailSpeed = kOpenGuardRailSpeed;
+				}
+				else {
+					guardRailSpeed = kSlowOpenGuardRailSpeed;
+				}
 			}
 			else {
-				guardRailSpeed = kSlowOpenGuardRailSpeed;
-			}
+				if(closeInHumanFeed){
+					humanFeedCloseTimer.reset();
+					closeInHumanFeed = false;
+				}
+				if(humanFeedCloseTimer.get() <= 1.0) {
+					guardRailSpeed = kCloseGuardRailSpeed;
+				}
+				else {
+					guardRailSpeed = kSlowCloseGuardRailSpeed;
+				}
+			} 
 			break;
 		case HumanFeed_WaitForTote:
 			guardRailSpeed = kSlowOpenGuardRailSpeed;

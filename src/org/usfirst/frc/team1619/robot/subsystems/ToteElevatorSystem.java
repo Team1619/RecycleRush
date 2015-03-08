@@ -20,13 +20,17 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
  */
 public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
-	public static final double kTransitPosition = 2.1;
+	public static final double kTransitPosition = 1.0;
 	public static final double kFeederPosition = 20.8;
 	public static final double kPickUpPosition = -2.0;
 	public static final double kPositionTolerance = 3.0;
 	public static final double kDeadZone = 0.25;
-	public static final double kInitSpeed = -0.2;
-
+	public static final double kInitSpeed = -0.5;
+	
+	public static final double k0ToteP = 0.55, k0ToteI = 0.005, k0ToteD = 0;
+	public static final double k2ToteP = 0.55, k2ToteI = 0.0075, k2ToteD = 0;
+	public static final double k4ToteP = 0.55, k4ToteI = 0.010, k4ToteD = 0;
+	
 	public final CANTalon toteElevatorMotor;
 	public final CANTalon toteElevatorMotorSmall;
 
@@ -51,39 +55,40 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseSensor(false);
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+		//PID values default to this
 		toteElevatorMotor.setPID(0.55, 0.005, 0, 0.0001, 800, 24/0.250, 0);
-
-		Preferences.putNumber("toteP", toteElevatorMotor.getP());
-		Preferences.putNumber("toteI", toteElevatorMotor.getI());
-		Preferences.putNumber("toteD", toteElevatorMotor.getD());
-		Preferences.putNumber("toteF", toteElevatorMotor.getF());
-		Preferences.putNumber("toteIZone", toteElevatorMotor.getIZone());
-		Preferences.addTableListener(new ITableListener() {
-			@Override
-			public void valueChanged(ITable source, String key, Object value, boolean isNew) {
-				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
-						key, value.toString(), Boolean.toString(isNew)));
-				
-				switch(key) {
-				case "toteP":
-					toteElevatorMotor.setP(Double.parseDouble((String)value));
-					break;
-				case "toteI":
-					toteElevatorMotor.setI(Double.parseDouble((String)value));
-					break;
-				case "toteD":
-					toteElevatorMotor.setD(Double.parseDouble((String)value));
-					break;
-				case "toteF":
-					toteElevatorMotor.setF(Double.parseDouble((String)value));
-					break;
-				case "toteIZone":
-					toteElevatorMotor.setIZone(Integer.parseInt((String)value));
-					break;
-				}
-			}
+//		These are disabled for now in order to use changing PID values for number of totes. 
+//		Preferences.putNumber("toteP", toteElevatorMotor.getP());
+//		Preferences.putNumber("toteI", toteElevatorMotor.getI());
+//		Preferences.putNumber("toteD", toteElevatorMotor.getD());
+//		Preferences.putNumber("toteF", toteElevatorMotor.getF());
+//		Preferences.putNumber("toteIZone", toteElevatorMotor.getIZone());
+//		Preferences.addTableListener(new ITableListener() {
+//			@Override
+//			public void valueChanged(ITable source, String key, Object value, boolean isNew) {
+//				System.out.println(String.format("Key '%s' changed to '%s' (new = '%s')",
+//						key, value.toString(), Boolean.toString(isNew)));
+//				
+//				switch(key) {
+//				case "toteP":
+//					toteElevatorMotor.setP(Double.parseDouble((String)value));
+//					break;
+//				case "toteI":
+//					toteElevatorMotor.setI(Double.parseDouble((String)value));
+//					break;
+//				case "toteD":
+//					toteElevatorMotor.setD(Double.parseDouble((String)value));
+//					break;
+//				case "toteF":
+//					toteElevatorMotor.setF(Double.parseDouble((String)value));
+//					break;
+//				case "toteIZone":
+//					toteElevatorMotor.setIZone(Integer.parseInt((String)value));
+//					break;
+//				}
+//			}
 			
-		});
+//		});
 		
 		toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
@@ -207,6 +212,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		case Init:
 			bInitFinished = false;
 			break;
+		case Idle:
+			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case HumanFeed_ToteOnConveyor:
+			
 		default:
 			break;
 		}
@@ -232,6 +242,30 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_RaiseTote:
+			switch (StateMachine.getInstance().numberTotes) {
+			case 0:
+				toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 1:
+				toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 2: 
+				toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 3:
+				toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 4:
+				toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 5:
+				toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			default:
+				break;
+			}
+			SmartDashboard.putNumber("Tote Elevator Variable P", toteElevatorMotor.getP());
+			SmartDashboard.putNumber("Tote Elevator Variable I", toteElevatorMotor.getI());
 			if(useStatePosition) {
 				setToteElevatorPosition(kFeederPosition);
 			}
