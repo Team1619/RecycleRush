@@ -6,10 +6,9 @@ import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.CANTalon.ControlMode;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -35,8 +34,6 @@ public class Conveyor extends StateMachineSystem {
 	private Timer frontSensorFedDelay = new Timer();
 	private final double kDebounceTime = 0.05;
 	
-	private final JoystickButton conveyorForwardButton;
-	private final JoystickButton conveyorBackButton;
 		
 	private Conveyor() {
 		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
@@ -47,9 +44,6 @@ public class Conveyor extends StateMachineSystem {
     	frontConveyorOpticalSensor = new DigitalInput(RobotMap.frontConveyorOpticalSensorID);
 		rearConveyorOpticalSensor = new DigitalInput(RobotMap.rearConveyorOpticalSensorID);
 
-		conveyorForwardButton = OI.getInstance().conveyorForwardButton;
-		conveyorBackButton = OI.getInstance().conveyorBackButton;
-		
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();
 		frontSensorFedDelay.start();
@@ -109,10 +103,10 @@ public class Conveyor extends StateMachineSystem {
     }
     
     private void updateConveyor() {
-    	if(conveyorForwardButton.get()) {
+    	if(OI.getInstance().conveyorForwardButton.get()) {
 			conveyorMotor.set(kManualForwardConveyorSpeed);
 		}
-		else if(conveyorBackButton.get()) {
+		else if(OI.getInstance().conveyorBackButton.get()) {
 			conveyorMotor.set(kManualBackConveyorSpeed);
 		}
 		else {

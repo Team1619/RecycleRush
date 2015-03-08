@@ -18,6 +18,7 @@ public class OI {
 	
 	public final Joystick rightStick;
 	public final Joystick leftStick;
+	public final Joystick tiltStick;
 	
 	
 	/**
@@ -26,16 +27,18 @@ public class OI {
 	 */
 	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
 	public final InternalButton binElevatorUp, binElevatorDown;
-//	public final InternalButton binTiltUpButton, binTiltDownButton;
 	
 	//rightStick
 	private final JoystickButton resetGyroButton;
 	private final JoystickButton resetDriveEncodersButton;
-	private final JoystickButton liftAbortButton;
-	private final JoystickButton liftResetButton;
+	public final JoystickButton liftAbortButton;
+	public final JoystickButton liftResetButton;
 	
-	private final JoystickButton startHumanFeedButton;
-	private final JoystickButton stopHumanFeedButton;
+	public final JoystickButton startHumanFeedButton;
+	public final JoystickButton stopHumanFeedButton;
+	
+	public final JoystickButton toteElevatorUpManualButton;
+	public final JoystickButton toteElevatorDownManualButton;
 	
 	//leftStick
 	public final JoystickButton closeClawButton;
@@ -45,8 +48,6 @@ public class OI {
 	public final JoystickButton rakerCloseManualButton;
 //	public final JoystickButton moveClawForBinPickupButton;
 //	public final JoystickButton moveClawForNoodleInsertionButton;
-	
-	public final JoystickButton toteElevatorManualButton;
 		
 	public final JoystickButton conveyorForwardButton;
 	public final JoystickButton conveyorBackButton;
@@ -54,12 +55,11 @@ public class OI {
 	public final JoystickButton guardRailOpenButton;
 	public final JoystickButton guardRailCloseButton;
 	
-	public final JoystickButton pickUpToteButton;
-	
 	public final JoystickButton incrementNumberTotesButton;
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
 		leftStick = new Joystick(RobotMap.leftStickID);
+		tiltStick = leftStick;
 		
 		//Right stick
 		kachigLeft = new InternalButton();
@@ -77,7 +77,9 @@ public class OI {
 		stopHumanFeedButton = new JoystickButton(rightStick, RobotMap.stopHumanFeedButtonID);
 		
 		incrementNumberTotesButton = new JoystickButton(rightStick, RobotMap.incrementNumberTotesButtonID);
-		pickUpToteButton = new JoystickButton(rightStick, RobotMap.pickUpToteButtonID);
+		
+		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
+		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();
@@ -93,7 +95,6 @@ public class OI {
 //		moveClawForBinPickupButton = new JoystickButton(leftStick, RobotMap.moveClawForBinPickupButtonID);
 //		moveClawForNoodleInsertionButton = new JoystickButton(leftStick, RobotMap.moveClawForNoodleInsertionButtonID);
 		
-		toteElevatorManualButton = new JoystickButton(leftStick, RobotMap.toteElevatorManualButtonID);
 		
 		conveyorForwardButton = new JoystickButton(leftStick, RobotMap.coneyorFowardButtonID);
 		conveyorBackButton = new JoystickButton(leftStick, RobotMap.coneyorBackButtonID);
@@ -117,7 +118,6 @@ public class OI {
 		
 		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Start));
 		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Stop));
-		pickUpToteButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_EndCurrentStateAndDescend));
 		
 		// unstickToteButton.whileHeld(new UnstickToteCommand());
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());

@@ -8,7 +8,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,8 +22,6 @@ public class GuardRailSystem extends StateMachineSystem {
 	private Timer humanFeedCloseTimer = new Timer();
 	private boolean closeInHumanFeed = false;
 	
-	private final JoystickButton guardRailOpenButton;
-	private final JoystickButton guardRailCloseButton;
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -37,26 +34,21 @@ public class GuardRailSystem extends StateMachineSystem {
     	guardRailMotor.enableBrakeMode(false);
     	
     	humanFeedCloseTimer.start();
-    	
-    	guardRailOpenButton = OI.getInstance().guardRailOpenButton;
-		guardRailCloseButton = OI.getInstance().guardRailCloseButton;
 	}
 	
-	private static GuardRailSystem theSystem;
+	private static GuardRailSystem theSystem = new GuardRailSystem();
 	
 	public static GuardRailSystem getInstance() {
-		if(theSystem == null)
-			theSystem = new GuardRailSystem();
 		return theSystem;
 	}
 
 	private double guardRailSpeed = 0.0;
 	
 	private void updateGuardRail() {
-		if(guardRailOpenButton.get()) {
+		if(OI.getInstance().guardRailOpenButton.get()) {
 			guardRailMotor.set(kOpenGuardRailSpeed);
 		}
-		else if(guardRailCloseButton.get()) {
+		else if(OI.getInstance().guardRailCloseButton.get()) {
 			guardRailMotor.set(kCloseGuardRailSpeed);
 		}
 		else {
@@ -134,10 +126,6 @@ public class GuardRailSystem extends StateMachineSystem {
 				guardRailSpeed = kOpenGuardRailSpeed;	
 			}
 			break;
-//		case GroundFeed:
-//			break;
-//		case Dropoff:
-//			break;
 		case Abort:	
 			guardRailSpeed = 0.0;
 			break;

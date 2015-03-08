@@ -7,14 +7,12 @@ import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
 	private State currentState = State.Init;
 
 	public int numberTotes;
-	private final JoystickButton incrementNumberTotesButton;
 	private boolean incrementNumberTotes;
 	
 	private boolean toStopHumanFeed;
@@ -24,7 +22,6 @@ public class StateMachine {
 	
 	private StateMachine() {
 		numberTotes = 0;
-		incrementNumberTotesButton = OI.getInstance().incrementNumberTotesButton;
 		incrementNumberTotes = false;
 		toStopHumanFeed = false;
 	}
@@ -487,7 +484,7 @@ public class StateMachine {
 				s.init(currentState);
 		}
 		
-		if (incrementNumberTotesButton.get()) {
+		if (OI.getInstance().incrementNumberTotesButton.get()) {
 			if (!incrementNumberTotes) {
 				numberTotes = (numberTotes++)%7;
 				incrementNumberTotes = true;

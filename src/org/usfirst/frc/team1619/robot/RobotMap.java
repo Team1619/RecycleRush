@@ -37,32 +37,31 @@ public class RobotMap {
 	public static final int resetGyroButtonID = 7;
 	public static final int resetDriveEncodersButtonID = 8;
 
-	public static final int liftAbortButtonID = 11;
-	public static final int liftResetButtonID = 12;	
+	public static final int liftAbortButtonID = 4;
+	public static final int liftResetButtonID = 3;	
 
-	public static final int startHumanFeedButtonID = 16;
-	public static final int stopHumanFeedButtonID = 15; //last tote on conveyor or ground (before tote elevator has active conrtol of tote)
+	public static final int startHumanFeedButtonID = 1;
+	public static final int stopHumanFeedButtonID = 2; //last tote on conveyor or ground (before tote elevator has active conrtol of tote)
 	
-	public static final int incrementNumberTotesButtonID = 2;
-	public static final int pickUpToteButtonID = 14;
+	public static final int incrementNumberTotesButtonID = 8;
+	
+	public static final int toteElevatorUpManualButtonID = 6;
+	public static final int toteElevatorDownManualButtonID = 7;
+	
 
 	//Left Stick
-	public static final int guardrailCloseManualButtonID = 13;
-	public static final int guardrailOpenManualButtonID = 14;
+	public static final int guardrailCloseManualButtonID = 9;
+	public static final int guardrailOpenManualButtonID = 8;
 	
-	public static final int coneyorFowardButtonID = 12;
-	public static final int coneyorBackButtonID = 15;
+	public static final int coneyorFowardButtonID = 4;
+	public static final int coneyorBackButtonID = 3;
 
-	public static final int toteElevatorManualButtonID = 8;
 	
-	public static final int binTiltManualButtonID = 6;
-	public static final int rakerOpenManualButtonID = 11;
-	public static final int rakerCloseManualButtonID = 16;
+	public static final int rakerOpenManualButtonID = 7;
+	public static final int rakerCloseManualButtonID = 6;
 	public static final int closeClawButtonID = 1;
-	public static final int openClawButtonID = 3;
-	public static final int moveClawForBinPickupButtonID = 4;
-	public static final int moveClawForNoodleInsertionButtonID = 2;
-	
+	public static final int openClawButtonID = 2;
+
 
 	//other stuff
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1
