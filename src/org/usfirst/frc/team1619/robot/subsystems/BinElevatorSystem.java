@@ -234,11 +234,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 			setBinElevatorSpeed(kInitSpeed);
 			break;
 		case Idle:
-			if(getTilterBackLimitSwitch())
-				setBinElevatorSpeed(kBinIdleSpeed);
-			else
-				setBinElevatorSpeed(0);
-			break;
+			setBinElevatorSpeed(0);
 		case HumanFeed_RaiseTote:
 			setBinElevatorSpeed(kBinIdleSpeed);
 			break;
@@ -252,7 +248,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 			setBinElevatorSpeed(kBinIdleSpeed);
 			break;
 		case Abort:
-			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinElevatorSpeed(0);
 			break;
 		default:
 			break;

@@ -17,7 +17,7 @@ public class GuardRailSystem extends StateMachineSystem {
 	public static final double kCloseGuardRailSpeed = -0.75;
 	public static final double kOpenGuardRailSpeed = 0.40;
 	public static final double kSlowOpenGuardRailSpeed = 0.00;
-	public static final double kSlowCloseGuardRailSpeed = -0.10;
+	public static final double kSlowCloseGuardRailSpeed = 0.00;
 	
 	private Timer humanFeedCloseTimer = new Timer();
 	private boolean closeInHumanFeed = false;

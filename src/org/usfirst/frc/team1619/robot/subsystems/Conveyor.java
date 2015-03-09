@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class Conveyor extends StateMachineSystem {
-	private static final double kForwardConveyorSpeed = -0.7;
-	private static final double kManualForwardConveyorSpeed = -0.5;
-	private static final double kManualBackConveyorSpeed = 0.5;
+	private static final double kForwardConveyorSpeed = -1.0;
+	private static final double kManualForwardConveyorSpeed = -1.0;
+	private static final double kManualBackConveyorSpeed = 1.0;
 	private static final double kConveyorDelayTime = 0.25;
     
     // Put methods for controlling this subsystem
