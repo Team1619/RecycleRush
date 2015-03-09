@@ -2,7 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
-import org.usfirst.frc.team1619.robot.auto.PrepareRake;
+import org.usfirst.frc.team1619.robot.auto.BinGrabAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
@@ -92,7 +92,6 @@ public class Robot extends IterativeRobot {
 				"Bin Current"
 				);
 		
-		StateMachine.State.Init.init(StateMachine.getInstance());
 	}
 
 	/**
@@ -159,7 +158,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
-		new PrepareRake().start();
+		new BinGrabAuto().start();
 	}
 
 	/**

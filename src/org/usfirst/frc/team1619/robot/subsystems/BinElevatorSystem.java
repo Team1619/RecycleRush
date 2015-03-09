@@ -6,6 +6,7 @@ import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -122,18 +123,21 @@ public class BinElevatorSystem extends StateMachineSystem {
     	
     	//get the tilt speed we want
     	double joystickY = OI.getInstance().tiltStick.getY();
-    	if(Math.abs(joystickY) > 0.1) {
+    	boolean manual = Math.abs(joystickY) > 0.1;
+    	if(manual) {
     		finalTiltSpeed = joystickY;
     	}
     	else {
-    		finalTiltSpeed = (tilterMotorSpeed);
+    		finalTiltSpeed = tilterMotorSpeed;
     	}
-
+    	
     	//assign the speed if it's safe
     	if(isSafeToTilt() || (finalTiltSpeed > 0)) {
+    		tilterMotor.changeControlMode(ControlMode.PercentVbus);
     		tilterMotor.set(finalTiltSpeed);
     	} 
     	else {
+    		tilterMotor.changeControlMode(ControlMode.PercentVbus);
     		tilterMotor.set(0.0);
     	}
     }

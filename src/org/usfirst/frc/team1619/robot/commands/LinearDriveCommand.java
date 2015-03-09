@@ -14,20 +14,30 @@ public class LinearDriveCommand extends Command {
 	
 	private Drivetrain drivetrain;
 	private double distance; 
+	private double speed;
 	private double leftStartVal;
 	private double rightStartVal;
 	private double leftChangeVal;
 	private double rightChangeVal;
 
 	private double turnVal;
-	
-    public LinearDriveCommand(double moveDistance) {
-        // Use requires() here to declare subsystem dependencies
+	void init() {
     	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
-        distance = moveDistance;
         turnVal = 0.0;
         setInterruptible(true);
+		
+	}
+    public LinearDriveCommand(double moveDistance) {
+        speed = kDriveSpeed;
+        distance = moveDistance;
+        init();
+    }
+    
+    public LinearDriveCommand(double moveDistance, double speed) {
+        this.speed = speed;
+        distance = moveDistance;
+        init();
     }
 
     // Called just before this Command runs the first time
@@ -48,8 +58,7 @@ public class LinearDriveCommand extends Command {
     	else {
     		turnVal = 0;
     	}
-    	
-    	drivetrain.drive(kDriveSpeed * (distance/Math.abs(distance)), turnVal);
+		drivetrain.drive(speed * Math.signum(distance), turnVal);
     	System.out.println(turnVal);
     }
 

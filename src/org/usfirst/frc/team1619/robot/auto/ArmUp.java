@@ -9,17 +9,19 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ArmUp extends Command {
 
-    public ArmUp() {
+	double speed;
+	
+    public ArmUp(double speed) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	
+    	this.speed = speed;
     	requires (BinElevatorSystem.getInstance());
 
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	BinElevatorSystem.getInstance().binTilt(999);  //TODO
+    	BinElevatorSystem.getInstance().binTilt(0.5);  //TODO
     }
 
     // Called repeatedly when this Command is scheduled to run

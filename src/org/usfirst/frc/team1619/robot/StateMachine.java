@@ -29,11 +29,13 @@ public class StateMachine {
 	public void init() {
 		if(initialized.check()) {
 			currentState = State.Idle;
-			initialized.clear();
 		}
 		else {
 			currentState = State.Init;
 		}
+		currentState.init(this);
+		for(StateMachineSystem system : systems)
+			system.init(currentState);
 	}
 	
 	private static StateMachine stateMachine;

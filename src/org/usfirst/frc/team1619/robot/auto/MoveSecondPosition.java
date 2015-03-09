@@ -17,7 +17,7 @@ public class MoveSecondPosition extends CommandGroup {
     	addSequential(new LinearDriveCommand(1));
     	addSequential(new TurnCommand(-90));
     	
-    	addParallel(new ClawsClose());
+    	addParallel(new ClawsClose(0.5, 2));
     	
     	
     	// Add Commands here:
