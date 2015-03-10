@@ -16,13 +16,13 @@ public class KachigCommand extends Command {
 	private double linearspeed;
 	private double time;
 	
-    public KachigCommand(double linearspeed, double rotationalspeed, double tim) {
+    public KachigCommand(double linearspeed, double rotationalspeed, double time) {
         // Use requires() here to declare subsystem dependencies
     	drivetrain = Drivetrain.getInstance();
         requires(drivetrain);
         this.rotationalspeed = rotationalspeed;
         this.linearspeed = linearspeed;
-        this.time = tim;
+        this.time = time;
         
         timer = new Timer();
     }

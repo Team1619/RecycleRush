@@ -1,40 +1,35 @@
-package org.usfirst.frc.team1619.robot.auto;
+package org.usfirst.frc.team1619.robot.commands;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class ClawsOpen extends Command {
+public class RaiseBinElevatorCommand extends Command {
 
-	private Timer timer;
-    public ClawsOpen() {
+    public RaiseBinElevatorCommand() {
         // Use requires() here to declare subsystem dependencies
-        requires(BinElevatorSystem.getInstance());
-        timer = new Timer();
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BinElevatorSystem.getInstance().moveBinGrip(0.4);
+    	BinElevatorSystem.getInstance().setBinElevatorSpeed(0.1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 2.0;
+        return false;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	BinElevatorSystem.getInstance().moveBinGrip(0.0);  
     }
 
     // Called when another command which requires one or more of the same

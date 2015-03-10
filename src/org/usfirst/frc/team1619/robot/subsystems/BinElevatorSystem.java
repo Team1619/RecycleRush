@@ -235,6 +235,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 			break;
 		case Idle:
 			setBinElevatorSpeed(0);
+			break;
 		case HumanFeed_RaiseTote:
 			setBinElevatorSpeed(kBinIdleSpeed);
 			break;

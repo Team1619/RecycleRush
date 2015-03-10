@@ -116,7 +116,7 @@ public class Drivetrain extends Subsystem {
 	}
 	
 	public void teleopMode() {
-		setBrakeMode(false);
+		setBrakeMode(true);
 	
 	}
 }
