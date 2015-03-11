@@ -8,14 +8,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class BinGrabAuto extends CommandGroup {
+public class BinGrabReverseAuto extends CommandGroup {
     
-    public  BinGrabAuto() {
+    public  BinGrabReverseAuto() {
         addParallel(new RaiseBinElevatorCommand());
     	addSequential(new LinearDriveCommand(1, 0.5));
         addSequential(new ClawsClose(0.5, 2));
-        addParallel(new LinearDriveCommand(0.56, 0.5));
-        addSequential(new ArmUp(1, 1.35));
-        //addParallel(new TurnCommand(180));
+        addParallel(new LinearDriveCommand(5, -0.5));
+        addSequential(new ArmUp(1));
     }
 }

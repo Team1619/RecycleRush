@@ -54,7 +54,6 @@ public class LinearDriveCommand extends Command {
     	if(leftChangeVal != rightChangeVal) {
     		turnVal = (rightChangeVal - leftChangeVal)*kPValue;
     	}
-    	
     	else {
     		turnVal = 0;
     	}
@@ -64,7 +63,7 @@ public class LinearDriveCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return (leftChangeVal + rightChangeVal)/2 >= distance;
+        return Math.abs((leftChangeVal + rightChangeVal)/2) >= distance;
     }
 
     // Called once after isFinished returns true

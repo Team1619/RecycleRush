@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.auto.BinGrabAuto;
+import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
@@ -158,7 +159,7 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
-		new BinGrabAuto().start();
+		new BinGrabReverseAuto().start();
 	}
 
 	/**

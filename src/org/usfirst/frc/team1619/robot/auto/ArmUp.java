@@ -13,6 +13,7 @@ public class ArmUp extends Command {
 	double speed;
 	private Timer timer = new Timer();
 	private double time;
+	private boolean fullUp = false;
 	
     public ArmUp(double speed, double time) {
         // Use requires() here to declare subsystem dependencies
@@ -20,7 +21,15 @@ public class ArmUp extends Command {
     	this.speed = speed;
     	requires (BinElevatorSystem.getInstance());
         this.time = time;
-        
+        fullUp = false;
+    }
+    
+    public ArmUp(double speed) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.speed = speed;
+    	requires (BinElevatorSystem.getInstance());
+    	fullUp = true;
     }
 
     // Called just before this Command runs the first time
@@ -37,7 +46,12 @@ public class ArmUp extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > time;
+    	if(fullUp) {
+    		return(BinElevatorSystem.getInstance().getTilterBackLimitSwitch());
+    	}
+    	else {
+    		return timer.get() > time;
+    	}
     }
 
     // Called once after isFinished returns true
