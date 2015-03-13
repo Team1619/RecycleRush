@@ -2,7 +2,7 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
-import org.usfirst.frc.team1619.robot.auto.BinGrabAuto;
+import org.usfirst.frc.team1619.robot.auto.BinGrabAutoWithLitter;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
@@ -15,8 +15,10 @@ import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -43,6 +45,7 @@ public class Robot extends IterativeRobot {
 	private Timer pdpLogTimer;
 	private Timer elevatorLogTimer;
 
+	private SendableChooser autoChooser;
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -92,7 +95,10 @@ public class Robot extends IterativeRobot {
 				"Tote Current 2", 
 				"Bin Current"
 				);
-		
+		autoChooser = new SendableChooser();
+		autoChooser.addDefault("Present Bin For Litter", new BinGrabAutoWithLitter());
+		autoChooser.addObject("Get Out of the Way", new BinGrabReverseAuto());
+		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
 	/**
@@ -159,7 +165,10 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
-		new BinGrabReverseAuto().start();
+		//new BinGrabReverseAuto().start();
+		//new BinGrabAutoWithLitter().start();
+		Command autoCommand = (Command) autoChooser.getSelected();
+		autoCommand.start();
 	}
 
 	/**

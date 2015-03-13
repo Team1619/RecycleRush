@@ -25,9 +25,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kToteElevatorUpSpeed = -0.7;
 	public static final double kToteElevatorDownSpeed = 0.7;
 	
-	public static final double k0ToteP = 0.55, k0ToteI = 0.005, k0ToteD = 0;
-	public static final double k2ToteP = 0.55, k2ToteI = 0.0075, k2ToteD = 0;
-	public static final double k4ToteP = 0.55, k4ToteI = 0.010, k4ToteD = 0;
+	public static final double k0ToteP = 0.50, k0ToteI = 0.003, k0ToteD = 0;
+	public static final double k2ToteP = 0.50, k2ToteI = 0.0075, k2ToteD = 0;
+	public static final double k4ToteP = 0.50, k4ToteI = 0.010, k4ToteD = 0;
 	
 	public final CANTalon toteElevatorMotor;
 	public final CANTalon toteElevatorMotorSmall;
@@ -48,7 +48,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		//PID values default to this
-		toteElevatorMotor.setPID(0.55, 0.005, 0, 0.0001, 800, 24/0.250, 0);
+		toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 		
 		toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
@@ -185,6 +185,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		switch(state) {
 		case Init:
 			bInitFinished = false;
+			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case Idle:
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
 		default:
