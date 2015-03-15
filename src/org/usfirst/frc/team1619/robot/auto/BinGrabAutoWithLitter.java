@@ -12,9 +12,9 @@ public class BinGrabAutoWithLitter extends CommandGroup {
     
     public  BinGrabAutoWithLitter() {
         addParallel(new RaiseBinElevatorCommand());
-    	addSequential(new LinearDriveCommand(1, 0.5));
+    	addSequential(new LinearDriveCommand(1.15, 0.5));
         addSequential(new ClawsClose(0.5, 2));
-        addParallel(new LinearDriveCommand(0.56, 0.5));
+        //addParallel(new LinearDriveCommand(0.5, 0.5));
         addSequential(new ArmUp(1, 1.35));
         //addParallel(new TurnCommand(180));
     }

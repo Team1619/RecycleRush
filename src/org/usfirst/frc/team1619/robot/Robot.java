@@ -2,8 +2,8 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
-import org.usfirst.frc.team1619.robot.auto.BinGrabAutoWithLitter;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
+import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
@@ -96,8 +96,9 @@ public class Robot extends IterativeRobot {
 				"Bin Current"
 				);
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Present Bin For Litter", new BinGrabAutoWithLitter());
-		autoChooser.addObject("Get Out of the Way", new BinGrabReverseAuto());
+		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
+		//autoChooser.addDefault("Present Bin For Litter", new BinGrabAutoWithLitter());
+		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 	}
 
