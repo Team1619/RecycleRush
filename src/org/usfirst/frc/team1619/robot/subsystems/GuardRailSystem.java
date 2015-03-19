@@ -129,6 +129,7 @@ public class GuardRailSystem extends StateMachineSystem {
 			if(StateMachine.getInstance().getToStopHumanFeed()) {
 				guardRailSpeed = 0.0;
 			}
+			
 			else {
 				guardRailSpeed = kOpenGuardRailSpeed;	
 			}

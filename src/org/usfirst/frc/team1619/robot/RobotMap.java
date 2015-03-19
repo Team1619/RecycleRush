@@ -34,8 +34,8 @@ public class RobotMap {
 	 * Button Identification
 	 */
 	//Right stick
-	public static final int resetGyroButtonID = 7;
-	public static final int resetDriveEncodersButtonID = 8;
+	//public static final int resetGyroButtonID = 7;
+	//public static final int resetDriveEncodersButtonID = 8;
 
 	public static final int liftAbortButtonID = 4;
 	public static final int liftResetButtonID = 3;	
@@ -47,6 +47,10 @@ public class RobotMap {
 	
 	public static final int toteElevatorUpManualButtonID = 6;
 	public static final int toteElevatorDownManualButtonID = 7;
+	
+	public static final int toteElevatorTopPositionButtonID = 13;
+	public static final int toteElevatorBottomPositionButtonID = 14;
+	
 	
 
 	//Left Stick

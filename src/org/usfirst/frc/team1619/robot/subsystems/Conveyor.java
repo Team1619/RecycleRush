@@ -31,7 +31,7 @@ public class Conveyor extends StateMachineSystem {
 
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
-	private Timer frontSensorFedDelay = new Timer();
+	private Timer frontSensorFedDelayTimer = new Timer();
 	private final double kDebounceTime = 0.05;
 	
 		
@@ -46,7 +46,7 @@ public class Conveyor extends StateMachineSystem {
 
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();
-		frontSensorFedDelay.start();
+		frontSensorFedDelayTimer.start();
 	}
 	
 	private static Conveyor theSystem;
@@ -121,7 +121,7 @@ public class Conveyor extends StateMachineSystem {
     public void init(State state) {
     	switch (state) {
     	case HumanFeed_ThrottleConveyorAndDescend:
-    		frontSensorFedDelay.reset();
+    		frontSensorFedDelayTimer.reset();
     		break;
     	default:
     		break;
@@ -148,7 +148,7 @@ public class Conveyor extends StateMachineSystem {
     		conveyorSpeed = kForwardConveyorSpeed;
     		break;
     	case HumanFeed_ThrottleConveyorAndDescend:
-    		if(frontSensorFedDelay.get() >= kConveyorDelayTime && StateMachine.getInstance().getToStopHumanFeed()) {
+    		if(frontSensorFedDelayTimer.get() >= kConveyorDelayTime && StateMachine.getInstance().getToStopHumanFeed()) {
     			conveyorSpeed = 0.0;
     		}
     		else {

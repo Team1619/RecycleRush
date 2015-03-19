@@ -2,8 +2,6 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.robot.commands.KachigCommand;
 import org.usfirst.frc.team1619.robot.commands.RaiseSignalCommand;
-import org.usfirst.frc.team1619.robot.commands.ResetDriveEncodersCommand;
-import org.usfirst.frc.team1619.robot.commands.ResetGyroCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.InternalButton;
@@ -29,8 +27,8 @@ public class OI {
 	public final InternalButton binElevatorUp, binElevatorDown;
 	
 	//rightStick
-	private final JoystickButton resetGyroButton;
-	private final JoystickButton resetDriveEncodersButton;
+//	private final JoystickButton resetGyroButton;
+//	private final JoystickButton resetDriveEncodersButton;
 	public final JoystickButton liftAbortButton;
 	public final JoystickButton liftResetButton;
 	
@@ -39,6 +37,9 @@ public class OI {
 	
 	public final JoystickButton toteElevatorUpManualButton;
 	public final JoystickButton toteElevatorDownManualButton;
+	
+	public final JoystickButton toteElevatorTopPositionButton;
+	public final JoystickButton toteElevatorBottomPositionButton;
 	
 	//leftStick
 	public final JoystickButton closeClawButton;
@@ -67,8 +68,8 @@ public class OI {
 		kachigForward = new InternalButton();
 		kachigBackward = new InternalButton();
 		
-		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
-		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
+//		resetGyroButton = new JoystickButton(rightStick, RobotMap.resetGyroButtonID);
+//		resetDriveEncodersButton = new JoystickButton(rightStick, RobotMap.resetDriveEncodersButtonID);
 		
 		liftAbortButton = new JoystickButton(rightStick, RobotMap.liftAbortButtonID);
 		liftResetButton = new JoystickButton(rightStick, RobotMap.liftResetButtonID);
@@ -80,6 +81,9 @@ public class OI {
 		
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
+
+		toteElevatorTopPositionButton = new JoystickButton(rightStick, RobotMap.toteElevatorTopPositionButtonID);
+		toteElevatorBottomPositionButton = new JoystickButton(rightStick, RobotMap.toteElevatorBottomPositionButtonID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();
@@ -113,8 +117,8 @@ public class OI {
 		kachigForward.whenPressed(new KachigCommand(1, 0, 0.05));
 		kachigBackward.whenPressed(new KachigCommand(-1, 0, 0.05));
 		
-		resetGyroButton.whenPressed(new ResetGyroCommand());
-		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
+//		resetGyroButton.whenPressed(new ResetGyroCommand());
+//		resetDriveEncodersButton.whenPressed(new ResetDriveEncodersCommand());
 		
 		startHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Start));
 		stopHumanFeedButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().humanFeed_Stop));
