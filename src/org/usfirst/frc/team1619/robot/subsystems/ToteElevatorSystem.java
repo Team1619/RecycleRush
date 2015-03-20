@@ -69,12 +69,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		
 		pref = Preferences.getInstance();
 		
-		pref.putDouble("Current P value", k0ToteP);
-		pref.putDouble("Current I value", k0ToteI);
-		pref.putDouble("Current D value", k0ToteD);
-		pref.putDouble("Current Feedforward value", 0.0001);
-		pref.putInt("Current IZone value", 800);
-		pref.putDouble("Current RampRate Value", 24/0.250);
+		pref.putDouble("Current_P_Value", k0ToteP);
+		pref.putDouble("Current_I_Value", k0ToteI);
+		pref.putDouble("Current_D_Value", k0ToteD);
+		pref.putDouble("Current_F_Value", 0.0001);
+		pref.putInt("Current_IZone_Value", 800);
+		pref.putDouble("Current_IZone_Value", 24/0.250);
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -211,12 +211,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		default:
 			break;
 		}
-		double p = pref.getDouble("Current P value", k0ToteP);
-		double i = pref.getDouble("Current I value", k0ToteI);
-		double d = pref.getDouble("Current D value", k0ToteD);
-		double f = pref.getDouble("Current Feedforward value", 0.0001);
-		int izone = pref.getInt("Current IZone value", 800);
-		double closeLoopRampRate = pref.getDouble("Current RampRate Value", 24/0.250);
+		double p = pref.getDouble("Current_P_Value", k0ToteP);
+		double i = pref.getDouble("Current_I_Value", k0ToteI);
+		double d = pref.getDouble("Current_D_Value", k0ToteD);
+		double f = pref.getDouble("Current_F_Value", 0.0001);
+		int izone = pref.getInt("Current_IZone_Value", 800);
+		double closeLoopRampRate = pref.getDouble("Current_IZone_Value", 24/0.250);
 		toteElevatorMotor.setPID(p, i, d, f, izone, closeLoopRampRate, 0);
 	}
 
