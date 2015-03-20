@@ -117,6 +117,8 @@ public class Robot extends IterativeRobot {
 //		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
 		SmartDashboard.putBoolean("chute door", true);
 		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
 		StateMachine.getInstance().display();
 		
 		Accelerometer.getInstance().display();

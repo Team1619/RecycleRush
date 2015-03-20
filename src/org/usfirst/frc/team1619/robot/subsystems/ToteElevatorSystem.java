@@ -166,8 +166,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()",toteElevatorMotor.getOutputVoltage());
 		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", toteElevatorMotor.getOutputCurrent());
 		SmartDashboard.putNumber("toteElevatorMotor.get()",toteElevatorMotor.get());
-		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", toteElevatorMotor.isFwdLimitSwitchClosed());
-		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", toteElevatorMotor.isRevLimitSwitchClosed());
+		
 
 	}
 
