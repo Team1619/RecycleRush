@@ -74,7 +74,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		pref.putDouble("Current_D_Value", k0ToteD);
 		pref.putDouble("Current_F_Value", 0.0001);
 		pref.putInt("Current_IZone_Value", 800);
-		pref.putDouble("Current_IZone_Value", 24/0.250);
+		pref.putDouble("Current_RampRate_Value", 24/0.250);
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -216,7 +216,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		double d = pref.getDouble("Current_D_Value", k0ToteD);
 		double f = pref.getDouble("Current_F_Value", 0.0001);
 		int izone = pref.getInt("Current_IZone_Value", 800);
-		double closeLoopRampRate = pref.getDouble("Current_IZone_Value", 24/0.250);
+		double closeLoopRampRate = pref.getDouble("Current_RampRate_Value", 24/0.250);
 		toteElevatorMotor.setPID(p, i, d, f, izone, closeLoopRampRate, 0);
 	}
 
