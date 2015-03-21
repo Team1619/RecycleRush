@@ -8,7 +8,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -179,13 +178,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 		}
 
-		SmartDashboard.putNumber("toteElevatorMotor.getIZone()", toteElevatorMotor.getIZone());
-		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()",toteElevatorMotor.getEncPosition());
-		SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()",toteElevatorMotor.getOutputVoltage());
-		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", toteElevatorMotor.getOutputCurrent());
-		SmartDashboard.putNumber("toteElevatorMotor.get()",toteElevatorMotor.get());
-		
-
+//		SmartDashboard.putNumber("toteElevatorMotor.getIZone()", toteElevatorMotor.getIZone());
 	}
 
 	boolean useStatePosition = true;
@@ -257,8 +250,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			default:
 				break;
 			}
-			SmartDashboard.putNumber("Tote Elevator Variable P", toteElevatorMotor.getP());
-			SmartDashboard.putNumber("Tote Elevator Variable I", toteElevatorMotor.getI());
+//			SmartDashboard.putNumber("Tote Elevator Variable P", toteElevatorMotor.getP());
+//			SmartDashboard.putNumber("Tote Elevator Variable I", toteElevatorMotor.getI());
 			if(useStatePosition) {
 				setToteElevatorPosition(kFeederPosition);
 			}

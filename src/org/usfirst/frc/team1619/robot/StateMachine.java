@@ -3,7 +3,7 @@ package org.usfirst.frc.team1619.robot;
 import java.util.ArrayList;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
-import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
+import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.StateMachineSystem;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -202,8 +202,8 @@ public class StateMachine {
 				if(sm.abortSignal.check()) {
 					return Abort;
 				}
-				if(Conveyor.getInstance().getRearSensor() ||
-						Conveyor.getInstance().getFrontSensor() ||
+				if(ConveyorSystem.getInstance().getRearSensor() ||
+						ConveyorSystem.getInstance().getFrontSensor() ||
 						sm.humanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ToteOnConveyor;
 				}

@@ -3,7 +3,6 @@ package org.usfirst.frc.team1619.robot.commands;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -59,8 +58,8 @@ public class TurnCommand extends Command {
     protected boolean isFinished() {
     	//Robot.getRobot().smashboard.write("Left turn distance", getLeftDistance());
     	//Robot.getRobot().smashboard.write("Right turn distance", getRightDistance());
-    	SmartDashboard.putNumber("Turn angle", getAngle());
-    	SmartDashboard.putNumber("Turn distance", getTurnDistance());
+//    	SmartDashboard.putNumber("Turn angle", getAngle());
+//    	SmartDashboard.putNumber("Turn distance", getTurnDistance());
     	
         return getTurnDistance() > distance;
     }
