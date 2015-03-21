@@ -280,7 +280,7 @@ public class StateMachine {
 			@Override
 			protected void init(StateMachine sm) {
 				sm.numberTotes++;
-				if(sm.numberTotes == 5) {
+				if(sm.numberTotes == 6) {
 					sm.toStopHumanFeed = true;
 				}
 			}
@@ -488,7 +488,8 @@ public class StateMachine {
 		
 		if (OI.getInstance().incrementNumberTotesButton.get()) {
 			if (!incrementNumberTotes) {
-				numberTotes = (numberTotes++)%7;
+				numberTotes = numberTotes--;
+				numberTotes = (numberTotes < 0) ? 0 : numberTotes;
 				incrementNumberTotes = true;
 			}
 		}

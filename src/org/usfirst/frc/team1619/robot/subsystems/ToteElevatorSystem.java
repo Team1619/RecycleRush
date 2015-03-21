@@ -25,9 +25,18 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kToteElevatorUpSpeed = -0.7;
 	public static final double kToteElevatorDownSpeed = 0.7;
 	
+	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
+	public static final double k1ToteP = 0.60, k1ToteI = 0.003, k1ToteD = 0;
+	public static final double k2ToteP = 0.70, k2ToteI = 0.003, k2ToteD = 0;
+	public static final double k3ToteP = 0.75, k3ToteI = 0.003, k3ToteD = 0;
+	public static final double k4ToteP = 0.75, k4ToteI = 0.003, k4ToteD = 0;
+	public static final double k5ToteP = 0.85, k5ToteI = 0.003, k5ToteD = 0;
+	
+	/* Utah values
 	public static final double k0ToteP = 0.50, k0ToteI = 0.003, k0ToteD = 0;
 	public static final double k2ToteP = 0.50, k2ToteI = 0.0075, k2ToteD = 0;
 	public static final double k4ToteP = 0.50, k4ToteI = 0.010, k4ToteD = 0;
+	*/
 	
 	public final CANTalon toteElevatorMotor;
 	public final CANTalon toteElevatorMotorSmall;
@@ -219,19 +228,22 @@ public class ToteElevatorSystem extends StateMachineSystem {
 				toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			case 1:
-				toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+				toteElevatorMotor.setPID(k1ToteP, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			case 2: 
 				toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			case 3:
-				toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+				toteElevatorMotor.setPID(k3ToteP, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			case 4:
 				toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			case 5:
-				toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+				toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 6:
+				toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
 				break;
 			default:
 				break;

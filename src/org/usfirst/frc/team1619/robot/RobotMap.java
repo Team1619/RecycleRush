@@ -43,7 +43,7 @@ public class RobotMap {
 	public static final int startHumanFeedButtonID = 1;
 	public static final int stopHumanFeedButtonID = 2; //last tote on conveyor or ground (before tote elevator has active conrtol of tote)
 	
-	public static final int incrementNumberTotesButtonID = 8;
+	public static final int incrementNumberTotesButtonID = 11;
 	
 	public static final int toteElevatorUpManualButtonID = 6;
 	public static final int toteElevatorDownManualButtonID = 7;
