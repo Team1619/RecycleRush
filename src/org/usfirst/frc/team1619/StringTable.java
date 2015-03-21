@@ -40,13 +40,24 @@ public class StringTable implements ITable {
 
 	@Override
 	public double getNumber(String key) throws TableKeyNotDefinedException {
-		return Double.parseDouble(table.getString(key));
+		try {
+			return Double.parseDouble(table.getString(key));
+		}
+		catch(NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	@Override
 	public double getNumber(String key, double defaultValue) {
-		if(table.containsKey(key))
-			return Double.parseDouble(table.getString(key));
+		if(table.containsKey(key)) {
+			try {
+				return Double.parseDouble(table.getString(key));
+			}
+			catch(NumberFormatException e) {
+				return 0;
+			}
+		}
 		else {
 			table.putString(key, Double.toString(defaultValue));
 			return defaultValue;
@@ -127,14 +138,25 @@ public class StringTable implements ITable {
 
 	@Override
 	public int getInt(String key) throws TableKeyNotDefinedException {
-		return Integer.parseInt(table.getString(key));
+		try {
+			return Integer.parseInt(table.getString(key));
+		}
+		catch(NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	@Override
 	public int getInt(String key, int defaultValue)
 			throws TableKeyNotDefinedException {
-		if(table.containsKey(key))
-			return Integer.parseInt(table.getString(key));
+		if(table.containsKey(key)) {
+			try {
+				return Integer.parseInt(table.getString(key));
+			}
+			catch(NumberFormatException e) {
+				return 0;
+			}
+		}
 		else {
 			table.putString(key, Integer.toString(defaultValue));
 			return defaultValue;
@@ -148,13 +170,24 @@ public class StringTable implements ITable {
 
 	@Override
 	public double getDouble(String key) throws TableKeyNotDefinedException {
-		return Double.parseDouble(table.getString(key));
+		try {
+			return Double.parseDouble(table.getString(key));
+		}
+		catch(NumberFormatException e) {
+			return 0;
+		}
 	}
 
 	@Override
 	public double getDouble(String key, double defaultValue) {
-		if(table.containsKey(key))
-			return Double.parseDouble(table.getString(key));
+		if(table.containsKey(key)) {
+			try {
+				return Double.parseDouble(table.getString(key));
+			}
+			catch(NumberFormatException e) {
+				return 0;
+			}
+		}
 		else {
 			table.putString(key, Double.toString(defaultValue));
 			return defaultValue;

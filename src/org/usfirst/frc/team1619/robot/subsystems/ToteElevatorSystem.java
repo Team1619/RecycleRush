@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
@@ -8,7 +9,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,6 +23,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kPositionTolerance = 3.0;
 	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.5;
+	public static final double kRateOffset = 0.5;
 	
 	public static final double kToteElevatorUpSpeed = -0.7;
 	public static final double kToteElevatorDownSpeed = 0.7;
@@ -42,9 +43,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	private JoystickButton toteElevatorTopPositionButton;
 	private JoystickButton toteElevatorBottomPositionButton;
-	
-	private Preferences pref;
-	
+		
 	private ToteElevatorSystem() {
 		toteElevatorTopPositionButton = OI.getInstance().toteElevatorTopPositionButton;
 		toteElevatorBottomPositionButton = OI.getInstance().toteElevatorBottomPositionButton;
@@ -67,14 +66,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotorSmall.set(RobotMap.toteElevatorMotor);
 		toteElevatorMotorSmall.reverseOutput(true);
 		
-		pref = Preferences.getInstance();
-		
-		pref.putDouble("Current_P_Value", k0ToteP);
-		pref.putDouble("Current_I_Value", k0ToteI);
-		pref.putDouble("Current_D_Value", k0ToteD);
-		pref.putDouble("Current_F_Value", 0.0001);
-		pref.putInt("Current_IZone_Value", 800);
-		pref.putDouble("Current_RampRate_Value", 24/0.250);
+		Preferences.putNumber("Current_P_Value", k0ToteP);
+		Preferences.putNumber("Current_I_Value", k0ToteI);
+		Preferences.putNumber("Current_D_Value", k0ToteD);
+		Preferences.putNumber("Current_F_Value", 0.0001);
+		Preferences.putNumber("Current_IZone_Value", 800);
+		Preferences.putNumber("Current_RampRate_Value", 24/0.250);
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -106,6 +103,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public double getToteElevatorPosition() { 
 		return toteElevatorMotor.getPosition()/kEncoderTicksPerInch;
 	}
+	
+	public double getToteElevatorRate() {
+		return toteElevatorMotor.getSpeed()/kEncoderTicksPerInch;
+	}
 
 	private boolean wasManual = false;
 	
@@ -134,7 +135,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		}
 		else {
 			if(wasManual) {
-				setToteElevatorPosition(getToteElevatorPosition());
+				//double rateOffset = getToteElevatorRate() * kRateOffset;
+				double rateOffset = getToteElevatorRate() * Preferences.getNumber("Current_RateOffset_Value", kRateOffset);
+				setToteElevatorPosition(getToteElevatorPosition() + rateOffset);
 				wasManual = false;
 				useStatePosition = false;
 			}
@@ -211,12 +214,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		default:
 			break;
 		}
-		double p = pref.getDouble("Current_P_Value", k0ToteP);
-		double i = pref.getDouble("Current_I_Value", k0ToteI);
-		double d = pref.getDouble("Current_D_Value", k0ToteD);
-		double f = pref.getDouble("Current_F_Value", 0.0001);
-		int izone = pref.getInt("Current_IZone_Value", 800);
-		double closeLoopRampRate = pref.getDouble("Current_RampRate_Value", 24/0.250);
+		double p = Preferences.getNumber("Current_P_Value", k0ToteP);
+		double i = Preferences.getNumber("Current_I_Value", k0ToteI);
+		double d = Preferences.getNumber("Current_D_Value", k0ToteD);
+		double f = Preferences.getNumber("Current_F_Value", 0.0001);
+		int izone = (int) Preferences.getNumber("Current_IZone_Value", 800);
+		double closeLoopRampRate = Preferences.getNumber("Current_RampRate_Value", 24/0.250);
 		toteElevatorMotor.setPID(p, i, d, f, izone, closeLoopRampRate, 0);
 	}
 
@@ -241,7 +244,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			else if(toteElevatorBottomPositionButton.get()) {
 				useStatePosition = false;
-				setToteElevatorPosition(kPickUpPosition);
+				setToteElevatorPosition(kTransitPosition);
 			}
 			if(useStatePosition) {
 				setToteElevatorPosition(kTransitPosition);		
