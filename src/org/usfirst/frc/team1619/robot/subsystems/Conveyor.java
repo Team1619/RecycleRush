@@ -38,7 +38,7 @@ public class Conveyor extends StateMachineSystem {
 	
 		
 	private Conveyor() {
-		conveyorMotor = new CANTalon(RobotMap.conveyorMotor);
+		conveyorMotor = RobotMap.MotorDefinition.conveyorMotor.getMotor();
 		conveyorMotor.changeControlMode(ControlMode.PercentVbus);
 		conveyorMotor.enableLimitSwitch(false, false);
     	conveyorMotor.enableBrakeMode(false);

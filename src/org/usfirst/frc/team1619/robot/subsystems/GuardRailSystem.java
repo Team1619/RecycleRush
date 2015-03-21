@@ -28,7 +28,7 @@ public class GuardRailSystem extends StateMachineSystem {
 	private CANTalon guardRailMotor; //overdrive slightly
 	
 	private GuardRailSystem() {
-    	guardRailMotor = new CANTalon(RobotMap.guardRailMotor);
+    	guardRailMotor = RobotMap.MotorDefinition.guardRailMotor.getMotor();
     	guardRailMotor.changeControlMode(ControlMode.PercentVbus);
     	guardRailMotor.enableLimitSwitch(false, false);
     	guardRailMotor.enableBrakeMode(false);

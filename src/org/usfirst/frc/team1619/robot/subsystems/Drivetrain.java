@@ -31,10 +31,10 @@ public class Drivetrain extends Subsystem {
 	}
 
     private Drivetrain() {
-    	leftMotor1 = new CANTalon(RobotMap.leftDriveMotor1);
-    	leftMotor2 = new CANTalon(RobotMap.leftDriveMotor2);
-    	rightMotor1 = new CANTalon(RobotMap.rightDriveMotor1);
-    	rightMotor2 = new CANTalon(RobotMap.rightDriveMotor2);
+    	leftMotor1 = RobotMap.MotorDefinition.leftDriveMotor1.getMotor();
+    	leftMotor2 = RobotMap.MotorDefinition.leftDriveMotor2.getMotor();
+    	rightMotor1 = RobotMap.MotorDefinition.rightDriveMotor1.getMotor();
+    	rightMotor2 = RobotMap.MotorDefinition.rightDriveMotor2.getMotor();
     	
     	drive = new RobotDrive(leftMotor1, leftMotor2, rightMotor1, rightMotor2);
     	drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);

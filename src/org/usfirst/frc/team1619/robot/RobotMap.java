@@ -1,5 +1,9 @@
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.KeyCodes;
+
+import edu.wpi.first.wpilibj.CANTalon;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -10,22 +14,56 @@ public class RobotMap {
 	/**
 	 * Motor Identification
 	 */
-	public final static int leftDriveMotor1 = 1;
-	public final static int leftDriveMotor2 = 2;
-	public final static int rightDriveMotor1 = 3;
-	public final static int rightDriveMotor2 = 4;
-
+	public enum MotorDefinition {
+		leftDriveMotor1(1, KeyCodes.VK_Q, KeyCodes.VK_A, 0.5, -0.5),
+		leftDriveMotor2(2, KeyCodes.VK_W, KeyCodes.VK_S, 0.5, -0.5),
+		rightDriveMotor1(3, KeyCodes.VK_E, KeyCodes.VK_D, 0.5, -0.5),
+		rightDriveMotor2(4, KeyCodes.VK_R, KeyCodes.VK_F, 0.5, -0.5),
+		rakerMotor(5, KeyCodes.VK_T, KeyCodes.VK_G, 0.5, -0.5),
+		tilterMotor(6, KeyCodes.VK_Y, KeyCodes.VK_H, 0.5, -0.5),
+		conveyorMotor(7, KeyCodes.VK_U, KeyCodes.VK_J, 0.5, -0.5),
+		guardRailMotor(8, KeyCodes.VK_I, KeyCodes.VK_K, 0.5, -0.5),
+		binElevatorMotor(9, KeyCodes.VK_O, KeyCodes.VK_L, 0.5, -0.5),
+		binGripMotor(10, KeyCodes.VK_Z, KeyCodes.VK_X, 0.5, -0.5),
+		toteElevatorMotor(11, KeyCodes.VK_C, KeyCodes.VK_V, 0.5, -0.5),
+		toteElevatorMotorSmall(12, KeyCodes.VK_B, KeyCodes.VK_N, 0.5, -0.5),
+		;
+		
+		public final int forwardKey;
+		public final int reverseKey;
+		public final double forwardKeySpeed;
+		public final double reverseKeySpeed;
+		public final int id;
+		
+		public CANTalon motor = null;
+		
+		public void initMotor() {
+			if(motor != null)
+				return;
+			motor = new CANTalon(id);
+		}
+		
+		public CANTalon getMotor() {
+			return motor;
+		}
+		
+		MotorDefinition(int id, int forwardKey, int reverseKey,
+				double forwardKeySpeed, double reverseKeySpeed) {
+			this.id = id;
+			this.forwardKey = forwardKey;
+			this.reverseKey = reverseKey;
+			this.forwardKeySpeed = forwardKeySpeed;
+			this.reverseKeySpeed = reverseKeySpeed;
+		}
+		
+		static void initMotors() {
+			for(MotorDefinition md : values())
+				md.initMotor();
+		}
+	}
+	
 	public final static int frontConveyorOpticalSensorID = 0;
 	public final static int rearConveyorOpticalSensorID = 1;
-
-	public final static int toteElevatorMotor = 11;
-	public final static int tilterMotor = 6;
-	public final static int conveyorMotor = 7;
-	public final static int guardRailMotor = 8;
-	public final static int binElevatorMotor = 9;
-	public final static int binGripMotor = 10;
-	public final static int rakerMotor = 5;
-	public final static int toteElevatorMotorSmall = 12;
 
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;

@@ -58,24 +58,24 @@ public class BinElevatorSystem extends StateMachineSystem {
 	
 		
 	private BinElevatorSystem() {
-		binElevatorMotor = new CANTalon(RobotMap.binElevatorMotor);
+		binElevatorMotor = RobotMap.MotorDefinition.binElevatorMotor.getMotor();
 		binElevatorMotor.enableLimitSwitch(true, true);
 		binElevatorMotor.enableBrakeMode(true);
 		binElevatorMotor.reverseSensor(true);
 		binElevatorMotor.reverseOutput(true);
 		binElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
-    	tilterMotor = new CANTalon(RobotMap.tilterMotor);
+    	tilterMotor = RobotMap.MotorDefinition.tilterMotor.getMotor();
     	tilterMotor.enableLimitSwitch(true, true);
     	tilterMotor.enableBrakeMode(true);
     	tilterMotor.ConfigFwdLimitSwitchNormallyOpen(true);
     	tilterMotor.ConfigRevLimitSwitchNormallyOpen(true);
     	
-    	binGripMotor = new CANTalon(RobotMap.binGripMotor);
+    	binGripMotor = RobotMap.MotorDefinition.binGripMotor.getMotor();
     	binGripMotor.enableLimitSwitch(false, false);
     	binGripMotor.enableBrakeMode(true);
     	
-    	rakerMotor = new CANTalon(RobotMap.rakerMotor);
+    	rakerMotor = RobotMap.MotorDefinition.rakerMotor.getMotor();
     	rakerMotor.enableLimitSwitch(true, true);
     	rakerMotor.enableBrakeMode(true);
     	rakerMotor.ConfigFwdLimitSwitchNormallyOpen(true);

@@ -52,6 +52,7 @@ public class Robot extends IterativeRobot {
 	 */
 	public void robotInit() {
 		OI.getInstance().init();
+		RobotMap.MotorDefinition.initMotors();
 		GyroSystem.getInstance().calibrate();
 		//Camera.getInstance();
 		BinElevatorSystem.getInstance().init();

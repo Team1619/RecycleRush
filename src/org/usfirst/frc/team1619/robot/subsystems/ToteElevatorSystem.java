@@ -48,7 +48,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private boolean bInitFinished = false;
 	
 	private ToteElevatorSystem() {
-		toteElevatorMotor = new CANTalon(RobotMap.toteElevatorMotor);
+		toteElevatorMotor = RobotMap.MotorDefinition.toteElevatorMotor.getMotor();
 		toteElevatorMotor.enableLimitSwitch(true, true);
 		toteElevatorMotor.ConfigFwdLimitSwitchNormallyOpen(true);
 		toteElevatorMotor.ConfigRevLimitSwitchNormallyOpen(true);
@@ -59,11 +59,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		//PID values default to this
 		toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 		
-		toteElevatorMotorSmall = new CANTalon(RobotMap.toteElevatorMotorSmall);
+		toteElevatorMotorSmall = RobotMap.MotorDefinition.toteElevatorMotorSmall.getMotor();
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
 		toteElevatorMotorSmall.enableBrakeMode(true);
 		toteElevatorMotorSmall.changeControlMode(ControlMode.Follower);
-		toteElevatorMotorSmall.set(RobotMap.toteElevatorMotor);
+		toteElevatorMotorSmall.set(RobotMap.MotorDefinition.toteElevatorMotor.id);
 		toteElevatorMotorSmall.reverseOutput(true);
 		
 	}
