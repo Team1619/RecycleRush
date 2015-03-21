@@ -14,7 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class GuardRailSystem extends StateMachineSystem {
-	public static final double kCloseGuardRailSpeed = -0.75;
+	//Competition Bot
+//	public static final double kCloseGuardRailSpeed = -0.75;
+	
+	//PracticeBot
+	public static final double kCloseGuardRailSpeed = -0.5;
+	
 	public static final double kOpenGuardRailSpeed = 0.40;
 	public static final double kSlowOpenGuardRailSpeed = 0.00;
 	public static final double kSlowCloseGuardRailSpeed = 0.00;

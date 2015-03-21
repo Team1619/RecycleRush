@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class BinGrabAutoWithLitter extends CommandGroup {
+public class BinGrabWithLitterAuto extends CommandGroup {
     
-    public  BinGrabAutoWithLitter() {
+    public  BinGrabWithLitterAuto() {
         addParallel(new RaiseBinElevatorCommand());
     	addSequential(new LinearDriveCommand(1.15, 0.5));
         addSequential(new ClawsClose(0.5, 2));
