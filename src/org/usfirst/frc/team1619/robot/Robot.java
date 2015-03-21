@@ -44,15 +44,15 @@ public class Robot extends IterativeRobot {
 	private Lumberjack elevatorLumberjack;
 	private Timer pdpLogTimer;
 	private Timer elevatorLogTimer;
-
 	private SendableChooser autoChooser;
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
 	 */
 	public void robotInit() {
-		OI.getInstance().init();
 		RobotMap.MotorDefinition.initMotors();
+		OI.getInstance().init();
 		GyroSystem.getInstance().calibrate();
 		//Camera.getInstance();
 		BinElevatorSystem.getInstance().init();

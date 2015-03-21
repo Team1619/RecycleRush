@@ -7,10 +7,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  * Master Class of Autonomous, Stage 0
  */
-public class BinRaker extends CommandGroup {
+public class BinRakerAuto extends CommandGroup {
     
-    public  BinRaker() {
-    	
+    public  BinRakerAuto() {
     	addSequential(new PrepareRake());
     	addSequential(new LinearDriveCommand(-1));
     	addSequential(new MoveSecondPosition());
