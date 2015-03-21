@@ -101,6 +101,8 @@ public class Robot extends IterativeRobot {
 		//autoChooser.addDefault("Present Bin For Litter", new BinGrabAutoWithLitter());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);
+		
+		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
 	}
 
 	/**
@@ -275,7 +277,8 @@ public class Robot extends IterativeRobot {
 	 * This function is called periodically during test mode
 	 */
 	public void testPeriodic() {
-		LiveWindow.run();
+		//LiveWindow.run();
+		//ManualKeyboardControl.getInstance().runRainbowSTORM();
 		sharedPeriodic();
 	}
 }

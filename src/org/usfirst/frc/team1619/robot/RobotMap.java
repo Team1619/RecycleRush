@@ -67,6 +67,8 @@ public class RobotMap {
 
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
+	
+	public static final int rainbowSTORMPort = 0x666;
 
 	/**
 	 * Button Identification
