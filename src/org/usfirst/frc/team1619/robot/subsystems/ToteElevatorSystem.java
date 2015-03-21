@@ -74,6 +74,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		Preferences.putNumber("Current_F_Value", 0.0001);
 		Preferences.putNumber("Current_IZone_Value", 800);
 		Preferences.putNumber("Current_RampRate_Value", 24/0.250);
+		Preferences.putNumber("Current_RateOffset_Value", kRateOffset);
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
