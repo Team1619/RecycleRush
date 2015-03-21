@@ -27,9 +27,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kToteElevatorUpSpeed = -0.7;
 	public static final double kToteElevatorDownSpeed = 0.7;
 	
-	public static final double k0ToteP = 0.50, k0ToteI = 0.003, k0ToteD = 0;
-	public static final double k2ToteP = 0.50, k2ToteI = 0.0075, k2ToteD = 0;
-	public static final double k4ToteP = 0.50, k4ToteI = 0.010, k4ToteD = 0;
+	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
+	public static final double k2ToteP = 0.70, k2ToteI = 0.003, k2ToteD = 0;
+	public static final double k3ToteP = 0.75, k3ToteI = 0.003, k3ToteD = 0;
+	public static final double k4ToteP = 0.75, k4ToteI = 0.003, k4ToteD = 0;
+	public static final double k5ToteP = 0.85, k5ToteI = 0.003, k5ToteD = 0;
 	
 	public final CANTalon toteElevatorMotor;
 	public final CANTalon toteElevatorMotorSmall;
@@ -75,6 +77,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		pref.putDouble("Current_F_Value", 0.0001);
 		pref.putInt("Current_IZone_Value", 800);
 		pref.putDouble("Current_RampRate_Value", 24/0.250);
+		
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -218,6 +221,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		int izone = pref.getInt("Current_IZone_Value", 800);
 		double closeLoopRampRate = pref.getDouble("Current_RampRate_Value", 24/0.250);
 		toteElevatorMotor.setPID(p, i, d, f, izone, closeLoopRampRate, 0);
+		
+		System.out.println(toteElevatorMotor.getP() + " " + toteElevatorMotor.getI() + " " + toteElevatorMotor.getD());
 	}
 
 	@Override
@@ -241,7 +246,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			else if(toteElevatorBottomPositionButton.get()) {
 				useStatePosition = false;
-				setToteElevatorPosition(kPickUpPosition);
+				setToteElevatorPosition(kTransitPosition);
 			}
 			if(useStatePosition) {
 				setToteElevatorPosition(kTransitPosition);		
