@@ -1,7 +1,6 @@
 package org.usfirst.frc.team1619.robot.auto;
 
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
-import org.usfirst.frc.team1619.robot.commands.RaiseBinElevatorCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 

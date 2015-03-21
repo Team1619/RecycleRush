@@ -9,12 +9,11 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class Conveyor extends StateMachineSystem {
+public class ConveyorSystem extends StateMachineSystem {
 	//Compeition Bot
 //	private static final double kForwardConveyorSpeed = -1.0; 
 //	private static final double kManualForwardConveyorSpeed = -1.0; 
@@ -29,7 +28,7 @@ public class Conveyor extends StateMachineSystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private CANTalon conveyorMotor; //multiple speeds based on optical sensor configuration
+	public final CANTalon conveyorMotor; //multiple speeds based on optical sensor configuration
 	private DigitalInput frontConveyorOpticalSensor;
 	private DigitalInput rearConveyorOpticalSensor;
 
@@ -42,7 +41,7 @@ public class Conveyor extends StateMachineSystem {
 	private final double kDebounceTime = 0.05;
 	
 		
-	private Conveyor() {
+	private ConveyorSystem() {
 		conveyorMotor = RobotMap.MotorDefinition.conveyorMotor.getMotor();
 		conveyorMotor.changeControlMode(ControlMode.PercentVbus);
 		conveyorMotor.enableLimitSwitch(false, false);
@@ -56,11 +55,11 @@ public class Conveyor extends StateMachineSystem {
 		frontSensorFedDelay.start();
 	}
 	
-	private static Conveyor theSystem;
+	private static ConveyorSystem theSystem;
 	
-	public static Conveyor getInstance() {
+	public static ConveyorSystem getInstance() {
 		if(theSystem == null)
-			theSystem = new Conveyor();
+			theSystem = new ConveyorSystem();
 		return theSystem;
 	}
 	
@@ -119,9 +118,6 @@ public class Conveyor extends StateMachineSystem {
 		else {
 			conveyorMotor.set(conveyorSpeed);	
 		}
-    	
-    	SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", conveyorMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", conveyorMotor.getOutputVoltage());
     }
 
     @Override

@@ -10,12 +10,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BinRakerAuto extends CommandGroup {
     
     public  BinRakerAuto() {
-    	addSequential(new PrepareRake());
-    	addSequential(new LinearDriveCommand(-1));
-    	addSequential(new MoveSecondPosition());
-    	addSequential(new PrepareRake());
-    	addSequential(new LinearDriveCommand(-1));
-    	addSequential(new LinearDriveCommand(10)); //moves to the autozone
-    	
+    	addSequential(new RakerLower());
+    	addSequential(new LinearDriveCommand(3.1415926535897932384626433832795028841971693993751058209749445923078164062862086280348253421170679821480865132823066470*2)); //moves to the autozone
     }
 }

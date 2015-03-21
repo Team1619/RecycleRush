@@ -1,4 +1,4 @@
-package org.usfirst.frc.team1619.robot.commands;
+package org.usfirst.frc.team1619.robot.auto;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 

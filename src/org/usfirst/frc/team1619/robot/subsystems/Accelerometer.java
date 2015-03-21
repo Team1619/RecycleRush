@@ -2,7 +2,6 @@ package org.usfirst.frc.team1619.robot.subsystems;
 
 import edu.wpi.first.wpilibj.BuiltInAccelerometer;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -28,9 +27,6 @@ public class Accelerometer extends Subsystem {
 	
 	public void display() {
 		//display information about the accelerator to the dashboard so drivers know the speed.
-		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getX()));
-		SmartDashboard.putString("Accelerometer Y", Double.toString(accelerometer.getY()));
-		SmartDashboard.putString("Accelerometer Z", Double.toString(accelerometer.getZ()));
 	}
 	
 	public double getX() {

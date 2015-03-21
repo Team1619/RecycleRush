@@ -3,13 +3,16 @@ package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
+import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
+import org.usfirst.frc.team1619.robot.auto.BinRakerAuto;
 import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
-import org.usfirst.frc.team1619.robot.subsystems.Conveyor;
+import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.Drivetrain;
 import org.usfirst.frc.team1619.robot.subsystems.GuardRailSystem;
 import org.usfirst.frc.team1619.robot.subsystems.GyroSystem;
+import org.usfirst.frc.team1619.robot.subsystems.RakerSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -55,7 +58,8 @@ public class Robot extends IterativeRobot {
 		OI.getInstance().init();
 		GyroSystem.getInstance().calibrate();
 		//Camera.getInstance();
-		BinElevatorSystem.getInstance().init();
+		BinElevatorSystem.getInstance();
+		RakerSystem.getInstance();
 		ToteElevatorSystem.getInstance();
 		GuardRailSystem.getInstance();
 		pdpCAN = new PowerDistributionPanel();
@@ -98,8 +102,9 @@ public class Robot extends IterativeRobot {
 				);
 		autoChooser = new SendableChooser();
 		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
-		//autoChooser.addDefault("Present Bin For Litter", new BinGrabAutoWithLitter());
+		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
+		autoChooser.addObject("Rake Bins", new BinRakerAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
@@ -109,19 +114,35 @@ public class Robot extends IterativeRobot {
 	 * Smart Dashboard
 	 */
 	public void sharedPeriodic() {
-		SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
-		SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
-		SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
+		SmartDashboard.putBoolean("chute door", true);
+//		SmartDashboard.putNumber("Gyro Direction", GyroSystem.getInstance().getHeading());
+//		SmartDashboard.putNumber("Gyro Temperature", GyroSystem.getInstance().getTemperature());
+//		SmartDashboard.putNumber("Gyro Turn Rate", GyroSystem.getInstance().getTurnRate());
+//		SmartDashboard.putString("Accelerometer X", Double.toString(accelerometer.getX()));
+//		SmartDashboard.putString("Accelerometer Y", Double.toString(accelerometer.getY()));
+//		SmartDashboard.putString("Accelerometer Z", Double.toString(accelerometer.getZ()));
 		SmartDashboard.putNumber("Left Encoder Position", Drivetrain.getInstance().getLeftEncoderPosition());
 		SmartDashboard.putNumber("Right Encoder Position", Drivetrain.getInstance().getRightEncoderPosition());
-		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", Conveyor.getInstance().getFrontSensor());
-		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", Conveyor.getInstance().getRearSensor());
-//		SmartDashboard.putNumber("BinLiftPositionValue", BinElevatorSystem.getInstance().getBinElevatorPosition());
-//		SmartDashboard.putNumber("BinLiftEncoderPosition", BinElevatorSystem.getInstance().getBinElevatorPosition());
-		SmartDashboard.putBoolean("chute door", true);
+		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", ConveyorSystem.getInstance().getFrontSensor());
+		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", ConveyorSystem.getInstance().getRearSensor());
+		
 		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()", ToteElevatorSystem.getInstance().toteElevatorMotor.getEncPosition());
 		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
 		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
+		SmartDashboard.putBoolean("binElevator Fwd Limit", BinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binElevator Rev Limit", BinElevatorSystem.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTilt  Fwd Limit", BinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTilt  Rev Limit", BinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
+    	SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent());
+		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent());
+		SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", ConveyorSystem.getInstance().conveyorMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", ConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
+    	SmartDashboard.putNumber("guardRail.getOutputCurrent()", GuardRailSystem.getInstance().guardRailMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("guardRail.getOutputVoltage()", GuardRailSystem.getInstance().guardRailMotor.getOutputVoltage());
+		
 		StateMachine.getInstance().display();
 		
 		Accelerometer.getInstance().display();
@@ -184,8 +205,8 @@ public class Robot extends IterativeRobot {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
 		BinElevatorSystem.getInstance().binTiltUpdate();
-		BinElevatorSystem.getInstance().rakerUpdate();
 		BinElevatorSystem.getInstance().binGripUpdate();
+		RakerSystem.getInstance().rakerUpdate();
 	}
 
 

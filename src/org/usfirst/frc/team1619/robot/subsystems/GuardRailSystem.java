@@ -8,7 +8,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -30,7 +29,7 @@ public class GuardRailSystem extends StateMachineSystem {
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	private CANTalon guardRailMotor; //overdrive slightly
+	public final CANTalon guardRailMotor; //overdrive slightly
 	
 	private GuardRailSystem() {
     	guardRailMotor = RobotMap.MotorDefinition.guardRailMotor.getMotor();
@@ -59,9 +58,6 @@ public class GuardRailSystem extends StateMachineSystem {
 		else {
 			guardRailMotor.set(guardRailSpeed);
 		}
-		
-		SmartDashboard.putNumber("guardRail.getOutputCurrent()", guardRailMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("guardRail.getOutputVoltage()", guardRailMotor.getOutputVoltage());
 	}
 	
     public void initDefaultCommand() {
@@ -91,7 +87,7 @@ public class GuardRailSystem extends StateMachineSystem {
 			guardRailSpeed = 0.0;
 			break;
 		case HumanFeed_RaiseTote:
-			if(!Conveyor.getInstance().getRearSensor()) {
+			if(!ConveyorSystem.getInstance().getRearSensor()) {
 				if(elapsed <= 0.25) { //just at beginning
 					guardRailSpeed = kOpenGuardRailSpeed;
 				}

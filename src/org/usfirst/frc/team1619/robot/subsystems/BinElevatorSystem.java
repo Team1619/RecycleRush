@@ -8,39 +8,37 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
 public class BinElevatorSystem extends StateMachineSystem {
-	public static final double kEncoderTicksPerInch = 2043 / 32.0; //fish
-	public static final double kOutOfTheWayPosition = 0.0;
-	public static final double kTransitPosition = 0.0;
-	public static final double kFeederPosition = 0.0;
-	public static final double kPickUpPosition = 0.0;
-	public static final double kPositionTolerance = 1.0;
+	//Not used right now
+//	public static final double kEncoderTicksPerInch = 2043 / 32.0; //fish
+//	public static final double kOutOfTheWayPosition = 0.0;
+//	public static final double kTransitPosition = 0.0;
+//	public static final double kFeederPosition = 0.0;
+//	public static final double kPickUpPosition = 0.0;
+//	public static final double kPositionTolerance = 1.0;
 	public static final double kInitSpeed = -0.4;
 	public static final double kBinElevatorUpSpeed = -0.4;
 	public static final double kBinElevatorDownSpeed = 0.4;
-	public static final double kBinTiltSpeed = 0.5;
+//	public static final double kBinTiltSpeed = 0.5;
 	public static final double kBinIdleSpeed = -0.2;
 	
-	
-	public static final double kTotalHeight = 62.0; //fish
-	public static final double kToteElevatorHeight = 25.0; //fish
-	public static final double kBinElevatorHeight = 37.0; //fish
-	public static final double kToteElevatorHeightModifier = 10.0; //fish, accounts for the plastic fins on elevator being above the "toteElevatorPosition" 
-	public static final double kBinElevatorHeightModifier = -6.0; //fish, accounts for bottom of bin gripper being below the "binElevatorPosition"
-	public static final double kDistanceBetweenLifts = 45.0; //catfinches
-	public static final double kSafetyTolerance = 12.0;
-	public static final double kBinPickupPosition = -8.427; //catfinches
-	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
+	//Not used right now
+//	public static final double kTotalHeight = 62.0; //fish
+//	public static final double kToteElevatorHeight = 25.0; //fish
+//	public static final double kBinElevatorHeight = 37.0; //fish
+//	public static final double kToteElevatorHeightModifier = 10.0; //fish, accounts for the plastic fins on elevator being above the "toteElevatorPosition" 
+//	public static final double kBinElevatorHeightModifier = -6.0; //fish, accounts for bottom of bin gripper being below the "binElevatorPosition"
+//	public static final double kDistanceBetweenLifts = 45.0; //catfinches
+//	public static final double kSafetyTolerance = 12.0;
+//	public static final double kBinPickupPosition = -8.427; //catfinches
+//	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
 	public static final double kBinGripOpenSpeed = 0.5;
 	public static final double kBinGripCloseSpeed = -0.5;
 	public static final double kToteElevatorSafetyForTilt = 5.5; //fish
-	public static final double kRakerOpenSpeed = 0.4;
-	public static final double kRakerCloseSpeed = -0.4;
 	
 	
     // Put methods for controlling this subsystem
@@ -48,12 +46,10 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public final CANTalon binElevatorMotor;
 	public final CANTalon tilterMotor;
 	public final CANTalon binGripMotor;
-	public final CANTalon rakerMotor;
 	
 	private double binElevatorSpeed; // will be %vbus 
 	
 	private double binGripSpeed = 0.0;
-	private double rakerSpeed = 0.0;
 	private double tilterMotorSpeed = 0.0;
 	
 		
@@ -74,15 +70,6 @@ public class BinElevatorSystem extends StateMachineSystem {
     	binGripMotor = RobotMap.MotorDefinition.binGripMotor.getMotor();
     	binGripMotor.enableLimitSwitch(false, false);
     	binGripMotor.enableBrakeMode(true);
-    	
-    	rakerMotor = RobotMap.MotorDefinition.rakerMotor.getMotor();
-    	rakerMotor.enableLimitSwitch(true, true);
-    	rakerMotor.enableBrakeMode(true);
-    	rakerMotor.ConfigFwdLimitSwitchNormallyOpen(true);
-    	rakerMotor.ConfigRevLimitSwitchNormallyOpen(true);
-	}
-	
-	public void init() {
 	}
 	
 	private final static BinElevatorSystem theSystem = new BinElevatorSystem();
@@ -108,10 +95,6 @@ public class BinElevatorSystem extends StateMachineSystem {
     	else {
 			binElevatorMotor.set(binElevatorSpeed);
 		}
-		SmartDashboard.putNumber("binElevatorMotor.getEncPosition()",binElevatorMotor.getEncPosition());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()",binElevatorMotor.getOutputVoltage());
-		SmartDashboard.putNumber("binElevatorMotor.get()",binElevatorMotor.get());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()", binElevatorMotor.getOutputCurrent());
     }
     
     public void binTilt(double moveValue) {
@@ -182,30 +165,10 @@ public class BinElevatorSystem extends StateMachineSystem {
     		binGripMotor.set(binGripSpeed);
     	}
     }
-    
-    public boolean getOpenedLimitSwitch() {
-    	return rakerMotor.isFwdLimitSwitchClosed();
-    }
-    public boolean getClosedLimitSwitch() {
-    	return rakerMotor.isRevLimitSwitchClosed();
-    }
-    
-    public void moveRaker(double moveValue) {
-    	rakerSpeed = moveValue;
-    }
-    public void rakerUpdate() {
-    	if(OI.getInstance().rakerOpenManualButton.get())
-    		rakerMotor.set(kRakerOpenSpeed);
-    	else if(OI.getInstance().rakerCloseManualButton.get())
-    		rakerMotor.set(kRakerCloseSpeed);
-    	else
-    		rakerMotor.set(rakerSpeed);
-    }
 
     public void init(State state) {
 		setBinElevatorSpeed(0.0);
 		binTilt(0.0);
-		moveRaker(0.0);
 		moveBinGrip(0.0);
 		
 		switch(state) {
@@ -228,7 +191,6 @@ public class BinElevatorSystem extends StateMachineSystem {
     
 	@Override
 	public void run(State state, double elapsed) {	
-		moveRaker(0);
 		switch(state) {
 		case Init:
 			setBinElevatorSpeed(kInitSpeed);
@@ -258,13 +220,6 @@ public class BinElevatorSystem extends StateMachineSystem {
 		binElevatorUpdate();
 		binGripUpdate();
 		binTiltUpdate();
-		rakerUpdate();
-		SmartDashboard.putBoolean("binElevatorFwd", binElevatorMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binElevatorRev", binElevatorMotor.isRevLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTiltFwd", tilterMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTiltRev", tilterMotor.isRevLimitSwitchClosed());
-    	SmartDashboard.putBoolean("rakerFwd", rakerMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("rakerRev", rakerMotor.isRevLimitSwitchClosed());
 	}
 	
 	public boolean initFinished() {
