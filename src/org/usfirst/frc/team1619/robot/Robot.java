@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -204,9 +203,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
+		BinElevatorSystem.getInstance().binElevatorUpdate();
 		BinElevatorSystem.getInstance().binTiltUpdate();
 		BinElevatorSystem.getInstance().binGripUpdate();
 		RakerSystem.getInstance().rakerUpdate();
+		ToteElevatorSystem.getInstance().toteElevatorUpdate();
 	}
 
 
@@ -278,11 +279,6 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		//StateMachine.getInstance().abortSignal.raise();
-		if(ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed()) {
-			ToteElevatorSystem.getInstance().setToteElevatorPositionValue(0.0);
-			StateMachine.getInstance().initialized.raise();
-		}
-		
 		StateMachine.getInstance().init();
 		Drivetrain.getInstance().teleopMode();
 	}

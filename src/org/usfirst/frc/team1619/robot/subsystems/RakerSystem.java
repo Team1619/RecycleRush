@@ -11,8 +11,8 @@ import edu.wpi.first.wpilibj.CANTalon;
  */
 public class RakerSystem extends StateMachineSystem {
 
-	public static final double kRakerOpenSpeed = 0.4;
-	public static final double kRakerCloseSpeed = -0.4;
+	public static final double kRakerDownSpeed = 1;
+	public static final double kRakerUpSpeed = -1;
 	
 	public final CANTalon rakerMotor;
 	
@@ -35,10 +35,10 @@ public class RakerSystem extends StateMachineSystem {
     	rakerSpeed = moveValue;
     }
     public void rakerUpdate() {
-    	if(OI.getInstance().rakerOpenManualButton.get())
-    		rakerMotor.set(kRakerOpenSpeed);
-    	else if(OI.getInstance().rakerCloseManualButton.get())
-    		rakerMotor.set(kRakerCloseSpeed);
+    	if(OI.getInstance().rakerDownManualButton.get())
+    		rakerMotor.set(kRakerDownSpeed);
+    	else if(OI.getInstance().rakerUpManualButton.get())
+    		rakerMotor.set(kRakerUpSpeed);
     	else
     		rakerMotor.set(rakerSpeed);
     }

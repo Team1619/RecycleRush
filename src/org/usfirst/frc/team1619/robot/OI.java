@@ -44,8 +44,8 @@ public class OI {
 	public final JoystickButton closeClawButton;
 	public final JoystickButton openClawButton;
 //	public final JoystickButton binTiltManualButton;
-	public final JoystickButton rakerOpenManualButton;
-	public final JoystickButton rakerCloseManualButton;
+	public final JoystickButton rakerDownManualButton;
+	public final JoystickButton rakerUpManualButton;
 //	public final JoystickButton moveClawForBinPickupButton;
 //	public final JoystickButton moveClawForNoodleInsertionButton;
 		
@@ -89,8 +89,9 @@ public class OI {
 		
 		closeClawButton = new JoystickButton(leftStick, RobotMap.closeClawButtonID);
 		openClawButton = new JoystickButton(leftStick, RobotMap.openClawButtonID);
-		rakerOpenManualButton = new JoystickButton(leftStick, RobotMap.rakerOpenManualButtonID);
-		rakerCloseManualButton = new JoystickButton(leftStick, RobotMap.rakerCloseManualButtonID);
+		
+		rakerDownManualButton = new JoystickButton(leftStick, RobotMap.rakerDownManualButtonID);
+		rakerUpManualButton = new JoystickButton(leftStick, RobotMap.rakerUpManualButtonID);
 //		binTiltManualButton = new JoystickButton(leftStick, RobotMap.binTiltManualButtonID);
 //		moveClawForBinPickupButton = new JoystickButton(leftStick, RobotMap.moveClawForBinPickupButtonID);
 //		moveClawForNoodleInsertionButton = new JoystickButton(leftStick, RobotMap.moveClawForNoodleInsertionButtonID);
