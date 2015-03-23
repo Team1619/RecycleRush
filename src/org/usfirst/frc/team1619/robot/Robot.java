@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -104,10 +103,11 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
-		autoChooser.addObject("Rake Bins", new BinRakerAuto());
+		autoChooser.addObject("Rake Bins", new BinRakerAuto(2.5));
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
+//		Preferences.putNumber("DriveDistanceForRakerAuto_(meters(ish))", 2.5);
 	}
 
 	/**
@@ -195,6 +195,7 @@ public class Robot extends IterativeRobot {
 		//new BinGrabReverseAuto().start();
 		//new BinGrabAutoWithLitter().start();
 		Command autoCommand = (Command) autoChooser.getSelected();
+//		Command autoCommand = new BinRakerAuto(Preferences.getNumber("DriveDistanceForRakerAuto_(meters(ish))"));
 		autoCommand.start();
 	}
 

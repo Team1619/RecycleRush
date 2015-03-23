@@ -58,7 +58,7 @@ public class LinearDriveCommand extends Command {
     		turnVal = 0;
     	}
 		drivetrain.drive(speed * Math.signum(distance), turnVal);
-    	System.out.println(turnVal);
+//    	System.out.println(turnVal);
     }
 
     // Make this return true when this Command no longer needs to run execute()

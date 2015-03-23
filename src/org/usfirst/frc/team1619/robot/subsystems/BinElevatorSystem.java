@@ -7,7 +7,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
-import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 
 /**
  *
@@ -57,9 +56,9 @@ public class BinElevatorSystem extends StateMachineSystem {
 		binElevatorMotor = RobotMap.MotorDefinition.binElevatorMotor.getMotor();
 		binElevatorMotor.enableLimitSwitch(true, true);
 		binElevatorMotor.enableBrakeMode(true);
-		binElevatorMotor.reverseSensor(true);
+//		binElevatorMotor.reverseSensor(true);
 		binElevatorMotor.reverseOutput(true);
-		binElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
+//		binElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
     	tilterMotor = RobotMap.MotorDefinition.tilterMotor.getMotor();
     	tilterMotor.enableLimitSwitch(true, true);
