@@ -8,6 +8,7 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -105,6 +106,15 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public double getToteElevatorPosition() { 
 		return toteElevatorMotor.getPosition()/kEncoderTicksPerInch;
 	}
+	
+	public boolean isFinishedMoving() {
+		if((getToteElevatorPosition() >= moveTo - 0.1) && (getToteElevatorPosition() <= moveTo + 0.1)) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 	private boolean wasManual = false;
 	
@@ -114,7 +124,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorSpeed = 0.0;
 	}
 	
-	private void toteElevatorUpdate() {
+	public void toteElevatorUpdate() {
+		SmartDashboard.putNumber("Tote Elevator Position", getToteElevatorPosition());
+		SmartDashboard.putNumber("Tote Elevator MoveTo", moveTo);
 		if(!isSafeToRaiseTote()) {
 			toteElevatorMotor.ClearIaccum();
 		}
@@ -198,7 +210,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
 		case Idle:
-			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
 		default:
 			break;
@@ -225,31 +236,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_RaiseTote:
-			switch (StateMachine.getInstance().numberTotes) {
-			case 0:
-				toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 1:
-				toteElevatorMotor.setPID(k1ToteP, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 2: 
-				toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 3:
-				toteElevatorMotor.setPID(k3ToteP, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 4:
-				toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 5:
-				toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			case 6:
-				toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
-				break;
-			default:
-				break;
-			}
 //			SmartDashboard.putNumber("Tote Elevator Variable P", toteElevatorMotor.getP());
 //			SmartDashboard.putNumber("Tote Elevator Variable I", toteElevatorMotor.getI());
 			if(useStatePosition) {
@@ -283,6 +269,33 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case Abort:
+			break;
+		default:
+			break;
+		}
+
+		StateMachine.getInstance();
+		switch (StateMachine.numberTotes) {
+		case 0:
+			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 1:
+			toteElevatorMotor.setPID(k1ToteP, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 2: 
+			toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 3:
+			toteElevatorMotor.setPID(k3ToteP, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 4:
+			toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 5:
+			toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+			break;
+		case 6:
+			toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
 		default:
 			break;

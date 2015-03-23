@@ -10,9 +10,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class StateMachine {
-	private State currentState = State.Init;
+	private State currentState = State.Idle;
 
-	public int numberTotes;
+	public static int numberTotes;
 	private boolean incrementNumberTotes;
 	
 	private boolean toStopHumanFeed;
@@ -27,12 +27,6 @@ public class StateMachine {
 	}
 	
 	public void init() {
-		if(initialized.check()) {
-			currentState = State.Idle;
-		}
-		else {
-			currentState = State.Init;
-		}
 		currentState.init(this);
 		for(StateMachineSystem system : systems)
 			system.init(currentState);
@@ -90,7 +84,6 @@ public class StateMachine {
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
 	public final Signal groundFeedSignal = new AutoClearSignal(); 
-	public final Signal initialized = new Signal();
 	
 //	public final Signal dropoffSignal = new AutoClearSignal();
 //	public final Signal groundFeedSignal = new AutoClearSignal(); 
@@ -101,6 +94,7 @@ public class StateMachine {
 		Init {
 			@Override
 			protected void init(StateMachine sm) {
+				numberTotes = 0;
 			}
 			
 			@Override
@@ -129,6 +123,7 @@ public class StateMachine {
 			@Override
 			protected void init(StateMachine sm) {
 				sm.toStopHumanFeed = false;
+				numberTotes = 0;
 			}
 			
 			@Override
@@ -137,7 +132,7 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanFeed_Start.check()) {
-					sm.numberTotes = 0;
+					StateMachine.numberTotes = 0;
 					
 					if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
@@ -279,8 +274,8 @@ public class StateMachine {
 
 			@Override
 			protected void init(StateMachine sm) {
-				sm.numberTotes++;
-				if(sm.numberTotes == 6) {
+				StateMachine.numberTotes++;
+				if(StateMachine.numberTotes == 6) {
 					sm.toStopHumanFeed = true;
 				}
 			}
@@ -350,7 +345,7 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanFeed_Start.check()) {
-					sm.numberTotes = 0;
+					StateMachine.numberTotes = 0;
 					
 					if(BinElevatorSystem.getInstance().getTilterFowardLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
@@ -439,19 +434,6 @@ public class StateMachine {
 				}
 				if(sm.resetSignal.check()) {
 					return Init;
-				}
-				if(sm.humanFeed_Start.check()){
-					if(sm.humanFeed_Start.check()) {
-						sm.numberTotes = 0;
-						if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
-							sm.humanFeed_ToteOnConveyor.clear();
-							sm.humanFeed_ThrottleConveyorDescend.clear();
-							return HumanFeed_RaiseTote;
-						}
-						else {
-							return Abort;
-						}
-					}
 				}
 				return Abort;
 			}

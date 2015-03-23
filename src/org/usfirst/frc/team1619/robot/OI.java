@@ -89,6 +89,7 @@ public class OI {
 		
 		closeClawButton = new JoystickButton(leftStick, RobotMap.closeClawButtonID);
 		openClawButton = new JoystickButton(leftStick, RobotMap.openClawButtonID);
+
 		rakerDownManualButton = new JoystickButton(leftStick, RobotMap.rakerDownManualButtonID);
 		rakerUpManualButton = new JoystickButton(leftStick, RobotMap.rakerUpManualButtonID);
 //		binTiltManualButton = new JoystickButton(leftStick, RobotMap.binTiltManualButtonID);

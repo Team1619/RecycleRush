@@ -8,14 +8,23 @@ import edu.wpi.first.wpilibj.command.Command;
 /**
  *
  */
-public class RakerLower extends Command {
+public class RakerMove extends Command {
 
 	private Timer timer;
-    public RakerLower() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	
-    	// requires (BinElevatorSystem.getInstance());
+	private final double kRakeTime = 1.5;
+	private double time;
+	private double speed;
+	
+	public RakerMove(double speed) {
+		time = kRakeTime;
+		this.speed = speed;
+		setInterruptible(true);
+		timer = new Timer();
+    }
+	
+    public RakerMove(double speed, double time) {
+    	this.time = time;
+    	this.speed = speed;
     	setInterruptible(true);
     	timer = new Timer();
     }
@@ -27,13 +36,13 @@ public class RakerLower extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	RakerSystem.getInstance().moveRaker(0.6); 
+    	RakerSystem.getInstance().moveRaker(speed); 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         //return BinElevatorSystem.getInstance().getOpenedLimitSwitch();
-    	return timer.get() > 0.3;
+    	return timer.get() > time;
     }
 
     // Called once after isFinished returns true

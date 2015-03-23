@@ -103,11 +103,10 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
-		autoChooser.addObject("Rake Bins", new BinRakerAuto(2.5));
+		autoChooser.addObject("Rake Bins", new BinRakerAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
-//		Preferences.putNumber("DriveDistanceForRakerAuto_(meters(ish))", 2.5);
 	}
 
 	/**
@@ -195,7 +194,6 @@ public class Robot extends IterativeRobot {
 		//new BinGrabReverseAuto().start();
 		//new BinGrabAutoWithLitter().start();
 		Command autoCommand = (Command) autoChooser.getSelected();
-//		Command autoCommand = new BinRakerAuto(Preferences.getNumber("DriveDistanceForRakerAuto_(meters(ish))"));
 		autoCommand.start();
 	}
 
@@ -205,9 +203,11 @@ public class Robot extends IterativeRobot {
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
+		BinElevatorSystem.getInstance().binElevatorUpdate();
 		BinElevatorSystem.getInstance().binTiltUpdate();
 		BinElevatorSystem.getInstance().binGripUpdate();
 		RakerSystem.getInstance().rakerUpdate();
+		ToteElevatorSystem.getInstance().toteElevatorUpdate();
 	}
 
 
@@ -279,11 +279,6 @@ public class Robot extends IterativeRobot {
 
 	public void teleopInit() {
 		//StateMachine.getInstance().abortSignal.raise();
-		if(ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed()) {
-			ToteElevatorSystem.getInstance().setToteElevatorPositionValue(0.0);
-			StateMachine.getInstance().initialized.raise();
-		}
-		
 		StateMachine.getInstance().init();
 		Drivetrain.getInstance().teleopMode();
 	}

@@ -20,7 +20,7 @@ public class RaiseBinElevatorCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BinElevatorSystem.getInstance().setBinElevatorSpeed(0.1);
+    	BinElevatorSystem.getInstance().setBinElevatorSpeed(-0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()

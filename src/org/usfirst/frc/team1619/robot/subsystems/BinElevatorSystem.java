@@ -84,7 +84,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	binElevatorSpeed = speed;
     }
     
-    private void binElevatorUpdate() {  
+    public void binElevatorUpdate() {  
 		if(OI.getInstance().binElevatorUp.get()) {
 			binElevatorMotor.set(kBinElevatorUpSpeed);
 		}
