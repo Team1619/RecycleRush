@@ -31,6 +31,7 @@ public class RakerMove extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	timer.reset();
     	timer.start();
     }
 
