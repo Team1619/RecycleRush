@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
@@ -8,7 +9,6 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -21,6 +21,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kPositionTolerance = 3.0;
 	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.5;
+	public static final double kRateOffset = 0.5;
+	public static final double kRateOffsetConstant = 1.0;
 	
 	public static final double kToteElevatorUpSpeed = -0.7;
 	public static final double kToteElevatorDownSpeed = 0.7;
@@ -75,6 +77,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotorSmall.set(RobotMap.MotorDefinition.toteElevatorMotor.id);
 		toteElevatorMotorSmall.reverseOutput(true);
 		
+		Preferences.putNumber("Current_RateOffset_Value", kRateOffset);
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -115,6 +118,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			return false;
 		}
 	}
+	
+	public double getToteElevatorRate() {
+		return toteElevatorMotor.getEncVelocity() / 100;
+	}
 
 	private boolean wasManual = false;
 	
@@ -125,11 +132,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	}
 	
 	public void toteElevatorUpdate() {
-		SmartDashboard.putNumber("Tote Elevator Position", getToteElevatorPosition());
-		SmartDashboard.putNumber("Tote Elevator MoveTo", moveTo);
 		if(!isSafeToRaiseTote()) {
 			toteElevatorMotor.ClearIaccum();
 		}
+		boolean up = true;
 
 		boolean finalSetValuePosition;
 		double finalSetValue;
@@ -142,10 +148,16 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			finalSetValue = kToteElevatorDownSpeed;
 			finalSetValuePosition = false;
 			wasManual = true;
+			up = false;
 		}
 		else {
 			if(wasManual) {
-				setToteElevatorPosition(getToteElevatorPosition());
+//				double rateOffset = getToteElevatorRate() * kRateOffset;
+				double rateOffset = getToteElevatorRate() * Preferences.getNumber("Current_RateOffset_Value", kRateOffset);
+				double rateOffsetCosntant = Preferences.getNumber("Current_RateOffsetConstant_Value", kRateOffsetConstant) * (up ? 1.0 : -1.0);
+				setToteElevatorPosition(getToteElevatorPosition() + rateOffset + rateOffsetCosntant);
+				System.out.println(getToteElevatorRate());
+//				setToteElevatorPosition(getToteElevatorPosition());
 				wasManual = false;
 				useStatePosition = false;
 			}

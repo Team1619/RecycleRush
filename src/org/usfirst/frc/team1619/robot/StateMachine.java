@@ -460,7 +460,7 @@ public class StateMachine {
 		if(currentState != nextState) {
 			currentState = nextState;
 			
-			System.out.println("Changed State to " + currentState.toString());
+//			System.out.println("Changed State to " + currentState.toString());
 			
 			currentState.init(this);
 			stateTimer.reset();
