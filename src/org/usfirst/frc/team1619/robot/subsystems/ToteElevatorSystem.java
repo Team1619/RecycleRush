@@ -56,6 +56,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private boolean usePosition;
 	private double moveTo;
 	private boolean bInitFinished = false;
+	private boolean up = true;
+	private boolean wasManual = false;
+	private boolean useStatePosition = true;
 	
 	private ToteElevatorSystem() {
 		toteElevatorMotor = RobotMap.MotorDefinition.toteElevatorMotor.getMotor();
@@ -123,20 +126,11 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		return toteElevatorMotor.getEncVelocity() / 100;
 	}
 
-	private boolean wasManual = false;
-	
 	private void stopAutoToteElevator() {
 		usePosition = false;
 		moveTo = Double.NaN;
 		toteElevatorSpeed = 0.0;
 	}
-	
-	/*
-	 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-	 */
-	
-	private boolean up = true; //hahahahahahahah - "WHY?!" - Jake    "Move it the fuck up!" - Everyone
 	
 	public void toteElevatorUpdate() {
 		if(!isSafeToRaiseTote()) {
@@ -213,8 +207,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 //		SmartDashboard.putNumber("toteElevatorMotor.getIZone()", toteElevatorMotor.getIZone());
 	}
-
-	boolean useStatePosition = true;
 	
 	public boolean isSafeToRaiseTote() {
 		return BinElevatorSystem.getInstance().getTilterBackLimitSwitch();
