@@ -30,7 +30,6 @@ public class Lumberjack {
 	private FileWriter fileWriter;
 	private String logName;
 	private String[] headers;
-	private long start;
 	
 	public Lumberjack(String logName, String ... headers) {
 		this.logName = new String(logName);
@@ -81,10 +80,10 @@ public class Lumberjack {
 	}
 	
 	private String getTimestamp() {
-		//SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss:SSS");
-		//date.setTimeZone(TimeZone.getTimeZone("UTC"));
-		//return date.format(new Date());
-		return String.format("%.3f", (double)(System.currentTimeMillis()-start) / 1000);
+		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+		date.setTimeZone(TimeZone.getTimeZone("UTC"));
+		return date.format(new Date());
+		//return String.format("%.3f", (double)(System.currentTimeMillis()-start) / 1000);
 	}
 	
 	public static void changeLogs() {
@@ -103,7 +102,6 @@ public class Lumberjack {
 			if(logDir.exists()) {
 				fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
 				printHeaders(headers);
-				start = System.currentTimeMillis();
 			}
 			else {
 				System.err.println("Cannot create log folder " + logName);

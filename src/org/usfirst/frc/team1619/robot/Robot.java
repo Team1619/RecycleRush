@@ -17,6 +17,8 @@ import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -44,8 +46,11 @@ public class Robot extends IterativeRobot {
 	public PowerDistributionPanel pdpCAN;
 	private Lumberjack pdpLumberjack;
 	private Lumberjack elevatorLumberjack;
+	private Lumberjack motorLumberjack;
 	private Timer pdpLogTimer;
 	private Timer elevatorLogTimer;
+	private Timer motorLogTimer;
+	private boolean logsChanged = false;
 	private SendableChooser autoChooser;
 	
 	/**
@@ -63,7 +68,11 @@ public class Robot extends IterativeRobot {
 		GuardRailSystem.getInstance();
 		pdpCAN = new PowerDistributionPanel();
 		pdpLogTimer = new Timer();
+		pdpLogTimer.start();
 		elevatorLogTimer = new Timer();
+		elevatorLogTimer.start();
+		motorLogTimer = new Timer();
+		motorLogTimer.start();
 
 		//switchSubsystem = new LimitSwitch();
 		pdpLumberjack = new Lumberjack("PDP.csv",
@@ -90,6 +99,7 @@ public class Robot extends IterativeRobot {
 				"PDP Total Energy"
 				);
 		
+		
 		elevatorLumberjack = new Lumberjack(
 				"Elevators.csv", 
 				"Tote Voltage 1", 
@@ -99,6 +109,16 @@ public class Robot extends IterativeRobot {
 				"Tote Current 2", 
 				"Bin Current"
 				);
+		
+		
+		String[] motorLumberjackHeaders = new String[RobotMap.MotorDefinition.values().length * 2];
+		for(int i = 0, j = 0, len = motorLumberjackHeaders.length; i < len; i+=2, j++) {
+			motorLumberjackHeaders[i] = "Current " + j;
+			motorLumberjackHeaders[i + 1] = "Voltage " + j;
+		}
+		motorLumberjack = new Lumberjack("Motors.csv", motorLumberjackHeaders);
+				
+		
 		autoChooser = new SendableChooser();
 		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
@@ -141,54 +161,73 @@ public class Robot extends IterativeRobot {
     	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", ConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
     	SmartDashboard.putNumber("guardRail.getOutputCurrent()", GuardRailSystem.getInstance().guardRailMotor.getOutputCurrent());
     	SmartDashboard.putNumber("guardRail.getOutputVoltage()", GuardRailSystem.getInstance().guardRailMotor.getOutputVoltage());
+    	SmartDashboard.putNumber("rakerMotor.getOutputCurrent()", RakerSystem.getInstance().rakerMotor.getOutputCurrent());
+    	SmartDashboard.putNumber("rakerMotor.getOutputVoltage()", RakerSystem.getInstance().rakerMotor.getOutputVoltage());
 		
 		StateMachine.getInstance().display();
 		
 		Accelerometer.getInstance().display();
 		OI.getInstance().updatePOV();
 
-		if (pdpLogTimer.get() >= 1) {
-			pdpLumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
-					Double.toString(pdpCAN.getCurrent(0)),
-					Double.toString(pdpCAN.getCurrent(1)),
-					Double.toString(pdpCAN.getCurrent(2)),
-					Double.toString(pdpCAN.getCurrent(3)),
-					Double.toString(pdpCAN.getCurrent(4)),
-					Double.toString(pdpCAN.getCurrent(5)),
-					Double.toString(pdpCAN.getCurrent(6)),
-					Double.toString(pdpCAN.getCurrent(7)),
-					Double.toString(pdpCAN.getCurrent(8)),
-					Double.toString(pdpCAN.getCurrent(9)),
-					Double.toString(pdpCAN.getCurrent(10)),
-					Double.toString(pdpCAN.getCurrent(11)),
-					Double.toString(pdpCAN.getCurrent(12)),
-					Double.toString(pdpCAN.getCurrent(13)),
-					Double.toString(pdpCAN.getCurrent(14)),
-					Double.toString(pdpCAN.getCurrent(15)),
-					Double.toString(pdpCAN.getVoltage()), 
-					Double.toString(pdpCAN.getTemperature()), 
-					Double.toString(pdpCAN.getTotalPower()), 
-					Double.toString(pdpCAN.getTotalEnergy())
-					);
-			pdpLogTimer.reset();
-		} //25.0 fish
-		
-		
-		if (elevatorLogTimer.get() >= 0.1) {
-			elevatorLumberjack.log(
-					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage()),
-					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputVoltage()),
-					Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage()),
-					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent()),
-					Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputCurrent()),
-					Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent())
-					);
-			elevatorLogTimer.reset();
+		if(RobotState.isDisabled() == false) {
+			if (pdpLogTimer.get() >= 1) {
+				pdpLumberjack.log(Double.toString(pdpCAN.getTotalCurrent()), 
+						Double.toString(pdpCAN.getCurrent(0)),
+						Double.toString(pdpCAN.getCurrent(1)),
+						Double.toString(pdpCAN.getCurrent(2)),
+						Double.toString(pdpCAN.getCurrent(3)),
+						Double.toString(pdpCAN.getCurrent(4)),
+						Double.toString(pdpCAN.getCurrent(5)),
+						Double.toString(pdpCAN.getCurrent(6)),
+						Double.toString(pdpCAN.getCurrent(7)),
+						Double.toString(pdpCAN.getCurrent(8)),
+						Double.toString(pdpCAN.getCurrent(9)),
+						Double.toString(pdpCAN.getCurrent(10)),
+						Double.toString(pdpCAN.getCurrent(11)),
+						Double.toString(pdpCAN.getCurrent(12)),
+						Double.toString(pdpCAN.getCurrent(13)),
+						Double.toString(pdpCAN.getCurrent(14)),
+						Double.toString(pdpCAN.getCurrent(15)),
+						Double.toString(pdpCAN.getVoltage()), 
+						Double.toString(pdpCAN.getTemperature()), 
+						Double.toString(pdpCAN.getTotalPower()), 
+						Double.toString(pdpCAN.getTotalEnergy())
+						);
+				pdpLogTimer.reset();
+			} //25.0 fish
+			
+			
+			if (elevatorLogTimer.get() >= 0.1) {
+				elevatorLumberjack.log(
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage()),
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputVoltage()),
+						Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage()),
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent()),
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputCurrent()),
+						Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent())
+						);
+				elevatorLogTimer.reset();
+			}
+			
+			if(motorLogTimer.get() >= 0.1) {
+				RobotMap.MotorDefinition[] motorDefinitions = RobotMap.MotorDefinition.values();
+				String[] motorLumberjackValues= new String[motorDefinitions.length * 2];
+				for(int i = 0, j = 0, len = motorLumberjackValues.length; i < len; i+=2, j++) {
+					motorLumberjackValues[i] = Double.toString(motorDefinitions[j].getMotor().getOutputCurrent());
+					motorLumberjackValues[i + 1] = Double.toString(motorDefinitions[j].getMotor().getOutputVoltage());
+				}
+				motorLumberjack.log(motorLumberjackValues);
+				motorLogTimer.reset();
+			}
 		}
 	}
 
 
 	public void autonomousInit() {
+		if(!logsChanged) {
+			logsChanged = true;
+			Lumberjack.changeLogs();
+		}
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
 		//new BinGrabReverseAuto().start();
@@ -222,10 +261,7 @@ public class Robot extends IterativeRobot {
 	private boolean gyroInitTimerFinished;
 	
 	public void disabledInit(){
-		pdpLogTimer.reset();
-		pdpLogTimer.start();
-		elevatorLogTimer.reset();
-		elevatorLogTimer.start();
+		logsChanged = false;
 		Lumberjack.changeLogs();
 		gyroInitTimer.start();
 		gyroInitTimerRunning = false;
@@ -235,12 +271,6 @@ public class Robot extends IterativeRobot {
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
-
-		/*if(OI.getInstance().rightStick.getRawButton(RobotMap.calibrateGyroButton)) {
-			gyroInitTimerFinished = false;
-			SmartDashboard.putString("Gyro status", "");
-		}
-		 */
 
 		/**
 		 * Gyro Timer to recalibrate
@@ -278,6 +308,11 @@ public class Robot extends IterativeRobot {
 
 
 	public void teleopInit() {
+
+		if(!logsChanged) {
+			logsChanged = true;
+			Lumberjack.changeLogs();
+		}
 		//StateMachine.getInstance().abortSignal.raise();
 		StateMachine.getInstance().init();
 		Drivetrain.getInstance().teleopMode();
