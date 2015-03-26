@@ -29,6 +29,7 @@ public class StateMachine {
 	public void init() {
 		currentState = State.Abort;
 		currentState.init(this);
+		numberTotes = 0;
 		for(StateMachineSystem system : systems)
 			system.init(currentState);
 	}
@@ -478,7 +479,7 @@ public class StateMachine {
 		if (OI.getInstance().incrementNumberTotesButton.get()) {
 			if (!incrementNumberTotes) {
 				numberTotes = numberTotes--;
-				numberTotes = (numberTotes < 0) ? 0 : numberTotes;
+				numberTotes = numberTotes < 0 ? 0 : numberTotes;
 				incrementNumberTotes = true;
 			}
 		}
