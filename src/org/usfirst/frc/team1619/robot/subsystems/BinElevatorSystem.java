@@ -35,8 +35,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 //	public static final double kSafetyTolerance = 12.0;
 //	public static final double kBinPickupPosition = -8.427; //catfinches
 //	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
-	public static final double kBinGripOpenSpeed = 0.5;
-	public static final double kBinGripCloseSpeed = -0.5;
+	public static final double kBinGripOpenSpeed = 0.8;
+	public static final double kBinGripCloseSpeed = -0.8;
 	public static final double kToteElevatorSafetyForTilt = 5.5; //fish
 	
 	

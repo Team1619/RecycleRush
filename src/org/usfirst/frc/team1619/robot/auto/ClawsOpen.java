@@ -24,7 +24,7 @@ public class ClawsOpen extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BinElevatorSystem.getInstance().moveBinGrip(0.4);
+    	BinElevatorSystem.getInstance().moveBinGrip(BinElevatorSystem.kBinGripOpenSpeed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
