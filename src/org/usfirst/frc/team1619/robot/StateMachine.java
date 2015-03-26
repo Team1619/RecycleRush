@@ -27,6 +27,7 @@ public class StateMachine {
 	}
 	
 	public void init() {
+		currentState = State.Abort;
 		currentState.init(this);
 		for(StateMachineSystem system : systems)
 			system.init(currentState);
@@ -434,6 +435,12 @@ public class StateMachine {
 				}
 				if(sm.resetSignal.check()) {
 					return Init;
+				}
+				if(sm.humanFeed_Start.check()) {
+					return HumanFeed_RaiseTote;
+				}
+				if(sm.humanFeed_Stop.check()) {
+					return Idle;
 				}
 				return Abort;
 			}

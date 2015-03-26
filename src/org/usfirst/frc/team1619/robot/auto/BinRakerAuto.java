@@ -14,9 +14,9 @@ public class BinRakerAuto extends CommandGroup {
     	addParallel(new RaiseBinElevatorCommand());
     	addSequential(new RakerMove(RakerSystem.kRakerDownSpeed, 1.25));
     	addParallel(new ToteElevatorMove(0.5, 0.5));
-    	addSequential(new LinearDriveCommand(1.5, 1));
-    	addSequential(new LinearDriveCommand(3.0, 0.5));
-    	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 3.0));
+    	addSequential(new LinearDriveCommand(1.0, 1));
+    	addSequential(new LinearDriveCommand(3.5, 0.5));
+    	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 6.0));
     	for(int i = 0; i < 3; i++) {
     		addSequential(new LinearDriveCommand(-0.1, 0.7));
     		addSequential(new LinearDriveCommand(0.1, 0.7));

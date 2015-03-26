@@ -144,14 +144,14 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", ConveyorSystem.getInstance().getFrontSensor());
 		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", ConveyorSystem.getInstance().getRearSensor());
 		
-		SmartDashboard.putNumber("ToteLiftPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
+		SmartDashboard.putNumber("ToteElevatorPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
 		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()", ToteElevatorSystem.getInstance().toteElevatorMotor.getEncPosition());
 		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
 		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
 		SmartDashboard.putBoolean("binElevator Fwd Limit", BinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
     	SmartDashboard.putBoolean("binElevator Rev Limit", BinElevatorSystem.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTilt  Fwd Limit", BinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTilt  Rev Limit", BinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTilt Fwd Limit", BinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
+    	SmartDashboard.putBoolean("binTilt Rev Limit", BinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
     	SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage());
 		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent());
 		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage());
