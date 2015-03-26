@@ -27,7 +27,7 @@ public class StateMachine {
 	}
 	
 	public void init() {
-		currentState = State.Abort;
+		currentState = State.Init;
 		currentState.init(this);
 		numberTotes = 0;
 		for(StateMachineSystem system : systems)
