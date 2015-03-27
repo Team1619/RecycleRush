@@ -18,8 +18,12 @@ public class BinRakerAuto extends CommandGroup {
     	addSequential(new LinearDriveCommand(3.5, 0.5));
     	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 6.0));
     	for(int i = 0; i < 3; i++) {
-    		addSequential(new LinearDriveCommand(-0.1, 0.7));
-    		addSequential(new LinearDriveCommand(0.1, 0.7));
+    		addSequential(new LinearDriveCommand(-0.2, 0.7));
+    		addSequential(new LinearDriveCommand(0.2, 0.7));
     	}
+//    	addParallel(new LinearDriveCommand(2.5, 0.5));
+//    	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 6.0));
+//    	addSequential(new LinearDriveCommand(-0.1, 0.7));
+//    	addSequential(new LinearDriveCommand(0.5, 0.7));
     }
 }

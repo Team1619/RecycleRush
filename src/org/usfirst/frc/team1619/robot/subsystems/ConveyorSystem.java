@@ -15,14 +15,14 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ConveyorSystem extends StateMachineSystem {
 	//Compeition Bot
-//	private static final double kForwardConveyorSpeed = -1.0; 
-//	private static final double kManualForwardConveyorSpeed = -1.0; 
-//	private static final double kManualBackConveyorSpeed = 1.0;
+	private static final double kForwardConveyorSpeed = -1.0; 
+	private static final double kManualForwardConveyorSpeed = -1.0; 
+	private static final double kManualBackConveyorSpeed = 1.0;
 	
 	//Practice Bot
-	private static final double kForwardConveyorSpeed = -0.7; 
-	private static final double kManualForwardConveyorSpeed = -0.7; 
-	private static final double kManualBackConveyorSpeed = 0.7; 
+//	private static final double kForwardConveyorSpeed = -0.7; 
+//	private static final double kManualForwardConveyorSpeed = -0.7; 
+//	private static final double kManualBackConveyorSpeed = 0.7; 
 	
 	private static final double kConveyorDelayTime = 0.25;
     

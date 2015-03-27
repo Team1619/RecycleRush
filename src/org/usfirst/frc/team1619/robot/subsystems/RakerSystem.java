@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 public class RakerSystem extends StateMachineSystem {
 
 	public static final double kRakerDownSpeed = -0.3;
-	public static final double kRakerUpSpeed = 0.3;
+	public static final double kRakerUpSpeed = 0.4;
 	
 	public final CANTalon rakerMotor;
 	

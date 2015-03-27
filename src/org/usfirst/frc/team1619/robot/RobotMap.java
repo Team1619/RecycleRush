@@ -97,8 +97,8 @@ public class RobotMap {
 	public static final int coneyorBackButtonID = 3;
 
 	
-	public static final int rakerDownManualButtonID = 7;
-	public static final int rakerUpManualButtonID = 6;
+	public static final int rakerDownManualButtonID = 6;
+	public static final int rakerUpManualButtonID = 7;
 	public static final int closeClawButtonID = 1;
 	public static final int openClawButtonID = 2;
 
