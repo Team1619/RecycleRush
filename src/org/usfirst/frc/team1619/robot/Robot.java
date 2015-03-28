@@ -2,10 +2,12 @@
 package org.usfirst.frc.team1619.robot;
 
 import org.usfirst.frc.team1619.Lumberjack;
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
 import org.usfirst.frc.team1619.robot.auto.BinRakerAuto;
 import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
+import org.usfirst.frc.team1619.robot.auto.XTR3M3BinRakerByMountainDew;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
@@ -126,6 +128,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
+		Preferences.putNumber("InitialSlowDriveDistance", 1.0);
+		Preferences.putNumber("SecondSlowDriveDistance", 1.0);
+		Preferences.putNumber("BackDriveShakeDistance", -0.1);
+		Preferences.putNumber("ForwardDriveShakeDistance", 0.2);
 	}
 
 	/**
@@ -229,9 +235,9 @@ public class Robot extends IterativeRobot {
 		}
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
-		//new BinGrabReverseAuto().start();
-		//new BinGrabAutoWithLitter().start();
 		Command autoCommand = (Command) autoChooser.getSelected();
+//		Command autoCommand = new XTR3M3BinRakerByMountainDew();
+		autoCommand.cancel();
 		autoCommand.start();
 	}
 
@@ -247,8 +253,6 @@ public class Robot extends IterativeRobot {
 		RakerSystem.getInstance().rakerUpdate();
 		ToteElevatorSystem.getInstance().toteElevatorUpdate();
 	}
-
-
 
 	/**
 	 * This function is called when the disabled button is hit.
