@@ -129,8 +129,6 @@ public class OI {
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
 		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
-		
-		lowerAndOpenClawButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().));
 		}
 	
 	public void updatePOV() {
