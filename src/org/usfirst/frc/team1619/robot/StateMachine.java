@@ -85,7 +85,7 @@ public class StateMachine {
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	public final Signal dropoffSignal = new AutoClearSignal();
-	public final Signal groundFeedSignal = new AutoClearSignal(); 
+	public final Signal groundFeedSignal = new AutoClearSignal();
 	
 //	public final Signal dropoffSignal = new AutoClearSignal();
 //	public final Signal groundFeedSignal = new AutoClearSignal(); 
@@ -145,8 +145,7 @@ public class StateMachine {
 						return Idle;
 					}
 				}
-				if(sm.humanFeed_EndCurrentStateAndDescend.check())
-				{
+				if(sm.humanFeed_EndCurrentStateAndDescend.check()) {
 					return TotePickup;
 				}
 				return this;

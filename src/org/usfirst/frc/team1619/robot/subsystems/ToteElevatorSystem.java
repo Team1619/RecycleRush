@@ -97,12 +97,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		usePosition = false;
 	}
 
-	public void setToteElevatorPosition(double position) {  //in inches
+	public void setToteElevatorPosition(double position) {  //in catfinches
 		moveTo = position;
 		usePosition = true;
 	}
 
-	//set position in inches, not move motor. Only use for calibration
+	//set position in catfinches, not move motor. Only use for calibration
 	public void setToteElevatorPositionValue(double position) { 
 		toteElevatorMotor.setPosition(position*kEncoderTicksPerInch);
 		moveTo = Double.NaN;
@@ -151,6 +151,10 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			wasManual = true;
 			up = false;
 		}
+    	else if(OI.getInstance().lowerAndOpenClawButton.get() && (StateMachine.getInstance().getState() == StateMachine.State.Idle)) {
+    		finalSetValue = 0.0;
+    		finalSetValuePosition = true;
+    	}
 		else {
 			if(wasManual) {
 				double rateOffset = getToteElevatorRate() * kRateOffset;

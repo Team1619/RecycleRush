@@ -101,6 +101,8 @@ public class RobotMap {
 	public static final int rakerUpManualButtonID = 7;
 	public static final int closeClawButtonID = 1;
 	public static final int openClawButtonID = 2;
+	
+	public static final int lowerAndOpenClawID = 5;
 
 
 	//other stuff

@@ -55,6 +55,8 @@ public class OI {
 	public final JoystickButton guardRailOpenButton;
 	public final JoystickButton guardRailCloseButton;
 	
+	public final JoystickButton lowerAndOpenClawButton;
+	
 	public final JoystickButton incrementNumberTotesButton;
 	OI() {
 		rightStick = new Joystick(RobotMap.rightStickID);
@@ -102,6 +104,8 @@ public class OI {
 		
 		guardRailOpenButton = new JoystickButton(leftStick, RobotMap.guardrailOpenManualButtonID);
 		guardRailCloseButton = new JoystickButton(leftStick, RobotMap.guardrailCloseManualButtonID);
+		
+		lowerAndOpenClawButton = new JoystickButton(leftStick, RobotMap.lowerAndOpenClawID);
 	}
 	
 	public void init() {
@@ -124,8 +128,10 @@ public class OI {
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));		
-	}
+		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
+		
+		lowerAndOpenClawButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().));
+		}
 	
 	public void updatePOV() {
 		int povLeft = rightStick.getPOV();
