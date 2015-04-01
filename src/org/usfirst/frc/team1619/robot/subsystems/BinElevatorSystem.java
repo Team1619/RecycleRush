@@ -96,7 +96,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 		}
     }
     
-    public void binTilt(double moveValue) {
+    public void setBinTilt(double moveValue) {
     	tilterMotorSpeed = moveValue;
     }
     
@@ -132,7 +132,6 @@ public class BinElevatorSystem extends StateMachineSystem {
     			return true;
     		default:
     			return false;
-
     		}
     	}
     	else {
@@ -149,7 +148,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	return tilterMotor.isRevLimitSwitchClosed();
     }
     
-    public void moveBinGrip(double moveValue) {
+    public void setBinGrip(double moveValue) {
     	binGripSpeed = moveValue;
     }
     
@@ -167,8 +166,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 
     public void init(State state) {
 		setBinElevatorSpeed(0.0);
-		binTilt(0.0);
-		moveBinGrip(0.0);
+		setBinTilt(0.0);
+		setBinGrip(0.0);
 		
 		switch(state) {
 		case Init:
@@ -208,6 +207,9 @@ public class BinElevatorSystem extends StateMachineSystem {
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			break;
+		case TiltUp:
+			setBinTilt(0.7);
 			break;
 		case Abort:
 			setBinElevatorSpeed(0);

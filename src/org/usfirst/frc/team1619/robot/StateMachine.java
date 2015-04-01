@@ -115,11 +115,6 @@ public class StateMachine {
 				else
 					return Init;
 			}
-
-			@Override
-			public String toString() {
-				return "Init";
-			}
 		},
 		Idle {
 			@Override
@@ -142,19 +137,10 @@ public class StateMachine {
 						return HumanFeed_RaiseTote;
 					}
 					else {
-						return Idle;
+						return TiltUp;
 					}
 				}
-				if(sm.humanFeed_EndCurrentStateAndDescend.check())
-				{
-					return TotePickup;
-				}
 				return this;
-			}
-
-			@Override
-			public String toString() {
-				return "Idle";
 			}
 		},
 		HumanFeed_RaiseTote {
@@ -175,12 +161,6 @@ public class StateMachine {
 				}
 				return this;
 			}
-
-			@Override
-			public String toString() {
-				return "HumanFeed_RaiseTote";
-			}
-
 			@Override
 			protected void init(StateMachine sm) {
 				sm.humanFeed_ThrottleConveyorDescend.clear();
@@ -213,11 +193,6 @@ public class StateMachine {
 				}
 				return this;
 			}
-
-			@Override
-			public String toString() {
-				return "HumanFeed_WaitForTote";
-			}
 		},
 		HumanFeed_ToteOnConveyor {
 			@Override
@@ -237,12 +212,6 @@ public class StateMachine {
 				}
 				return this;
 			}
-
-			@Override
-			public String toString() { 
-				return "HumanFeed_ToteOnConveyor";
-			}
-
 			@Override
 			protected void init(StateMachine sm) {
 			}
@@ -268,12 +237,6 @@ public class StateMachine {
 				}
 				return this;
 			}
-
-			@Override
-			public String toString() {
-				return "HumanFeed_ThrottleConveyorDescend";
-			}
-
 			@Override
 			protected void init(StateMachine sm) {
 				StateMachine.numberTotes++;
@@ -294,29 +257,6 @@ public class StateMachine {
 				}
 				return Idle;
 			}
-
-			@Override
-			public String toString() {
-				return "Ground Feed";
-			}
-		},
-		Dropoff {
-			@Override
-			protected void init(StateMachine sm) {
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-
-			@Override
-			public String toString() {
-				return "Dropoff";
-			}
 		},
 		BinPickup {
 			@Override
@@ -329,41 +269,6 @@ public class StateMachine {
 					return Abort;
 				}
 				return Idle;
-			}
-
-			@Override
-			public String toString() {
-				return "Bin Pickup";
-			}
-		},
-		TotePickup {
-			@Override
-			protected void init(StateMachine sm) {
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				if(sm.humanFeed_Start.check()) {
-					StateMachine.numberTotes = 0;
-					
-					if(BinElevatorSystem.getInstance().getTilterFowardLimitSwitch()) {
-						sm.humanFeed_ToteOnConveyor.clear();
-						sm.humanFeed_ThrottleConveyorDescend.clear();
-						return HumanFeed_RaiseTote;
-					}
-					else {
-						return Idle;
-					}
-				}
-				return Idle;
-			}
-			
-			@Override
-			public String toString() {
-				return "Tote Pickup";
 			}
 		},
 //		GroundFeed_Raise {
@@ -381,11 +286,6 @@ public class StateMachine {
 //				}
 //				return this;
 //			}
-//
-//			@Override
-//			public String toString() {
-//				return "GroundFeed_Raise";
-//			}
 //		},
 //		GroundFeed_Descend {
 //			@Override
@@ -395,35 +295,26 @@ public class StateMachine {
 //				}
 //				return this;
 //			}
-//
-//			@Override
-//			public String toString() {
-//				return "GroundFeed_Descend";
-//			}
-//
 //			@Override
 //			protected void init(StateMachine sm) {
 //				
 //			}
 //		},
-//		Dropoff {
-//			@Override
-//			protected void init(StateMachine sm) {
-//			}
-//			
-//			@Override
-//			public State run(StateMachine sm) {
-//				if(sm.abortSignal.check()) {
-//					return Abort;
-//				}
-//				return Idle;
-//			}
-//
-//			@Override
-//			public String toString() {
-//				return "Dropoff";
-//			}
-//		},
+		TiltUp {
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
+					return HumanFeed_RaiseTote;
+				}
+				return this;
+			}
+			@Override
+			protected void init(StateMachine sm) {
+			}
+		},
 		Abort {
 			@Override
 			protected void init(StateMachine sm) {
@@ -444,16 +335,15 @@ public class StateMachine {
 					return Idle;
 				}
 				return Abort;
-			}
-
-			@Override
-			public String toString() {
-				return "Abort";
-			}			
+			}		
 		};
 		
 		public abstract State run(StateMachine sm);
-		public abstract String toString();
+		
+		@Override
+		public String toString() {
+			return this.name();
+		}
 		
 		protected abstract void init(StateMachine sm);
 	}

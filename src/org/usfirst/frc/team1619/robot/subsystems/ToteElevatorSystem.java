@@ -23,8 +23,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kRateOffset = 0.4;
 	public static final double kRateOffsetConstant = 2.5;
 	
-	public static final double kToteElevatorUpSpeed = -0.5;
-	public static final double kToteElevatorDownSpeed = 0.7;
+	public static final double kToteElevatorUpSpeed = 0.7;
+	public static final double kToteElevatorDownSpeed = -0.5;
 	
 	//With CIM and miniCIM
 	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
@@ -155,8 +155,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			if(wasManual) {
 				double rateOffset = getToteElevatorRate() * kRateOffset;
 //				double rateOffset = getToteElevatorRate() * Preferences.getNumber("Current_RateOffset_Value", kRateOffset);
-//				double rateOffsetConstant = Preferences.getNumber("Current_RateOffsetConstant_Value", kRateOffsetConstant) * (up ? -1.0 : 1.0);
-				double rateOffsetConstant = kRateOffsetConstant * (up ? -1.0 : 1.0);
+//				double rateOffsetConstant = Preferences.getNumber("Current_RateOffsetConstant_Value", kRateOffsetConstant) * (up ? 1.0 : -1.0);
+				double rateOffsetConstant = kRateOffsetConstant * (up ? 1.0 : -1.0);
 //				System.out.println(rateOffset + " " + rateOffsetConstant);
 				setToteElevatorPosition(getToteElevatorPosition() + rateOffset + rateOffsetConstant);
 //				System.out.println(getToteElevatorRate());
@@ -274,11 +274,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanFeed_RaiseTote.raise();	
-			}
-			break;
-		case TotePickup:
-			if(useStatePosition) {
-				setToteElevatorPosition(kPickUpPosition);
 			}
 			break;
 		case Abort:

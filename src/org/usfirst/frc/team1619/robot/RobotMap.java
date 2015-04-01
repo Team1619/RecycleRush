@@ -85,8 +85,8 @@ public class RobotMap {
 	
 	public static final int incrementNumberTotesButtonID = 11;
 	
-	public static final int toteElevatorUpManualButtonID = 6;
-	public static final int toteElevatorDownManualButtonID = 7;
+	public static final int toteElevatorUpManualButtonID = 7;
+	public static final int toteElevatorDownManualButtonID = 6;
 	
 
 	//Left Stick

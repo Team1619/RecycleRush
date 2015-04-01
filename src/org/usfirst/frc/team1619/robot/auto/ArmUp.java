@@ -41,7 +41,7 @@ public class ArmUp extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BinElevatorSystem.getInstance().binTilt(speed);
+    	BinElevatorSystem.getInstance().setBinTilt(speed);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -56,7 +56,7 @@ public class ArmUp extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	BinElevatorSystem.getInstance().binTilt(0);
+    	BinElevatorSystem.getInstance().setBinTilt(0);
     }
 
     // Called when another command which requires one or more of the same

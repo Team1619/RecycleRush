@@ -37,7 +37,7 @@ public class ClawsClose extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	BinElevatorSystem.getInstance().moveBinGrip(-speed);  
+    	BinElevatorSystem.getInstance().setBinGrip(-speed);  
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -47,7 +47,7 @@ public class ClawsClose extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	BinElevatorSystem.getInstance().moveBinGrip(0.0);
+    	BinElevatorSystem.getInstance().setBinGrip(0.0);
     }
 
     // Called when another command which requires one or more of the same

@@ -7,7 +7,6 @@ import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
 import org.usfirst.frc.team1619.robot.auto.BinRakerAuto;
 import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
-import org.usfirst.frc.team1619.robot.auto.XTR3M3BinRakerByMountainDew;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;

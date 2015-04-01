@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.Timer;
  *
  */
 public class ConveyorSystem extends StateMachineSystem {
-	//Compeition Bot
+	//Competition Bot
 	private static final double kForwardConveyorSpeed = -1.0; 
 	private static final double kManualForwardConveyorSpeed = -1.0; 
 	private static final double kManualBackConveyorSpeed = 1.0;
@@ -152,6 +152,9 @@ public class ConveyorSystem extends StateMachineSystem {
     		break;
     	case HumanFeed_ThrottleConveyorAndDescend:
     		if(frontSensorFedDelay.get() >= kConveyorDelayTime && StateMachine.getInstance().getToStopHumanFeed()) {
+    			conveyorSpeed = 0.0;
+    		}
+    		else if(getRearSensor()) {
     			conveyorSpeed = 0.0;
     		}
     		else {

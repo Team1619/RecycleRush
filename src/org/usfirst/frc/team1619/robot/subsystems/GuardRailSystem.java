@@ -120,8 +120,9 @@ public class GuardRailSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
+			// TODO: stuff
 			/*
-			 * For Denver:
+			 * FOR DENVER:
 			 * We may look to see if the back sensor is tripped in this state, 
 			 * and if so, crowd, as well as stop the conveyor, so that it wont 
 			 * get caught against the tote elevator, but it will still crown and 
