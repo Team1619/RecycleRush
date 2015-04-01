@@ -84,8 +84,6 @@ public class StateMachine {
 	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
-	public final Signal dropoffSignal = new AutoClearSignal();
-	public final Signal groundFeedSignal = new AutoClearSignal(); 
 	
 //	public final Signal dropoffSignal = new AutoClearSignal();
 //	public final Signal groundFeedSignal = new AutoClearSignal(); 
@@ -245,61 +243,6 @@ public class StateMachine {
 				}
 			}
 		},
-		GroundFeed {
-			@Override
-			protected void init(StateMachine sm) {
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-		},
-		BinPickup {
-			@Override
-			protected void init(StateMachine sm) {				
-			}
-			
-			@Override
-			public State run(StateMachine sm) {
-				if(sm.abortSignal.check()) {
-					return Abort;
-				}
-				return Idle;
-			}
-		},
-//		GroundFeed_Raise {
-//			@Override
-//			protected void init(StateMachine sm) {
-//			}
-//			
-//			@Override
-//			public State run(StateMachine sm) {
-//				if(sm.abortSignal.check()) {
-//					return Abort;
-//				}
-//				if(sm.groundFeedSignal_Descend.check()) {
-//					return GroundFeed_Descend;
-//				}
-//				return this;
-//			}
-//		},
-//		GroundFeed_Descend {
-//			@Override
-//			public State run(StateMachine sm) {
-//				if(sm.abortSignal.check()) {
-//					return Abort;
-//				}
-//				return this;
-//			}
-//			@Override
-//			protected void init(StateMachine sm) {
-//				
-//			}
-//		},
 		TiltUp {
 			@Override
 			public State run(StateMachine sm) {

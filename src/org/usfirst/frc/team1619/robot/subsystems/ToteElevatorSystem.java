@@ -97,12 +97,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		usePosition = false;
 	}
 
-	public void setToteElevatorPosition(double position) {  //in inches
+	public void setToteElevatorPosition(double position) {  //in catfinches
 		moveTo = position;
 		usePosition = true;
 	}
 
-	//set position in inches, not move motor. Only use for calibration
+	//set position in catfinches, not move motor. Only use for calibration
 	public void setToteElevatorPositionValue(double position) { 
 		toteElevatorMotor.setPosition(position*kEncoderTicksPerInch);
 		moveTo = Double.NaN;
@@ -151,6 +151,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			wasManual = true;
 			up = false;
 		}
+    	else if(OI.getInstance().lowerAndOpenClawButton.get() && 
+    			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
+    		finalSetValue = 0.0;
+    		finalSetValuePosition = true;
+    		useStatePosition = false;
+    	}
 		else {
 			if(wasManual) {
 				double rateOffset = getToteElevatorRate() * kRateOffset;
@@ -249,8 +255,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			}
 			break;
 		case HumanFeed_RaiseTote:
-//			SmartDashboard.putNumber("Tote Elevator Variable P", toteElevatorMotor.getP());
-//			SmartDashboard.putNumber("Tote Elevator Variable I", toteElevatorMotor.getI());
 			if(useStatePosition) {
 				setToteElevatorPosition(kFeederPosition);
 			}

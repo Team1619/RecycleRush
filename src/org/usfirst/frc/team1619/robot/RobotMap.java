@@ -88,6 +88,8 @@ public class RobotMap {
 	public static final int toteElevatorUpManualButtonID = 7;
 	public static final int toteElevatorDownManualButtonID = 6;
 	
+	public static final int lowerAndOpenClawID = 5;
+
 
 	//Left Stick
 	public static final int guardrailCloseManualButtonID = 9;
@@ -101,7 +103,7 @@ public class RobotMap {
 	public static final int rakerUpManualButtonID = 7;
 	public static final int closeClawButtonID = 1;
 	public static final int openClawButtonID = 2;
-
+	
 
 	//other stuff
 	public static final int gyroTempAnalogID = 1;//temperature - analog 1

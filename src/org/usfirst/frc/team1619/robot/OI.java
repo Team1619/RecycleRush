@@ -40,6 +40,8 @@ public class OI {
 	public final JoystickButton toteElevatorUpManualButton;
 	public final JoystickButton toteElevatorDownManualButton;
 	
+	public final JoystickButton lowerAndOpenClawButton;
+	
 	//leftStick
 	public final JoystickButton closeClawButton;
 	public final JoystickButton openClawButton;
@@ -80,6 +82,8 @@ public class OI {
 		
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
+
+		lowerAndOpenClawButton = new JoystickButton(rightStick, RobotMap.lowerAndOpenClawID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();
@@ -124,8 +128,8 @@ public class OI {
 		//unloadConveyorButton.whenPressed(new UnloadConveyorCommand());
 		
 		liftAbortButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().abortSignal));
-		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));		
-	}
+		liftResetButton.whenPressed(new RaiseSignalCommand(StateMachine.getInstance().resetSignal));
+		}
 	
 	public void updatePOV() {
 		int povLeft = rightStick.getPOV();
