@@ -40,7 +40,8 @@ public class OI {
 	public final JoystickButton toteElevatorUpManualButton;
 	public final JoystickButton toteElevatorDownManualButton;
 	
-	public final JoystickButton lowerAndOpenClawButton;
+	public final JoystickButton lowerToteElevatorAndOpenClawButton;
+	public final JoystickButton driverCloseButton;
 	
 	//leftStick
 	public final JoystickButton closeClawButton;
@@ -83,7 +84,8 @@ public class OI {
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 
-		lowerAndOpenClawButton = new JoystickButton(rightStick, RobotMap.lowerToteElevatorAndOpenClawButtonID);
+		lowerToteElevatorAndOpenClawButton = new JoystickButton(rightStick, RobotMap.lowerToteElevatorAndOpenClawButtonID);
+		driverCloseButton = new JoystickButton(rightStick, RobotMap.driverCloseClawButtonID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();

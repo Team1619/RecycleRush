@@ -37,6 +37,7 @@ public class BinElevatorSystem extends StateMachineSystem {
 //	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
 	public static final double kBinGripOpenSpeed = 0.8;
 	public static final double kBinGripCloseSpeed = -0.8;
+	public static final double kBinGripOpenSpeedSlow = 0.4;
 	public static final double kToteElevatorSafetyForTilt = 5.5; //fish
 	
 	
@@ -159,9 +160,12 @@ public class BinElevatorSystem extends StateMachineSystem {
     	else if(OI.getInstance().closeClawButton.get()) {
     		binGripMotor.set(kBinGripCloseSpeed);
     	}
-    	else if(OI.getInstance().lowerAndOpenClawButton.get() && 
+    	else if(OI.getInstance().driverCloseButton.get()) {
+    		binGripMotor.set(kBinGripCloseSpeed);
+    	}
+    	else if(OI.getInstance().lowerToteElevatorAndOpenClawButton.get() && 
     			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
-    		binGripMotor.set(kBinGripOpenSpeed);
+    		binGripMotor.set(kBinGripOpenSpeedSlow);
     	}
     	else {
     		binGripMotor.set(binGripSpeed);

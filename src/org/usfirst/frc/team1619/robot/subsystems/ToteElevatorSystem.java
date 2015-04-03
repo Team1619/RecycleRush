@@ -137,6 +137,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			toteElevatorMotor.ClearIaccum();
 		}
 		
+		if(OI.getInstance().lowerToteElevatorAndOpenClawButton.get() && 
+    			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
+			setToteElevatorPosition(0);
+			useStatePosition = false;
+    	}
+		
 		boolean finalSetValuePosition;
 		double finalSetValue;
 		if(OI.getInstance().toteElevatorUpManualButton.get()) {
@@ -151,13 +157,6 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			wasManual = true;
 			up = false;
 		}
-    	else if(OI.getInstance().lowerAndOpenClawButton.get() && 
-    			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
-    		finalSetValue = 0.0;
-    		finalSetValuePosition = true;
-    		wasManual = true;
-			up = false;
-    	}
 		else {
 			if(wasManual) {
 				double rateOffset = getToteElevatorRate() * kRateOffset;

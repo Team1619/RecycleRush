@@ -89,6 +89,7 @@ public class RobotMap {
 	public static final int toteElevatorDownManualButtonID = 6;
 	
 	public static final int lowerToteElevatorAndOpenClawButtonID = 5;
+	public static final int driverCloseClawButtonID = 10;
 
 
 	//Left Stick
