@@ -136,7 +136,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		if(!isSafeToRaiseTote()) {
 			toteElevatorMotor.ClearIaccum();
 		}
-
+		
 		boolean finalSetValuePosition;
 		double finalSetValue;
 		if(OI.getInstance().toteElevatorUpManualButton.get()) {
@@ -155,7 +155,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
     			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
     		finalSetValue = 0.0;
     		finalSetValuePosition = true;
-    		useStatePosition = false;
+    		wasManual = true;
+			up = false;
     	}
 		else {
 			if(wasManual) {
@@ -193,11 +194,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		}
 
 		if(finalSetValuePosition) {
-			toteElevatorMotor.changeControlMode(ControlMode.Position);
 			if(isSafeToRaiseTote() || (finalSetValue < 0)) {
+				toteElevatorMotor.changeControlMode(ControlMode.Position);
 				toteElevatorMotor.set(finalSetValue);
 			}
 			else {
+				toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
 				toteElevatorMotor.set(0.0);
 			}
 		}

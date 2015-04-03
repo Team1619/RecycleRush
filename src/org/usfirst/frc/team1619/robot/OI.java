@@ -83,7 +83,7 @@ public class OI {
 		toteElevatorUpManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorUpManualButtonID);
 		toteElevatorDownManualButton = new JoystickButton(rightStick, RobotMap.toteElevatorDownManualButtonID);
 
-		lowerAndOpenClawButton = new JoystickButton(rightStick, RobotMap.lowerAndOpenClawID);
+		lowerAndOpenClawButton = new JoystickButton(rightStick, RobotMap.lowerToteElevatorAndOpenClawButtonID);
 		
 		//Left stick
 		binElevatorUp = new InternalButton();
