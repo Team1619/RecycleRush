@@ -13,8 +13,8 @@ public class ArmDown extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	
-    	requires(BinElevatorSystem.getInstance());
-    	setInterruptible(true);
+//    	requires(BinElevatorSystem.getInstance());
+//    	setInterruptible(true);
     }
 
     // Called just before this Command runs the first time
@@ -39,6 +39,6 @@ public class ArmDown extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	BinElevatorSystem.getInstance().setBinTilt(0.0);
+//    	BinElevatorSystem.getInstance().setBinTilt(0.0);
     }
 }

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1619.robot.auto;
 
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class GetOutTheWayAuto extends CommandGroup {
     
     public  GetOutTheWayAuto() {
-    	addParallel(new RaiseBinElevatorCommand());
+    	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
     	addSequential(new LinearDriveCommand(2.0, 0.5));
         // Add Commands here:
         // e.g. addSequential(new Command1());

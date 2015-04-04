@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1619.robot.auto;
 
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.RakerSystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -11,7 +12,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BinRakerAuto extends CommandGroup {
 
     public  BinRakerAuto() {
-    	addParallel(new RaiseBinElevatorCommand());
+    	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
     	addSequential(new LinearDriveCommand(-0.15, 0.5));
     	addSequential(new RakerMove(RakerSystem.kRakerDownSpeed, 1.5));
     	addParallel(new ToteElevatorMove(0.5, 0.5));

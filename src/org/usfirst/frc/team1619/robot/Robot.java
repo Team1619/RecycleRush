@@ -128,8 +128,8 @@ public class Robot extends IterativeRobot {
 				
 		
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Get out of The Way", new GetOutTheWayAuto());
-		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
+		autoChooser.addDefault("Present Bin For Litter", new BinGrabWithLitterAuto());
+		autoChooser.addObject("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
 		autoChooser.addObject("Rake Bins", new BinRakerAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);

@@ -16,7 +16,7 @@ public class XTR3M3BinRakerByMountainDew extends CommandGroup {
     
     public  XTR3M3BinRakerByMountainDew() {
     	// Hold claw at top
-    	addParallel(new RaiseBinElevatorCommand());
+    	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
     	
     	// Open claws at beginning
     	addParallel(new ClawsOpen(BinElevatorSystem.kBinGripOpenTime));

@@ -15,7 +15,7 @@ public class ClawsOpen extends Command {
 	
     public ClawsOpen(double time) {
         // Use requires() here to declare subsystem dependencies
-        requires(BinElevatorSystem.getInstance());
+//        requires(BinElevatorSystem.getInstance());
         driveTime = time;
         timer = new Timer();
     }

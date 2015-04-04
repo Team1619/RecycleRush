@@ -12,29 +12,13 @@ import edu.wpi.first.wpilibj.CANTalon.ControlMode;
  *
  */
 public class BinElevatorSystem extends StateMachineSystem {
-	//Not used right now
-//	public static final double kEncoderTicksPerInch = 2043 / 32.0; //fish
-//	public static final double kOutOfTheWayPosition = 0.0;
-//	public static final double kTransitPosition = 0.0;
-//	public static final double kFeederPosition = 0.0;
-//	public static final double kPickUpPosition = 0.0;
-//	public static final double kPositionTolerance = 1.0;
+
 	public static final double kInitSpeed = -0.4;
 	public static final double kBinElevatorUpSpeed = -0.4;
 	public static final double kBinElevatorDownSpeed = 0.4;
-//	public static final double kBinTiltSpeed = 0.5;
+	
 	public static final double kBinIdleSpeed = -0.2;
 	
-	//Not used right now
-//	public static final double kTotalHeight = 62.0; //fish
-//	public static final double kToteElevatorHeight = 25.0; //fish
-//	public static final double kBinElevatorHeight = 37.0; //fish
-//	public static final double kToteElevatorHeightModifier = 10.0; //fish, accounts for the plastic fins on elevator being above the "toteElevatorPosition" 
-//	public static final double kBinElevatorHeightModifier = -6.0; //fish, accounts for bottom of bin gripper being below the "binElevatorPosition"
-//	public static final double kDistanceBetweenLifts = 45.0; //catfinches
-//	public static final double kSafetyTolerance = 12.0;
-//	public static final double kBinPickupPosition = -8.427; //catfinches
-//	public static final double kBinNoodleInsertionPosition = -26.69; //catfinches
 	public static final double kBinGripOpenSpeed = 0.8;
 	public static final double kBinGripCloseSpeed = -0.8;
 	public static final double kBinGripOpenSpeedSlow = 0.4;

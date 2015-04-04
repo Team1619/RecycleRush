@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class BinGrabWithLitterAuto extends CommandGroup {
     
     public  BinGrabWithLitterAuto() {
-        addParallel(new RaiseBinElevatorCommand());
+        addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
         addParallel(new ClawsOpen(BinElevatorSystem.kBinGripOpenTime));
     	addSequential(new LinearDriveCommand(0.8, 0.5));
         addSequential(new ClawsClose(0.5, 2));
