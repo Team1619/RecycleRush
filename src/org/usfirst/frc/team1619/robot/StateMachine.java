@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class StateMachine {
 	private State currentState = State.Idle;
 
-	public static int numberTotes;
+	public int numberTotes;
 	private boolean incrementNumberTotes;
 	
 	private boolean toStopHumanFeed;
@@ -94,7 +94,7 @@ public class StateMachine {
 		Init {
 			@Override
 			protected void init(StateMachine sm) {
-				numberTotes = 0;
+				sm.numberTotes = 0;
 			}
 			
 			@Override
@@ -118,7 +118,7 @@ public class StateMachine {
 			@Override
 			protected void init(StateMachine sm) {
 				sm.toStopHumanFeed = false;
-				numberTotes = 0;
+				sm.numberTotes = 0;
 			}
 			
 			@Override
@@ -127,7 +127,7 @@ public class StateMachine {
 					return Abort;
 				}
 				if(sm.humanFeed_Start.check()) {
-					StateMachine.numberTotes = 0;
+					StateMachine.getInstance().numberTotes = 0;
 					
 					if(BinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
@@ -237,8 +237,8 @@ public class StateMachine {
 			}
 			@Override
 			protected void init(StateMachine sm) {
-				StateMachine.numberTotes++;
-				if(StateMachine.numberTotes == 6) {
+				StateMachine.getInstance().numberTotes++;
+				if(StateMachine.getInstance().numberTotes == 6) {
 					sm.toStopHumanFeed = true;
 				}
 			}

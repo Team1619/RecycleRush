@@ -2,6 +2,7 @@ package org.usfirst.frc.team1619.robot.auto;
 
 import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.commands.LinearDriveCommand;
+import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.RakerSystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -16,6 +17,9 @@ public class XTR3M3BinRakerByMountainDew extends CommandGroup {
     public  XTR3M3BinRakerByMountainDew() {
     	// Hold claw at top
     	addParallel(new RaiseBinElevatorCommand());
+    	
+    	// Open claws at beginning
+    	addParallel(new ClawsOpen(BinElevatorSystem.kBinGripOpenTime));
     	
     	// Let toteElevator fall flat
     	addSequential(new ToteElevatorMove(0.5, 0.5));

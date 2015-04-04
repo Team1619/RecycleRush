@@ -47,6 +47,7 @@ public class Robot extends IterativeRobot {
 	private Lumberjack pdpLumberjack;
 	private Lumberjack elevatorLumberjack;
 	private Lumberjack motorLumberjack;
+	private String operationState;
 	private Timer pdpLogTimer;
 	private Timer elevatorLogTimer;
 	private Timer motorLogTimer;
@@ -69,6 +70,7 @@ public class Robot extends IterativeRobot {
 		pdpCAN = new PowerDistributionPanel();
 		pdpLogTimer = new Timer();
 		pdpLogTimer.start();
+		operationState = "Disabled";
 		elevatorLogTimer = new Timer();
 		elevatorLogTimer.start();
 		motorLogTimer = new Timer();
@@ -107,7 +109,13 @@ public class Robot extends IterativeRobot {
 				"Bin Voltage", 
 				"Tote Current 1", 
 				"Tote Current 2", 
-				"Bin Current"
+				"Bin Current",
+				"Tote Encoder Speed",
+				"Tote Encoder Position",
+				"Tote Position Value",
+				"Current State",
+				"Number of Totes",
+				"Operation State"
 				);
 		
 		
@@ -200,6 +208,21 @@ public class Robot extends IterativeRobot {
 				pdpLogTimer.reset();
 			} //25.0 fish
 			
+			if(isDisabled()) {
+				operationState = "Disabled";
+			}
+			else if(isAutonomous()) {
+				operationState = "Autonomous";
+			}
+			else if(isOperatorControl()) {
+				operationState = "TeleOp";
+			}
+			else if(isTest()) {
+				operationState = "Test";
+			}
+			else {
+				operationState = "Limbo";
+			}
 			
 			if (elevatorLogTimer.get() >= 0.1) {
 				elevatorLumberjack.log(
@@ -208,10 +231,17 @@ public class Robot extends IterativeRobot {
 						Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage()),
 						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent()),
 						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotorSmall.getOutputCurrent()),
-						Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent())
+						Double.toString(BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent()),
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getEncVelocity()),
+						Double.toString(ToteElevatorSystem.getInstance().toteElevatorMotor.getPosition()),
+						Double.toString(ToteElevatorSystem.getInstance().getToteElevatorPosition()),
+						StateMachine.getInstance().getState().toString(),
+						Double.toString(StateMachine.getInstance().numberTotes),
+						operationState
 						);
 				elevatorLogTimer.reset();
 			}
+			
 			
 			if(motorLogTimer.get() >= 0.1) {
 				RobotMap.MotorDefinition[] motorDefinitions = RobotMap.MotorDefinition.values();

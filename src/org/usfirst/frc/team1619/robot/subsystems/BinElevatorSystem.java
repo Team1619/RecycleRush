@@ -40,6 +40,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kBinGripOpenSpeedSlow = 0.4;
 	public static final double kToteElevatorSafetyForTilt = 5.5; //fish
 	
+	public static final double kBinGripOpenTime = 0.5;
+	
 	
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

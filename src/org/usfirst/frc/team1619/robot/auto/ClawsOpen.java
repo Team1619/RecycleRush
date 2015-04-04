@@ -11,9 +11,12 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ClawsOpen extends Command {
 
 	private Timer timer;
-    public ClawsOpen() {
+	private double driveTime;
+	
+    public ClawsOpen(double time) {
         // Use requires() here to declare subsystem dependencies
         requires(BinElevatorSystem.getInstance());
+        driveTime = time;
         timer = new Timer();
     }
 
@@ -29,7 +32,7 @@ public class ClawsOpen extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return timer.get() > 2.0;
+        return timer.get() > driveTime;
     }
 
     // Called once after isFinished returns true

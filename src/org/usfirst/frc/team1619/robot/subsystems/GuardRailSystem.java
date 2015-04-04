@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class GuardRailSystem extends StateMachineSystem {
 	//Competition Bot
-	public static final double kCloseGuardRailSpeed = -0.75;
+//	public static final double kCloseGuardRailSpeed = -0.75;
 	
 	//PracticeBot
-//	public static final double kCloseGuardRailSpeed = -0.5;
+	public static final double kCloseGuardRailSpeed = -0.5;
 	
 	public static final double kOpenGuardRailSpeed = 0.40;
 	public static final double kSlowOpenGuardRailSpeed = 0.00;
