@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ConveyorSystem extends StateMachineSystem {
 	//Competition Bot
-	public static final double kForwardConveyorSpeed = -1.0; 
+	public static final double kForwardConveyorSpeed = -0.75; 
 	public static final double kManualForwardConveyorSpeed = -1.0; 
 	public static final double kManualBackConveyorSpeed = 1.0;
 	

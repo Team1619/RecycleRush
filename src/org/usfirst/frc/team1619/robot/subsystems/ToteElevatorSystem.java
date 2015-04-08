@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
 public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
 	public static final double kTransitPosition = 1.0;
-	public static final double kFeederPosition = 20.8;
+	public static final double kFeederPosition = 17.8;
 	public static final double kPickUpPosition = -2.0;
 	public static final double kPositionTolerance = 4.0;
 	public static final double kDeadZone = 0.25;
