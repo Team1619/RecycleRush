@@ -7,6 +7,7 @@ import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
 import org.usfirst.frc.team1619.robot.auto.BinRakerAuto;
 import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
+import org.usfirst.frc.team1619.robot.auto.JustMoveRakerAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
@@ -132,6 +133,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
 		autoChooser.addObject("Rake Bins", new BinRakerAuto());
+		autoChooser.addObject("Just Rake Down", new JustMoveRakerAuto());
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
