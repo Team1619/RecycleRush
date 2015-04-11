@@ -35,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends IterativeRobot {
 
+	
 	//create a singleton robot
 	private static Robot robot;
 	public Robot() {
