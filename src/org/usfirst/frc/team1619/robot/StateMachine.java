@@ -1,6 +1,9 @@
 package org.usfirst.frc.team1619.robot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimeZone;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
@@ -82,6 +85,7 @@ public class StateMachine {
 	public final Signal humanFeed_RaiseTote = new AutoClearSignal();
 	public final Signal humanFeed_WaitForTote = new AutoClearSignal();
 	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
+	public final Signal humanFeed_ThrottleConveyorBack = new AutoClearSignal();
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	
@@ -204,8 +208,31 @@ public class StateMachine {
 				if(sm.humanFeed_Stop.check()) {
 					sm.toStopHumanFeed = true;
 				}
-				if(sm.humanFeed_EndCurrentStateAndDescend.check())
-				{
+				if(sm.humanFeed_EndCurrentStateAndDescend.check()) {
+					return HumanFeed_ThrottleConveyorAndDescend;
+				}
+				if(sm.humanFeed_ThrottleConveyorBack.check()) {
+					return HumanFeed_ThrottleConveyorBack;
+				}
+				return this;
+			}
+			@Override
+			protected void init(StateMachine sm) {
+			}
+		},
+		HumanFeed_ThrottleConveyorBack {
+			@Override
+			public State run(StateMachine sm) {
+				if(sm.abortSignal.check()) {
+					return Abort;
+				}
+				if(sm.humanFeed_ThrottleConveyorDescend.check()) {
+					return HumanFeed_ThrottleConveyorAndDescend;
+				}
+				if(sm.humanFeed_Stop.check()) {
+					sm.toStopHumanFeed = true;
+				}
+				if(sm.humanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
@@ -301,7 +328,10 @@ public class StateMachine {
 		if(currentState != nextState) {
 			currentState = nextState;
 			
-//			System.out.println("Changed State to " + currentState.toString());
+			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
+			date.setTimeZone(TimeZone.getTimeZone("UTC"));
+			System.out.println(date.format(new Date()) + " -- Changed State to " + currentState.name());
+			
 			
 			currentState.init(this);
 			stateTimer.reset();

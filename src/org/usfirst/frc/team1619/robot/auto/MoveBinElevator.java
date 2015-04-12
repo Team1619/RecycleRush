@@ -23,8 +23,7 @@ public class MoveBinElevator extends Command {
 	 * @param speed - positive = down, negative = up. (PercentVBus)
 	 */
     public MoveBinElevator(boolean toEnd, double speed) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    	setInterruptible(true);
     	this.toEnd = toEnd;
     	moveSpeed = speed; 
     	up = true;
@@ -65,5 +64,6 @@ public class MoveBinElevator extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+    	end();
     }
 }

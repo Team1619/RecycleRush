@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
+import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
@@ -15,16 +16,18 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ConveyorSystem extends StateMachineSystem {
 	//Competition Bot
-	public static final double kForwardConveyorSpeed = -0.75; 
+	public static final double kForwardConveyorSpeed = -1.0; 
+	public static final double kSlowForwardConveyorSpeed = -0.4;
 	public static final double kManualForwardConveyorSpeed = -1.0; 
 	public static final double kManualBackConveyorSpeed = 1.0;
+	private static final double kConveyorDelayTime = 0.25;
 	
 	//Practice Bot
 //	private static final double kForwardConveyorSpeed = -0.7; 
 //	private static final double kManualForwardConveyorSpeed = -0.7; 
 //	private static final double kManualBackConveyorSpeed = 0.7; 
 	
-	private static final double kConveyorDelayTime = 0.25;
+	
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -37,8 +40,7 @@ public class ConveyorSystem extends StateMachineSystem {
 
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
-	private Timer frontSensorFedDelay = new Timer();
-	private final double kDebounceTime = 0.05;
+	private final double kDebounceTime = 0.0;
 	
 		
 	private ConveyorSystem() {
@@ -52,7 +54,6 @@ public class ConveyorSystem extends StateMachineSystem {
 
 		frontSensorDebounceTimer.start();
 		rearSensorDebounceTimer.start();
-		frontSensorFedDelay.start();
 	}
 	
 	private static ConveyorSystem theSystem;
@@ -64,9 +65,12 @@ public class ConveyorSystem extends StateMachineSystem {
 	}
 	
 	public void updateConveyorSignals() {
+    	//double debounceTime = Preferences.getNumber("DebounceTime", kDebounceTime);
+		
 		if(!getFrontSensorRaw()) {
 			if(frontSensor) {
-				frontSensor = !(frontSensorDebounceTimer.get() > kDebounceTime);
+				//frontSensor = !(frontSensorDebounceTimer.get() > kDebounceTime);
+				frontSensor = !frontSensor;
 				if(!frontSensor) {
 					StateMachine.getInstance().humanFeed_ThrottleConveyorDescend.raise();
 				}
@@ -75,6 +79,7 @@ public class ConveyorSystem extends StateMachineSystem {
 		else {
 			frontSensor = true;
 			frontSensorDebounceTimer.reset();
+			StateMachine.getInstance().humanFeed_ThrottleConveyorBack.raise();
 		}
 		if(getRearSensorRaw()) {
 			rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;
@@ -123,9 +128,6 @@ public class ConveyorSystem extends StateMachineSystem {
     @Override
     public void init(State state) {
     	switch (state) {
-    	case HumanFeed_ThrottleConveyorAndDescend:
-    		frontSensorFedDelay.reset();
-    		break;
     	default:
     		break;
     	}
@@ -134,6 +136,11 @@ public class ConveyorSystem extends StateMachineSystem {
     @Override
     public void run(State state, double elapsed) {
     	updateConveyorSignals();
+    	
+    	double forwardConveyorSpeed = Preferences.getNumber("ForwardConveyorSpeed", kForwardConveyorSpeed);
+    	double slowForwardConveyorSpeed = Preferences.getNumber("SlowForwardConveyorSpeed", kSlowForwardConveyorSpeed);
+    	double conveyorDelayTime = Preferences.getNumber("ConveyorDelayTime", kConveyorDelayTime);
+    	
     	switch(state) {
     	case Init:
     		conveyorSpeed = 0.0;
@@ -142,24 +149,19 @@ public class ConveyorSystem extends StateMachineSystem {
     		conveyorSpeed = 0.0;
     		break;
     	case HumanFeed_RaiseTote:
-    		conveyorSpeed = kForwardConveyorSpeed;
+    		conveyorSpeed = forwardConveyorSpeed;
     		break;
     	case HumanFeed_WaitForTote:
-    		conveyorSpeed = kForwardConveyorSpeed;
+    		conveyorSpeed = forwardConveyorSpeed;
     		break;
     	case HumanFeed_ToteOnConveyor:
-    		conveyorSpeed = kForwardConveyorSpeed;
+    		conveyorSpeed = forwardConveyorSpeed;
+    		break;
+    	case HumanFeed_ThrottleConveyorBack:
+    		conveyorSpeed = elapsed > conveyorDelayTime ? slowForwardConveyorSpeed : forwardConveyorSpeed;
     		break;
     	case HumanFeed_ThrottleConveyorAndDescend:
-    		if(frontSensorFedDelay.get() >= kConveyorDelayTime && StateMachine.getInstance().getToStopHumanFeed()) {
-    			conveyorSpeed = 0.0;
-    		}
-    		else if(getRearSensor()) {
-    			conveyorSpeed = 0.0;
-    		}
-    		else {
-    			conveyorSpeed = kForwardConveyorSpeed;
-    		}
+    		conveyorSpeed = 0.0;
     		break;
 		case Abort:	
 			conveyorSpeed = 0.0;

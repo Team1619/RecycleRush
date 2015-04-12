@@ -10,14 +10,18 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  * Master Class of Autonomous, Stage 0
  */
 public class BinRakerAuto extends CommandGroup {
-
     public  BinRakerAuto() {
-    	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
-    	addSequential(new LinearDriveCommand(-0.15, 0.5));
-    	addSequential(new RakerMove(RakerSystem.kRakerDownSpeed, 1.5));
-    	addParallel(new ToteElevatorMove(0.5, 0.5));
+    	
+    	
+    	//addSequential(new LinearDriveCommand(-0.15, 0.5));
+    	addParallel(new RakerMove(RakerSystem.kRakerDownSpeed, 1.0));
+    	
+    	addSequential(new DelayCommand(0.5));
     	
     	addSequential(new LinearDriveCommand(1.0, 1));
+    	addParallel(new ToteElevatorMove(0.5, 0.5));
+    	
+    	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
     	addSequential(new LinearDriveCommand(2.0, 0.5));
     	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 6.0));
     	for(int i = 0; i < 1; i++) {
