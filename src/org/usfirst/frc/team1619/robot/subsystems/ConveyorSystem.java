@@ -42,7 +42,6 @@ public class ConveyorSystem extends StateMachineSystem {
 	private Timer rearSensorDebounceTimer = new Timer();
 	private final double kDebounceTime = 0.0;
 	
-		
 	private ConveyorSystem() {
 		conveyorMotor = RobotMap.MotorDefinition.conveyorMotor.getMotor();
 		conveyorMotor.changeControlMode(ControlMode.PercentVbus);
@@ -77,9 +76,11 @@ public class ConveyorSystem extends StateMachineSystem {
 			}
 		}
 		else {
-			frontSensor = true;
-			frontSensorDebounceTimer.reset();
-			StateMachine.getInstance().humanFeed_ThrottleConveyorBack.raise();
+			if(!frontSensor) {
+				frontSensor = true;
+				frontSensorDebounceTimer.reset();
+				StateMachine.getInstance().humanFeed_ThrottleConveyorBack.raise();
+			}
 		}
 		if(getRearSensorRaw()) {
 			rearSensor = rearSensorDebounceTimer.get() > kDebounceTime;

@@ -71,7 +71,7 @@ public class StateMachine {
 		}
 	}
 
-	private ArrayList<Signal> autoClearSignals = new ArrayList<Signal>(); 
+	private ArrayList<Signal> autoClearSignals = new ArrayList<>(); 
 	public class AutoClearSignal extends Signal {
 		public AutoClearSignal() {
 			autoClearSignals.add(this);

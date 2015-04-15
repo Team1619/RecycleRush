@@ -5,6 +5,7 @@ import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.RakerSystem;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 
 /**
  * Master Class of Autonomous, Stage 0
@@ -16,7 +17,7 @@ public class BinRakerAuto extends CommandGroup {
     	//addSequential(new LinearDriveCommand(-0.15, 0.5));
     	addParallel(new RakerMove(RakerSystem.kRakerDownSpeed, 1.0));
     	
-    	addSequential(new DelayCommand(0.5));
+    	addSequential(new WaitCommand(0.5));
     	
     	addSequential(new LinearDriveCommand(1.0, 1));
     	addParallel(new ToteElevatorMove(0.5, 0.5));

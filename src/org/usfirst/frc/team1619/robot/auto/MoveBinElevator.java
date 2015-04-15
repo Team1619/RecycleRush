@@ -13,9 +13,6 @@ public class MoveBinElevator extends Command {
 	private boolean toEnd;
 	private double moveSpeed;
 	private boolean up;
-		
-	//TODO: make binElevator positive voltage go up
-
 	
 	/**
 	 * 

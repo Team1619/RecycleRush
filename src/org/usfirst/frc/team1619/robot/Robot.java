@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.Lumberjack;
 import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
@@ -19,7 +18,6 @@ import org.usfirst.frc.team1619.robot.subsystems.ToteElevatorSystem;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -45,14 +43,14 @@ public class Robot extends IterativeRobot {
 	}
 
 	public PowerDistributionPanel pdpCAN;
-	private Lumberjack pdpLumberjack;
-	private Lumberjack elevatorLumberjack;
-	private Lumberjack motorLumberjack;
-	private String operationState;
+//	private Lumberjack pdpLumberjack;
+//	private Lumberjack elevatorLumberjack;
+//	private Lumberjack motorLumberjack;
+//	private String operationState;
 	private Timer pdpLogTimer;
 	private Timer elevatorLogTimer;
-	private Timer motorLogTimer;
-	private boolean logsChanged = false;
+//	private Timer motorLogTimer;
+//	private boolean logsChanged = false;
 	private SendableChooser autoChooser;
 	
 	/**
@@ -71,7 +69,7 @@ public class Robot extends IterativeRobot {
 		pdpCAN = new PowerDistributionPanel();
 		pdpLogTimer = new Timer();
 		pdpLogTimer.start();
-		operationState = "Disabled";
+//		operationState = "Disabled";
 		elevatorLogTimer = new Timer();
 		elevatorLogTimer.start();
 //		motorLogTimer = new Timer();
@@ -209,22 +207,22 @@ public class Robot extends IterativeRobot {
 //						);
 //				pdpLogTimer.reset();
 //			} //25.0 fish
-			
-			if(isDisabled()) {
-				operationState = "Disabled";
-			}
-			else if(isAutonomous()) {
-				operationState = "Autonomous";
-			}
-			else if(isOperatorControl()) {
-				operationState = "TeleOp";
-			}
-			else if(isTest()) {
-				operationState = "Test";
-			}
-			else {
-				operationState = "Limbo";
-			}
+//			
+//			if(isDisabled()) {
+//				operationState = "Disabled";
+//			}
+//			else if(isAutonomous()) {
+//				operationState = "Autonomous";
+//			}
+//			else if(isOperatorControl()) {
+//				operationState = "TeleOp";
+//			}
+//			else if(isTest()) {
+//				operationState = "Test";
+//			}
+//			else {
+//				operationState = "Limbo";
+//			}
 			
 //			if (elevatorLogTimer.get() >= 0.1) {
 //				elevatorLumberjack.log(

@@ -151,7 +151,7 @@ public class BinElevatorSystem extends StateMachineSystem {
     	}
     	else if(OI.getInstance().lowerToteElevatorAndOpenClawButton.get() && 
     			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
-    		binGripMotor.set(kBinGripOpenSpeedSlow);
+    		binGripMotor.set(kBinGripOpenSpeed);
     	}
     	else {
     		binGripMotor.set(binGripSpeed);
