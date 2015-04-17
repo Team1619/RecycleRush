@@ -114,6 +114,8 @@ public class StateMachine {
 				}
 				if(finished)
 					return Idle;
+				else if (sm.abortSignal.check() || (sm.stateTimer.get() > 4))
+					return Abort;
 				else
 					return Init;
 			}
