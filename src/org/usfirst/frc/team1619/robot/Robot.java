@@ -5,8 +5,8 @@ import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.auto.BinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.BinGrabWithLitterAuto;
 import org.usfirst.frc.team1619.robot.auto.BinRakerAuto;
+import org.usfirst.frc.team1619.robot.auto.BinRakerAuto.BinRakerMode;
 import org.usfirst.frc.team1619.robot.auto.GetOutTheWayAuto;
-import org.usfirst.frc.team1619.robot.auto.JustMoveRakerAuto;
 import org.usfirst.frc.team1619.robot.subsystems.Accelerometer;
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.ConveyorSystem;
@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -127,11 +128,16 @@ public class Robot extends IterativeRobot {
 				
 		
 		autoChooser = new SendableChooser();
-		autoChooser.addDefault("Present Bin For Litter", new BinGrabWithLitterAuto());
+		autoChooser.addDefault("None", new WaitCommand(0));
+		autoChooser.addObject("Present Bin For Litter", new BinGrabWithLitterAuto());
 		autoChooser.addObject("Get out of The Way", new GetOutTheWayAuto());
 		autoChooser.addObject("Pickup Bin and Get Out Way", new BinGrabReverseAuto());
-		autoChooser.addObject("Rake Bins", new BinRakerAuto());
-		autoChooser.addObject("Just Rake Down", new JustMoveRakerAuto());
+		autoChooser.addObject("Rake bins (platform)", new BinRakerAuto(BinRakerMode.PLATFORM_SIDE));
+		autoChooser.addObject("Rake bins (carpet)", new BinRakerAuto(BinRakerMode.CARPET_SIDE));
+		autoChooser.addObject("Rake bins (no drive)", new BinRakerAuto(BinRakerMode.NO_DRIVE));
+		autoChooser.addObject("Rake bins (and pick up)", new BinRakerAuto(BinRakerMode.WITH_PICKUP));
+		//autoChooser.addObject("Just Rake Down", new JustMoveRakerAuto());
+		
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
