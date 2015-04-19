@@ -2,7 +2,6 @@ package org.usfirst.frc.team1619.robot;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TimeZone;
 
 import org.usfirst.frc.team1619.robot.subsystems.BinElevatorSystem;
@@ -332,7 +331,7 @@ public class StateMachine {
 			
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
 			date.setTimeZone(TimeZone.getTimeZone("UTC"));
-			System.out.println(date.format(new Date()) + " -- Changed State to " + currentState.name());
+//			System.out.println(date.format(new Date()) + " -- Changed State to " + currentState.name());
 			
 			
 			currentState.init(this);

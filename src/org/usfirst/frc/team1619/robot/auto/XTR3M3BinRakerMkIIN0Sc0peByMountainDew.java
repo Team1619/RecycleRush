@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 /**
  *
  */
-public class XTR3M3BinRakerMkIIByMountainDew extends CommandGroup {
+public class XTR3M3BinRakerMkIIN0Sc0peByMountainDew extends CommandGroup {
     
-    public  XTR3M3BinRakerMkIIByMountainDew() {
+    public  XTR3M3BinRakerMkIIN0Sc0peByMountainDew() {
     	// Hold claw at top
     	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
     	

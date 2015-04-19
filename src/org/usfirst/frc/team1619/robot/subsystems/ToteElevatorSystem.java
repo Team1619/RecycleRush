@@ -16,8 +16,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
 	public static final double kTransitPosition = 2.0;
 	public static final double kFeederPosition = 17.8;
-	public static final double kPickUpPosition = -2.0;
-	public static final double kPositionTolerance = 4.0;
+	public static final double kPickUpPosition = 0.0;
+	public static final double kPositionTolerance = 1.0;
 	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.5;
 	public static final double kRateOffset = 0.4;
@@ -41,6 +41,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double k3ToteP = 0.90, k3ToteI = 0.002, k3ToteD = 0;
 	public static final double k4ToteP = 1.0, k4ToteI = 0.003, k4ToteD = 0;
 	public static final double k5ToteP = 1.1, k5ToteI = 0.004, k5ToteD = 0;
+	
+//	public static final double k0TotePosition = 1.0, k1TotePosition = 2.0, k2TotePosition = 3.0, k3TotePosition = 4.0, k4TotePosition = 5.0, k5TotePosition = 6.0;
 	
 	/* Utah values
 	public static final double k0ToteP = 0.50, k0ToteI = 0.003, k0ToteD = 0;

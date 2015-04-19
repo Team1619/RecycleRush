@@ -135,16 +135,12 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Rake bins (platform)", new BinRakerAuto(BinRakerMode.PLATFORM_SIDE));
 		autoChooser.addObject("Rake bins (carpet)", new BinRakerAuto(BinRakerMode.CARPET_SIDE));
 		autoChooser.addObject("Rake bins (no drive)", new BinRakerAuto(BinRakerMode.NO_DRIVE));
-		autoChooser.addObject("Rake bins (and pick up)", new BinRakerAuto(BinRakerMode.WITH_PICKUP));
-		//autoChooser.addObject("Just Rake Down", new JustMoveRakerAuto());
+		autoChooser.addObject("Rake bins (and pick up)", new BinRakerAuto(BinRakerMode.XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII));
 		
 		SmartDashboard.putData("Auto Mode", autoChooser);
 		
 		//ManualKeyboardControl.getInstance().startRainbowSTORMServer();
-		Preferences.putNumber("InitialSlowDriveDistance", 1.0);
-		Preferences.putNumber("SecondSlowDriveDistance", 1.0);
-		Preferences.putNumber("BackDriveShakeDistance", -0.1);
-		Preferences.putNumber("ForwardDriveShakeDistance", 0.2);
+		Preferences.putNumber("SecondSlowDriveDistance", 0.4);
 	}
 
 	/**
@@ -165,22 +161,22 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putNumber("ToteElevatorPositionValue", ToteElevatorSystem.getInstance().getToteElevatorPosition());
 		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()", ToteElevatorSystem.getInstance().toteElevatorMotor.getEncPosition());
-		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
-		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
-		SmartDashboard.putBoolean("binElevator Fwd Limit", BinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binElevator Rev Limit", BinElevatorSystem.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTilt Fwd Limit", BinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
-    	SmartDashboard.putBoolean("binTilt Rev Limit", BinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
-    	SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage());
-		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent());
-		SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", ConveyorSystem.getInstance().conveyorMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", ConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
-    	SmartDashboard.putNumber("guardRail.getOutputCurrent()", GuardRailSystem.getInstance().guardRailMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("guardRail.getOutputVoltage()", GuardRailSystem.getInstance().guardRailMotor.getOutputVoltage());
-    	SmartDashboard.putNumber("rakerMotor.getOutputCurrent()", RakerSystem.getInstance().rakerMotor.getOutputCurrent());
-    	SmartDashboard.putNumber("rakerMotor.getOutputVoltage()", RakerSystem.getInstance().rakerMotor.getOutputVoltage());
+//		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
+//		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", ToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
+//		SmartDashboard.putBoolean("binElevator Fwd Limit", BinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
+//    	SmartDashboard.putBoolean("binElevator Rev Limit", BinElevatorSystem.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
+//    	SmartDashboard.putBoolean("binTilt Fwd Limit", BinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
+//    	SmartDashboard.putBoolean("binTilt Rev Limit", BinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
+//    	SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage());
+//		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", ToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent());
+//		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage());
+//		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()", BinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent());
+//		SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", ConveyorSystem.getInstance().conveyorMotor.getOutputCurrent());
+//    	SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", ConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
+//    	SmartDashboard.putNumber("guardRail.getOutputCurrent()", GuardRailSystem.getInstance().guardRailMotor.getOutputCurrent());
+//    	SmartDashboard.putNumber("guardRail.getOutputVoltage()", GuardRailSystem.getInstance().guardRailMotor.getOutputVoltage());
+//    	SmartDashboard.putNumber("rakerMotor.getOutputCurrent()", RakerSystem.getInstance().rakerMotor.getOutputCurrent());
+//    	SmartDashboard.putNumber("rakerMotor.getOutputVoltage()", RakerSystem.getInstance().rakerMotor.getOutputVoltage());
 		
 		StateMachine.getInstance().display();
 		
@@ -267,10 +263,11 @@ public class Robot extends IterativeRobot {
 //			logsChanged = true;
 //			Lumberjack.changeLogs();
 //		}
+		
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
 		Command autoCommand = (Command) autoChooser.getSelected();
-//		Command autoCommand = new XTR3M3BinRakerByMountainDew();
+//		Command autoCommand = new BinRakerAuto(BinRakerMode.WITH_PICKUP);
 		autoCommand.cancel();
 		autoCommand.start();
 	}

@@ -199,6 +199,9 @@ public class BinElevatorSystem extends StateMachineSystem {
 		case HumanFeed_ToteOnConveyor:
 			setBinElevatorSpeed(kBinIdleSpeed);
 			break;
+		case HumanFeed_ThrottleConveyorBack:
+			setBinElevatorSpeed(kBinIdleSpeed);
+			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			setBinElevatorSpeed(kBinIdleSpeed);
 			break;

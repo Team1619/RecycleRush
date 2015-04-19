@@ -1,6 +1,5 @@
 package org.usfirst.frc.team1619.robot.subsystems;
 
-import org.usfirst.frc.team1619.Preferences;
 import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
@@ -16,11 +15,11 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ConveyorSystem extends StateMachineSystem {
 	//Competition Bot
-	public static final double kForwardConveyorSpeed = -0.65; 
+	public static final double kForwardConveyorSpeed = -0.55; 
 	public static final double kSlowForwardConveyorSpeed = -0.55;
 	public static final double kManualForwardConveyorSpeed = -1.0; 
 	public static final double kManualBackConveyorSpeed = 1.0;
-	private static final double kConveyorDelayTime = 0.25;
+	private static final double kConveyorDelayTime = 0.4;
 	
 	//Practice Bot
 //	private static final double kForwardConveyorSpeed = -0.7; 
@@ -138,9 +137,13 @@ public class ConveyorSystem extends StateMachineSystem {
     public void run(State state, double elapsed) {
     	updateConveyorSignals();
     	
-    	double forwardConveyorSpeed = Preferences.getNumber("ForwardConveyorSpeed", kForwardConveyorSpeed);
-    	double slowForwardConveyorSpeed = Preferences.getNumber("SlowForwardConveyorSpeed", kSlowForwardConveyorSpeed);
-    	double conveyorDelayTime = Preferences.getNumber("ConveyorDelayTime", kConveyorDelayTime);
+//    	double forwardConveyorSpeed = Preferences.getNumber("ForwardConveyorSpeed", kForwardConveyorSpeed);
+//    	double slowForwardConveyorSpeed = Preferences.getNumber("SlowForwardConveyorSpeed", kSlowForwardConveyorSpeed);
+//    	double conveyorDelayTime = Preferences.getNumber("ConveyorDelayTime", kConveyorDelayTime);
+    	
+    	double forwardConveyorSpeed = kForwardConveyorSpeed;
+    	double slowForwardConveyorSpeed = kSlowForwardConveyorSpeed;
+    	double conveyorDelayTime = kConveyorDelayTime;
     	
     	switch(state) {
     	case Init:
