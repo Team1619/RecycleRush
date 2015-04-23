@@ -18,6 +18,8 @@ public class BinElevatorSystem extends StateMachineSystem {
 	public static final double kBinElevatorDownSpeed = 0.4;
 	
 	public static final double kBinIdleSpeed = -0.2;
+	public static final double kBinTiltHumanFeedSpeed = -0.2;
+
 	
 	public static final double kBinGripOpenSpeed = 0.8;
 	public static final double kBinGripCloseSpeed = -0.8;
@@ -192,18 +194,23 @@ public class BinElevatorSystem extends StateMachineSystem {
 			break;
 		case HumanFeed_RaiseTote:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinTilt(kBinTiltHumanFeedSpeed);
 			break;
 		case HumanFeed_WaitForTote:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinTilt(kBinTiltHumanFeedSpeed);
 			break;
 		case HumanFeed_ToteOnConveyor:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinTilt(kBinTiltHumanFeedSpeed);
 			break;
 		case HumanFeed_ThrottleConveyorBack:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinTilt(kBinTiltHumanFeedSpeed);
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			setBinElevatorSpeed(kBinIdleSpeed);
+			setBinTilt(kBinTiltHumanFeedSpeed);
 			break;
 		case TiltUp:
 			setBinTilt(0.7);
