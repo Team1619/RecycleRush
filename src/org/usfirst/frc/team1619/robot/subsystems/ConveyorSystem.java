@@ -165,7 +165,7 @@ public class ConveyorSystem extends StateMachineSystem {
     		conveyorSpeed = elapsed > conveyorDelayTime ? slowForwardConveyorSpeed : forwardConveyorSpeed;
     		break;
     	case HumanFeed_ThrottleConveyorAndDescend:
-    		conveyorSpeed = 0.0;
+    		conveyorSpeed = forwardConveyorSpeed;
     		break;
 		case Abort:	
 			conveyorSpeed = 0.0;

@@ -8,6 +8,7 @@ import org.usfirst.frc.team1619.robot.StateMachine.State;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
 import edu.wpi.first.wpilibj.CANTalon.FeedbackDevice;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  *
@@ -61,6 +62,9 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	private boolean up = true;
 	private boolean wasManual = false;
 	private boolean useStatePosition = true;
+	private boolean isSafeToRaiseTote = true;
+	private Timer safeToRaiseToteTimer = new Timer();
+
 	
 	private ToteElevatorSystem() {
 		toteElevatorMotor = RobotMap.MotorDefinition.toteElevatorMotor.getMotor();
@@ -134,10 +138,29 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorSpeed = 0.0;
 	}
 	
+	
 	public void toteElevatorUpdate() {
-		if(!isSafeToRaiseTote()) {
+		
+//		if(!isSafeToRaiseTote()) {
+//			if(isSafeToRaiseTote) {
+//				safeToRaiseToteTimer.start();
+//				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > 0.25);
+//			}
+//			else {
+//				safeToRaiseToteTimer.stop();
+//				safeToRaiseToteTimer.reset();
+//				toteElevatorMotor.ClearIaccum();
+//			}
+//		}
+//		else {
+//			isSafeToRaiseTote = true;
+//		}	
+		
+		if(!isFinishedMoving()) {
 			toteElevatorMotor.ClearIaccum();
+
 		}
+			
 		
 		if(OI.getInstance().lowerToteElevatorAndOpenClawButton.get() && 
     			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
