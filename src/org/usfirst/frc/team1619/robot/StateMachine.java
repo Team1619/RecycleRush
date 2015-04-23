@@ -29,6 +29,7 @@ public class StateMachine {
 	}
 	
 	public void init() {
+		stateTimer.reset();
 		currentState = State.Init;
 		currentState.init(this);
 		numberTotes = 0;
