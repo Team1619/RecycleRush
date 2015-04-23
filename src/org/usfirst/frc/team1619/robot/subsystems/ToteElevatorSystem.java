@@ -87,6 +87,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		
 //		Preferences.putNumber("Current_RateOffsetConstant_Value", kRateOffsetConstant);
 //		Preferences.putNumber("Current_RateOffset_Value", kRateOffset);
+		
+//		safeToRaiseToteTimer.start();
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -143,17 +145,15 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		
 //		if(!isSafeToRaiseTote()) {
 //			if(isSafeToRaiseTote) {
-//				safeToRaiseToteTimer.start();
 //				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > 0.25);
-//			}
-//			else {
-//				safeToRaiseToteTimer.stop();
-//				safeToRaiseToteTimer.reset();
-//				toteElevatorMotor.ClearIaccum();
 //			}
 //		}
 //		else {
-//			isSafeToRaiseTote = true;
+//			if(!isSafeToRaiseTote) {				
+//				isSafeToRaiseTote = true;
+//				toteElevatorMotor.ClearIaccum();
+//			}
+//			safeToRaiseToteTimer.reset();
 //		}	
 		
 		if(!isFinishedMoving()) {
