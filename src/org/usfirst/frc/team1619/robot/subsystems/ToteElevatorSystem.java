@@ -27,6 +27,8 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kToteElevatorUpSpeed = 0.7;
 	public static final double kToteElevatorDownSpeed = -0.5;
 	
+	public static final double kDebounceTime = 1.0;
+	
 	//With CIM and miniCIM
 //	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
 //	public static final double k1ToteP = 0.60, k1ToteI = 0.003, k1ToteD = 0;
@@ -88,7 +90,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 //		Preferences.putNumber("Current_RateOffsetConstant_Value", kRateOffsetConstant);
 //		Preferences.putNumber("Current_RateOffset_Value", kRateOffset);
 		
-//		safeToRaiseToteTimer.start();
+		safeToRaiseToteTimer.start();
 	}
 
 	private final static ToteElevatorSystem theSystem = new ToteElevatorSystem();
@@ -143,18 +145,18 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	public void toteElevatorUpdate() {
 		
-//		if(!isSafeToRaiseTote()) {
-//			if(isSafeToRaiseTote) {
-//				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > 0.25);
-//			}
-//		}
-//		else {
-//			if(!isSafeToRaiseTote) {				
-//				isSafeToRaiseTote = true;
-//				toteElevatorMotor.ClearIaccum();
-//			}
-//			safeToRaiseToteTimer.reset();
-//		}	
+		if(!checkIfSafeToRaiseTote()) {
+			if(isSafeToRaiseTote) {
+				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > kDebounceTime);
+			}
+		}
+		else {
+			if(!isSafeToRaiseTote) {
+				isSafeToRaiseTote = true;
+				toteElevatorMotor.ClearIaccum();
+			}
+			safeToRaiseToteTimer.reset();
+		}	
 		
 		if(!isFinishedMoving()) {
 			toteElevatorMotor.ClearIaccum();
@@ -218,7 +220,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		}
 
 		if(finalSetValuePosition) {
-			if(isSafeToRaiseTote() || (finalSetValue < 0)) {
+			if(checkIfSafeToRaiseTote() || (finalSetValue < 0)) {
 				toteElevatorMotor.changeControlMode(ControlMode.Position);
 				toteElevatorMotor.set(finalSetValue);
 			}
@@ -240,7 +242,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 //		SmartDashboard.putNumber("toteElevatorMotor.getIZone()", toteElevatorMotor.getIZone());
 	}
 	
-	public boolean isSafeToRaiseTote() {
+	public boolean checkIfSafeToRaiseTote() {
 		return BinElevatorSystem.getInstance().getTilterBackLimitSwitch();
 	}
 	
