@@ -162,8 +162,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		if(!isFinishedMoving()) {
 			toteElevatorMotor.ClearIaccum();
 
-		}
-			
+		}	
 		
 		if(OI.getInstance().lowerToteElevatorAndOpenClawButton.get() && 
     			(StateMachine.getInstance().getState() == StateMachine.State.Idle || StateMachine.getInstance().getState() == StateMachine.State.Abort)) {
