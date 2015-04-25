@@ -266,6 +266,13 @@ public class Robot extends IterativeRobot {
 		
 		//add in Auto stuff thing
 		Drivetrain.getInstance().autoMode();
+//		Command autoCommand = new BinGrabWithLitterAuto();
+//		Command autoCommand = new GetOutTheWayAuto();
+//		Command autoCommand = new BinGrabReverseAuto();
+//		Command autoCommand = new BinRakerAuto(BinRakerMode.CARPET_SIDE);
+//		Command autoCommand = new BinRakerAuto(BinRakerMode.NO_DRIVE);
+//		Command autoCommand = new BinRakerAuto(BinRakerMode.PLATFORM_SIDE);
+//		Command autoCommand = new BinRakerAuto(BinRakerMode.CARPET_SIDE);
 		Command autoCommand = (Command) autoChooser.getSelected();
 //		Command autoCommand = new BinRakerAuto(BinRakerMode.WITH_PICKUP);
 		autoCommand.cancel();

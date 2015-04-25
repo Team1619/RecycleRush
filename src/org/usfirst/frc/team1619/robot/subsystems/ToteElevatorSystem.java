@@ -16,9 +16,10 @@ import edu.wpi.first.wpilibj.Timer;
 public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kEncoderTicksPerInch = 5468/22.5; //fish
 	public static final double kTransitPosition = 2.0;
-	public static final double kFeederPosition = 17.8;
-	public static final double kPickUpPosition = 0.0;
+	public static final double kFeederPosition = 18.8;
+	public static final double kPickUpPosition = -0.5;
 	public static final double kPositionTolerance = 1.0;
+	public static final double kSlowdownDistance = 14.0;
 	public static final double kDeadZone = 0.25;
 	public static final double kInitSpeed = -0.5;
 	public static final double kRateOffset = 0.4;
@@ -145,18 +146,18 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	public void toteElevatorUpdate() {
 		
-		if(!checkIfSafeToRaiseTote()) {
-			if(isSafeToRaiseTote) {
-				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > kDebounceTime);
-			}
-		}
-		else {
-			if(!isSafeToRaiseTote) {
-				isSafeToRaiseTote = true;
-				toteElevatorMotor.ClearIaccum();
-			}
-			safeToRaiseToteTimer.reset();
-		}	
+//		if(!checkIfSafeToRaiseTote()) {
+//			if(isSafeToRaiseTote) {
+//				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > kDebounceTime);
+//			}
+//		}
+//		else {
+//			if(!isSafeToRaiseTote) {
+//				isSafeToRaiseTote = true;
+//				toteElevatorMotor.ClearIaccum();
+//			}
+//			safeToRaiseToteTimer.reset();
+//		}	
 		
 		if(!isFinishedMoving()) {
 			toteElevatorMotor.ClearIaccum();
@@ -220,7 +221,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		}
 
 		if(finalSetValuePosition) {
-			if(checkIfSafeToRaiseTote() || (finalSetValue < 0)) {
+			if(isSafeToRaiseTote || (finalSetValue < 0)) {
 				toteElevatorMotor.changeControlMode(ControlMode.Position);
 				toteElevatorMotor.set(finalSetValue);
 			}
@@ -302,8 +303,15 @@ public class ToteElevatorSystem extends StateMachineSystem {
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
 			if(useStatePosition) {
-				setToteElevatorPosition(kPickUpPosition);
+//				double slowdownDis1tance = Preferences.getNumber("slowdownDistance", kSlowdownDistance);
+				if(getToteElevatorPosition() > kSlowdownDistance + kPositionTolerance) {
+					setToteElevatorPosition(kSlowdownDistance);
+				}
+				else {
+					setToteElevatorPosition(kPickUpPosition);
+				}
 			}
+			
 			if(Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
 				StateMachine.getInstance().humanFeed_RaiseTote.raise();	
 			}
