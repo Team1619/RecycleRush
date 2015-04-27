@@ -146,18 +146,18 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	public void toteElevatorUpdate() {
 		
-//		if(!checkIfSafeToRaiseTote()) {
-//			if(isSafeToRaiseTote) {
-//				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > kDebounceTime);
-//			}
-//		}
-//		else {
-//			if(!isSafeToRaiseTote) {
-//				isSafeToRaiseTote = true;
-//				toteElevatorMotor.ClearIaccum();
-//			}
-//			safeToRaiseToteTimer.reset();
-//		}	
+		if(!checkIfSafeToRaiseTote()) {
+			if(isSafeToRaiseTote) {
+				isSafeToRaiseTote = !(safeToRaiseToteTimer.get() > kDebounceTime);
+			}
+		}
+		else {
+			if(!isSafeToRaiseTote) {
+				isSafeToRaiseTote = true;
+				toteElevatorMotor.ClearIaccum();
+			}
+			safeToRaiseToteTimer.reset();
+		}	
 		
 		if(!isFinishedMoving()) {
 			toteElevatorMotor.ClearIaccum();
