@@ -240,8 +240,6 @@ public class URobot extends IterativeRobot {
 	 */
 
 	private Timer gyroInitTimer = new Timer();
-	private boolean gyroInitTimerRunning;
-	private boolean gyroInitTimerFinished;
 	
 	public void disabledInit(){
 //		logsChanged = false;

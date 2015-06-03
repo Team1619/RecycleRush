@@ -21,6 +21,7 @@ import java.util.TimeZone;
 
 public class UDataCollector {
 	
+	private static SimpleDateFormat sDateFormat;
 	private static final String logFolderPath = "/home/lvuser/log/";
 	private static final int maxLogs = 50;
 	private static final ArrayList<UDataCollector> lumberjacks = new ArrayList<UDataCollector>();
@@ -30,6 +31,11 @@ public class UDataCollector {
 	private FileWriter fileWriter;
 	private String logName;
 	private String[] headers;
+	
+	static {
+		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
+		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
+	}
 	
 	public UDataCollector(String logName, String ... headers) {
 		this.logName = new String(logName);
@@ -74,15 +80,11 @@ public class UDataCollector {
 	}
 	
 	private static String getDateString() {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
-		date.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return date.format(new Date());
+		return sDateFormat.format(new Date());
 	}
 	
 	private String getTimestamp() {
-		SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
-		date.setTimeZone(TimeZone.getTimeZone("UTC"));
-		return date.format(new Date());
+		return sDateFormat.format(new Date());
 		//return String.format("%.3f", (double)(System.currentTimeMillis()-start) / 1000);
 	}
 	
