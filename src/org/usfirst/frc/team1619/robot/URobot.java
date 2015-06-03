@@ -238,15 +238,10 @@ public class URobot extends IterativeRobot {
 	 * This function is called when the disabled button is hit.
 	 * You can use it to reset subsystems before shutting down.
 	 */
-
-	private Timer gyroInitTimer = new Timer();
 	
 	public void disabledInit(){
 //		logsChanged = false;
 //		Lumberjack.changeLogs();
-		gyroInitTimer.start();
-		gyroInitTimerRunning = false;
-		gyroInitTimerFinished = true;
 	}
 
 	public void disabledPeriodic() {
