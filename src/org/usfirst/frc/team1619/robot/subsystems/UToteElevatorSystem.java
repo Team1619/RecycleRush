@@ -322,7 +322,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 		}
 
 		UStateMachine.getInstance();
-		switch (UStateMachine.getInstance().numberTotes) {
+		switch (UStateMachine.getInstance().fNumberTotes) {
 		case 0:
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;

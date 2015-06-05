@@ -2,10 +2,11 @@ package org.usfirst.frc.team1619;
 
 import java.util.Properties;
 
-import edu.wpi.first.wpilibj.tables.ITableListener;
-import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
-
 public class UPreferences extends Properties {
+	/**
+	 * Auto-generated serialVersionUID
+	 */
+	private static final long serialVersionUID = -660698254584286808L;
 	private static final UPreferences sPreferences = new UPreferences();
 
 	private UPreferences() {
