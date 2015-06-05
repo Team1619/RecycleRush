@@ -12,7 +12,11 @@ import edu.wpi.first.wpilibj.CANTalon;
  */
 public class URobotMap {
 	/**
-	 * Motor Identification
+	 * Motor Identification. 
+	 * Includes:
+	 * The CANBus ID associated with the motor,
+	 * Keys to be pressed for individual motor testing (forward and reverse),
+	 * Speeds of motor for each key being pressed.
 	 */
 	public enum MotorDefinition {
 		leftDriveMotor1(1, UKeyCodes.VK_Q, UKeyCodes.VK_A, 0.5, -0.5),
@@ -26,26 +30,16 @@ public class URobotMap {
 		binElevatorMotor(9, UKeyCodes.VK_O, UKeyCodes.VK_L, 0.5, -0.5),
 		binGripMotor(10, UKeyCodes.VK_Z, UKeyCodes.VK_X, 0.5, -0.5),
 		toteElevatorMotor(11, UKeyCodes.VK_C, UKeyCodes.VK_V, 0.5, -0.5),
-		toteElevatorMotorSmall(12, UKeyCodes.VK_B, UKeyCodes.VK_N, 0.5, -0.5),
+		toteElevatorMotorSmall(12, UKeyCodes.VK_B, UKeyCodes.VK_N, 0.5, -0.5)
 		;
 		
+		public final int id;
 		public final int forwardKey;
 		public final int reverseKey;
 		public final double forwardKeySpeed;
 		public final double reverseKeySpeed;
-		public final int id;
 		
 		public CANTalon motor = null;
-		
-		public void initMotor() {
-			if(motor != null)
-				return;
-			motor = new CANTalon(id);
-		}
-		
-		public CANTalon getMotor() {
-			return motor;
-		}
 		
 		MotorDefinition(int id, int forwardKey, int reverseKey,
 				double forwardKeySpeed, double reverseKeySpeed) {
@@ -56,32 +50,51 @@ public class URobotMap {
 			this.reverseKeySpeed = reverseKeySpeed;
 		}
 		
+		/**
+		 * Associates an actual motor with the enum based on the CANBus ID provided for each enum
+		 */
+		public void initMotor() {
+			if(motor != null)
+				return;
+			motor = new CANTalon(id);
+		}
+		
+		/**
+		 * @return the motor associated with the enum
+		 */
+		public CANTalon getMotor() {
+			return motor;
+		}
+		
+		/**
+		 * Calls the initMotor() function to associate a motor with each enum
+		 */
 		static void initMotors() {
 			for(MotorDefinition md : values())
 				md.initMotor();
 		}
 	}
 	
+	//Port for keyboard input to motors
+	public static final int rainbowSTORMPort = 0x666;
+	
+	//Optical sensor IDs
 	public final static int frontConveyorOpticalSensorID = 0;
 	public final static int rearConveyorOpticalSensorID = 1;
 
+	//Joystick IDs
 	public static final int rightStickID = 0;
 	public static final int leftStickID = 1;
-	
-	public static final int rainbowSTORMPort = 0x666;
 
-	/**
-	 * Button Identification
-	 */
+	//Button IDs
 	//Right stick
-	public static final int resetGyroButtonID = 7;
 	public static final int resetDriveEncodersButtonID = 8;
 
 	public static final int liftAbortButtonID = 4;
 	public static final int liftResetButtonID = 3;	
 
 	public static final int startHumanFeedButtonID = 1;
-	public static final int stopHumanFeedButtonID = 2; //last tote on conveyor or ground (before tote elevator has active control of tote)
+	public static final int stopHumanFeedButtonID = 2;
 	
 	public static final int incrementNumberTotesButtonID = 11;
 	
@@ -91,7 +104,6 @@ public class URobotMap {
 	public static final int lowerToteElevatorAndOpenClawButtonID = 5;
 	public static final int driverCloseClawButtonID = 10;
 
-
 	//Left Stick
 	public static final int guardrailCloseManualButtonID = 9;
 	public static final int guardrailOpenManualButtonID = 8;
@@ -99,14 +111,9 @@ public class URobotMap {
 	public static final int coneyorFowardButtonID = 4;
 	public static final int coneyorBackButtonID = 3;
 
-	
 	public static final int rakerDownManualButtonID = 6;
 	public static final int rakerUpManualButtonID = 7;
+
 	public static final int closeClawButtonID = 1;
 	public static final int openClawButtonID = 2;
-	
-
-	//other stuff
-	public static final int gyroTempAnalogID = 1;//temperature - analog 1
-	public static final int gyroRateAnalogID = 0;//rate - analog 2
 }

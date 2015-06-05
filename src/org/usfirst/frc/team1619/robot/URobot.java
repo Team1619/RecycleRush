@@ -199,7 +199,9 @@ public class URobot extends IterativeRobot {
 //			}
 	}
 
-
+	/**
+	 * This function is called at the start of autonomous mode
+	 */
 	public void autonomousInit() {
 //		if(!logsChanged) {
 //			logsChanged = true;
@@ -215,8 +217,8 @@ public class URobot extends IterativeRobot {
 //		Command autoCommand = new BinRakerAuto(BinRakerMode.NO_DRIVE);
 //		Command autoCommand = new BinRakerAuto(BinRakerMode.PLATFORM_SIDE);
 //		Command autoCommand = new BinRakerAuto(BinRakerMode.CARPET_SIDE);
-		Command autoCommand = (Command) fAutoChooser.getSelected();
 //		Command autoCommand = new BinRakerAuto(BinRakerMode.WITH_PICKUP);
+		Command autoCommand = (Command) fAutoChooser.getSelected();
 		autoCommand.cancel();
 		autoCommand.start();
 	}
@@ -238,22 +240,23 @@ public class URobot extends IterativeRobot {
 	 * This function is called when the disabled button is hit.
 	 * You can use it to reset subsystems before shutting down.
 	 */
-	
 	public void disabledInit(){
 //		logsChanged = false;
 //		Lumberjack.changeLogs();
 	}
 
+	/**
+	 * This function is called periodically while the robot is disabled
+	 */
 	public void disabledPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
 	}
 
 	/**
-	 * This function is called periodically during operator control
+	 * This function is called once at the start of operator control
 	 */
 	public void teleopInit() {
-
 //		if(!logsChanged) {
 //			logsChanged = true;
 //			Lumberjack.changeLogs();
@@ -263,6 +266,9 @@ public class URobot extends IterativeRobot {
 		UDrivetrain.getInstance().teleopMode();
 	}
 
+	/**
+	 * This function is called periodically during operator control
+	 */
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();

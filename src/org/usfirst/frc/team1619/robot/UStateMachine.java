@@ -12,43 +12,46 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class UStateMachine {
-	private State currentState = State.Idle;
-
-	public int numberTotes;
-	private boolean incrementNumberTotes;
 	
-	private boolean toStopHumanFeed;
+	private State fCurrentState = State.Idle;
+	private boolean fIncrementNumberTotes;
+	private boolean fToStopHumanFeed;
+	private ArrayList<UStateMachineSystem> fSystems = new ArrayList<>();
+	
+	//Creates singleton stateMachine
+	private static UStateMachine sStateMachine = null;
+	
+	public int fNumberTotes;
+	
+	public static UStateMachine getInstance() {
+		if(sStateMachine == null) {
+			sStateMachine = new UStateMachine();
+			sStateMachine.stateTimer.start();
+		}
+		return sStateMachine;
+	}
+	
 	public boolean getToStopHumanFeed() {
-		return toStopHumanFeed;
+		return fToStopHumanFeed;
 	}
 	
 	private UStateMachine() {
-		numberTotes = 0;
-		incrementNumberTotes = false;
-		toStopHumanFeed = false;
+		fNumberTotes = 0;
+		fIncrementNumberTotes = false;
+		fToStopHumanFeed = false;
 	}
 	
 	public void init() {
 		stateTimer.reset();
-		currentState = State.Init;
-		currentState.init(this);
-		numberTotes = 0;
-		for(UStateMachineSystem system : systems)
-			system.init(currentState);
+		fCurrentState = State.Init;
+		fCurrentState.init(this);
+		fNumberTotes = 0;
+		for(UStateMachineSystem system : fSystems)
+			system.init(fCurrentState);
 	}
 	
-	private static UStateMachine stateMachine;
-	public static UStateMachine getInstance() {
-		if(stateMachine == null) {
-			stateMachine = new UStateMachine();
-			stateMachine.stateTimer.start();
-		}
-		return stateMachine;
-	}
-	
-	private ArrayList<UStateMachineSystem> systems = new ArrayList<UStateMachineSystem>();
 	public void addSystem(UStateMachineSystem sms) {
-		systems.add(sms);
+		fSystems.add(sms);
 	}
 	
 	public class Signal {
@@ -89,22 +92,19 @@ public class UStateMachine {
 	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
 	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
 	
-//	public final Signal dropoffSignal = new AutoClearSignal();
-//	public final Signal groundFeedSignal = new AutoClearSignal(); 
-//	public final Signal groundFeedSignal_Descend = new AutoClearSignal();
 	private final Timer stateTimer = new Timer();
 	
 	public enum State {
 		Init {
 			@Override
 			protected void init(UStateMachine sm) {
-				sm.numberTotes = 0;
+				sm.fNumberTotes = 0;
 			}
 			
 			@Override
 			public State run(UStateMachine sm) {
 				boolean finished = true;
-				for(UStateMachineSystem s : sm.systems) {
+				for(UStateMachineSystem s : sm.fSystems) {
 					if(s.initFinished())
 						continue;
 					else {
@@ -123,8 +123,8 @@ public class UStateMachine {
 		Idle {
 			@Override
 			protected void init(UStateMachine sm) {
-				sm.toStopHumanFeed = false;
-				sm.numberTotes = 0;
+				sm.fToStopHumanFeed = false;
+				sm.fNumberTotes = 0;
 			}
 			
 			@Override
@@ -133,7 +133,7 @@ public class UStateMachine {
 					return Abort;
 				}
 				if(sm.humanFeed_Start.check()) {
-					UStateMachine.getInstance().numberTotes = 0;
+					UStateMachine.getInstance().fNumberTotes = 0;
 					
 					if(UBinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
 						sm.humanFeed_ToteOnConveyor.clear();
@@ -157,7 +157,7 @@ public class UStateMachine {
 					return HumanFeed_WaitForTote;
 				}
 				if(sm.humanFeed_Stop.check()) {
-					sm.toStopHumanFeed = true;
+					sm.fToStopHumanFeed = true;
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check())
 				{
@@ -177,7 +177,7 @@ public class UStateMachine {
 			
 			@Override
 			public State run(UStateMachine sm) {
-				if(sm.toStopHumanFeed) {
+				if(sm.fToStopHumanFeed) {
 					return Idle;
 				}
 				if(sm.abortSignal.check()) {
@@ -189,7 +189,7 @@ public class UStateMachine {
 					return HumanFeed_ToteOnConveyor;
 				}
 				if(sm.humanFeed_Stop.check()) {
-					sm.toStopHumanFeed = true;
+					sm.fToStopHumanFeed = true;
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check())
 				{
@@ -208,7 +208,7 @@ public class UStateMachine {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				if(sm.humanFeed_Stop.check()) {
-					sm.toStopHumanFeed = true;
+					sm.fToStopHumanFeed = true;
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
@@ -232,7 +232,7 @@ public class UStateMachine {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				if(sm.humanFeed_Stop.check()) {
-					sm.toStopHumanFeed = true;
+					sm.fToStopHumanFeed = true;
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
@@ -250,13 +250,13 @@ public class UStateMachine {
 					return Abort;
 				}
 				if(sm.humanFeed_RaiseTote.check()) {				
-					if(sm.toStopHumanFeed) {
+					if(sm.fToStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
 				}
 				if(sm.humanFeed_Stop.check()) {
-					sm.toStopHumanFeed = true;
+					sm.fToStopHumanFeed = true;
 				}
 				if(sm.humanFeed_EndCurrentStateAndDescend.check())
 				{
@@ -266,9 +266,9 @@ public class UStateMachine {
 			}
 			@Override
 			protected void init(UStateMachine sm) {
-				UStateMachine.getInstance().numberTotes++;
-				if(UStateMachine.getInstance().numberTotes == 6) {
-					sm.toStopHumanFeed = true;
+				UStateMachine.getInstance().fNumberTotes++;
+				if(UStateMachine.getInstance().fNumberTotes == 6) {
+					sm.fToStopHumanFeed = true;
 				}
 			}
 		},
@@ -322,34 +322,34 @@ public class UStateMachine {
 	
 	public void run() {
 		double elapsed = stateTimer.get();
-		for(UStateMachineSystem sms: systems) {
-			sms.superSecretSpecialSatanRun(currentState, elapsed);
+		for(UStateMachineSystem sms: fSystems) {
+			sms.superSecretSpecialSatanRun(fCurrentState, elapsed);
 		}
 
-		State nextState = currentState.run(this);
-		if(currentState != nextState) {
-			currentState = nextState;
+		State nextState = fCurrentState.run(this);
+		if(fCurrentState != nextState) {
+			fCurrentState = nextState;
 			
 			SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
 			date.setTimeZone(TimeZone.getTimeZone("UTC"));
 //			System.out.println(date.format(new Date()) + " -- Changed State to " + currentState.name());
 			
 			
-			currentState.init(this);
+			fCurrentState.init(this);
 			stateTimer.reset();
-			for(UStateMachineSystem s : systems)
-				s.init(currentState);
+			for(UStateMachineSystem s : fSystems)
+				s.init(fCurrentState);
 		}
 		
 		if (UOI.getInstance().incrementNumberTotesButton.get()) {
-			if (!incrementNumberTotes) {
-				numberTotes = numberTotes--;
-				numberTotes = numberTotes < 0 ? 0 : numberTotes;
-				incrementNumberTotes = true;
+			if (!fIncrementNumberTotes) {
+				fNumberTotes = fNumberTotes--;
+				fNumberTotes = fNumberTotes < 0 ? 0 : fNumberTotes;
+				fIncrementNumberTotes = true;
 			}
 		}
 		else {
-			incrementNumberTotes = false;
+			fIncrementNumberTotes = false;
 		}
 		
 		for(Signal sig : autoClearSignals) {
@@ -358,11 +358,11 @@ public class UStateMachine {
 	}
 	
 	public void display() {
-		SmartDashboard.putNumber("Number of Totes", numberTotes);
-		SmartDashboard.putString("CurrentState", currentState.toString());
+		SmartDashboard.putNumber("Number of Totes", fNumberTotes);
+		SmartDashboard.putString("CurrentState", fCurrentState.toString());
 	}
 	
 	public State getState() {
-		return currentState;
+		return fCurrentState;
 	}
 }
