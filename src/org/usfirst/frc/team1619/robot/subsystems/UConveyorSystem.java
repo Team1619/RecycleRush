@@ -63,11 +63,9 @@ public class UConveyorSystem extends UStateMachineSystem {
 	}
 	
 	public void updateConveyorSignals() {
-    	//double debounceTime = Preferences.getNumber("DebounceTime", kDebounceTime);
 		
 		if(!getFrontSensorRaw()) {
 			if(frontSensor) {
-				//frontSensor = !(frontSensorDebounceTimer.get() > kDebounceTime);
 				frontSensor = !frontSensor;
 				if(!frontSensor) {
 					UStateMachine.getInstance().humanFeed_ThrottleConveyorDescend.raise();
@@ -96,7 +94,6 @@ public class UConveyorSystem extends UStateMachineSystem {
 	
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-    	//setDefaultCommand(new ManualConveyorCommand());
     }
     
     public boolean getFrontSensorRaw() {
@@ -136,10 +133,6 @@ public class UConveyorSystem extends UStateMachineSystem {
     @Override
     public void run(State state, double elapsed) {
     	updateConveyorSignals();
-    	
-//    	double forwardConveyorSpeed = Preferences.getNumber("ForwardConveyorSpeed", kForwardConveyorSpeed);
-//    	double slowForwardConveyorSpeed = Preferences.getNumber("SlowForwardConveyorSpeed", kSlowForwardConveyorSpeed);
-//    	double conveyorDelayTime = Preferences.getNumber("ConveyorDelayTime", kConveyorDelayTime);
     	
     	double forwardConveyorSpeed = kForwardConveyorSpeed;
     	double slowForwardConveyorSpeed = kSlowForwardConveyorSpeed;

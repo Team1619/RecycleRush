@@ -45,9 +45,7 @@ public class UBinElevatorSystem extends UStateMachineSystem {
 		binElevatorMotor = URobotMap.MotorDefinition.binElevatorMotor.getMotor();
 		binElevatorMotor.enableLimitSwitch(true, true);
 		binElevatorMotor.enableBrakeMode(true);
-//		binElevatorMotor.reverseSensor(true);
 		binElevatorMotor.reverseOutput(true);
-//		binElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
     	
     	tilterMotor = URobotMap.MotorDefinition.tilterMotor.getMotor();
     	tilterMotor.enableLimitSwitch(true, true);
