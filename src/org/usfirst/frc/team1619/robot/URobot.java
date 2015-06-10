@@ -76,29 +76,20 @@ public class URobot extends IterativeRobot {
 		// Adds autonomous mode options to the smart dashboard
 		fAutoChooser = new SendableChooser();
 		fAutoChooser.addDefault("None", new WaitCommand(0));
-		fAutoChooser.addObject("Present Bin For Litter",
-				new UBinGrabWithLitterAuto());
+		fAutoChooser.addObject("Present Bin For Litter", new UBinGrabWithLitterAuto());
 		fAutoChooser.addObject("Get out of The Way", new UGetOutTheWayAuto());
-		fAutoChooser.addObject("Pickup Bin and Get Out Way",
-				new UBinGrabReverseAuto());
-		fAutoChooser.addObject("Rake bins (platform)", new UBinRakerAuto(
-				BinRakerMode.PLATFORM_SIDE));
-		fAutoChooser.addObject("Rake bins (carpet)", new UBinRakerAuto(
-				BinRakerMode.CARPET_SIDE));
-		fAutoChooser.addObject("Rake bins (no drive)", new UBinRakerAuto(
-				BinRakerMode.NO_DRIVE));
-		fAutoChooser
-				.addObject(
-						"Rake bins (and pick up)",
-						new UBinRakerAuto(
-								BinRakerMode.XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII));
+		fAutoChooser.addObject("Pickup Bin and Get Out Way", new UBinGrabReverseAuto());
+		fAutoChooser.addObject("Rake bins (platform)", new UBinRakerAuto(BinRakerMode.PLATFORM_SIDE));
+		fAutoChooser.addObject("Rake bins (carpet)", new UBinRakerAuto(BinRakerMode.CARPET_SIDE));
+		fAutoChooser.addObject("Rake bins (no drive)", new UBinRakerAuto(BinRakerMode.NO_DRIVE));
+		fAutoChooser.addObject("Rake bins (and pick up)", new UBinRakerAuto(BinRakerMode.XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII));
 
 		SmartDashboard.putData("Auto Mode", fAutoChooser);
 
 		if (UPreferences.isTestMode()) {
 			UManualKeyboardControl.getInstance().startRainbowSTORMServer();
 		}
-		//TODO move this to network table
+		// TODO move this to network table
 		UPreferences.getPreferences().put("SecondSlowDriveDistance", 0.4);
 	}
 
@@ -107,60 +98,29 @@ public class URobot extends IterativeRobot {
 	 */
 	public void sharedPeriodic() {
 		SmartDashboard.putBoolean("chute door", true);
-		SmartDashboard.putNumber("Left Encoder Position", UDrivetrain
-				.getInstance().getLeftEncoderPosition());
-		SmartDashboard.putNumber("Right Encoder Position", UDrivetrain
-				.getInstance().getRightEncoderPosition());
-		SmartDashboard.putBoolean("Front Conveyor Optical Sensor",
-				UConveyorSystem.getInstance().getFrontSensor());
-		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor",
-				UConveyorSystem.getInstance().getRearSensor());
+		SmartDashboard.putNumber("Left Encoder Position", UDrivetrain.getInstance().getLeftEncoderPosition());
+		SmartDashboard.putNumber("Right Encoder Position", UDrivetrain.getInstance().getRightEncoderPosition());
+		SmartDashboard.putBoolean("Front Conveyor Optical Sensor", UConveyorSystem.getInstance().getFrontSensor());
+		SmartDashboard.putBoolean("Rear Conveyor Optical Sensor", UConveyorSystem.getInstance().getRearSensor());
 
-		SmartDashboard.putNumber("ToteElevatorPositionValue",
-				UToteElevatorSystem.getInstance().getToteElevatorPosition());
-		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()",
-				UToteElevatorSystem.getInstance().toteElevatorMotor
-						.getEncPosition());
-		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit",
-				UToteElevatorSystem.getInstance().toteElevatorMotor
-						.isFwdLimitSwitchClosed());
-		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit",
-				UToteElevatorSystem.getInstance().toteElevatorMotor
-						.isRevLimitSwitchClosed());
-		SmartDashboard.putBoolean("binElevator Fwd Limit", UBinElevatorSystem
-				.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
-		SmartDashboard.putBoolean("binElevator Rev Limit", UBinElevatorSystem
-				.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
-		SmartDashboard.putBoolean("binTilt Fwd Limit", UBinElevatorSystem
-				.getInstance().tilterMotor.isFwdLimitSwitchClosed());
-		SmartDashboard.putBoolean("binTilt Rev Limit", UBinElevatorSystem
-				.getInstance().tilterMotor.isRevLimitSwitchClosed());
-		SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()",
-				UToteElevatorSystem.getInstance().toteElevatorMotor
-						.getOutputVoltage());
-		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()",
-				UToteElevatorSystem.getInstance().toteElevatorMotor
-						.getOutputCurrent());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()",
-				UBinElevatorSystem.getInstance().binElevatorMotor
-						.getOutputVoltage());
-		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()",
-				UBinElevatorSystem.getInstance().binElevatorMotor
-						.getOutputCurrent());
-		SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()",
-				UConveyorSystem.getInstance().conveyorMotor.getOutputCurrent());
-		SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()",
-				UConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
-		SmartDashboard.putNumber("guardRail.getOutputCurrent()",
-				UGuardRailSystem.getInstance().guardRailMotor
-						.getOutputCurrent());
-		SmartDashboard.putNumber("guardRail.getOutputVoltage()",
-				UGuardRailSystem.getInstance().guardRailMotor
-						.getOutputVoltage());
-		SmartDashboard.putNumber("rakerMotor.getOutputCurrent()",
-				URakerSystem.getInstance().rakerMotor.getOutputCurrent());
-		SmartDashboard.putNumber("rakerMotor.getOutputVoltage()",
-				URakerSystem.getInstance().rakerMotor.getOutputVoltage());
+		SmartDashboard.putNumber("ToteElevatorPositionValue", UToteElevatorSystem.getInstance().getToteElevatorPosition());
+		SmartDashboard.putNumber("toteElevatorMotor.getEncPosition()", UToteElevatorSystem.getInstance().toteElevatorMotor.getEncPosition());
+		SmartDashboard.putBoolean("toteElevatorMotor Fwd Limit", UToteElevatorSystem.getInstance().toteElevatorMotor.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("toteElevatorMotor Rev Limit", UToteElevatorSystem.getInstance().toteElevatorMotor.isRevLimitSwitchClosed());
+		SmartDashboard.putBoolean("binElevator Fwd Limit", UBinElevatorSystem.getInstance().binElevatorMotor.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("binElevator Rev Limit", UBinElevatorSystem.getInstance().binElevatorMotor.isRevLimitSwitchClosed());
+		SmartDashboard.putBoolean("binTilt Fwd Limit", UBinElevatorSystem.getInstance().tilterMotor.isFwdLimitSwitchClosed());
+		SmartDashboard.putBoolean("binTilt Rev Limit", UBinElevatorSystem.getInstance().tilterMotor.isRevLimitSwitchClosed());
+		SmartDashboard.putNumber("toteElevatorMotor.getOutputVoltage()", UToteElevatorSystem.getInstance().toteElevatorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("toteElevatorMotor.getOutputCurrent()", UToteElevatorSystem.getInstance().toteElevatorMotor.getOutputCurrent());
+		SmartDashboard.putNumber("binElevatorMotor.getOutputVoltage()", UBinElevatorSystem.getInstance().binElevatorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("binElevatorMotor.getOutputCurrent()", UBinElevatorSystem.getInstance().binElevatorMotor.getOutputCurrent());
+		SmartDashboard.putNumber("conveyorMotor.getOutputCurrent()", UConveyorSystem.getInstance().conveyorMotor.getOutputCurrent());
+		SmartDashboard.putNumber("conveyorMotor.getOutputVoltage()", UConveyorSystem.getInstance().conveyorMotor.getOutputVoltage());
+		SmartDashboard.putNumber("guardRail.getOutputCurrent()", UGuardRailSystem.getInstance().guardRailMotor.getOutputCurrent());
+		SmartDashboard.putNumber("guardRail.getOutputVoltage()", UGuardRailSystem.getInstance().guardRailMotor.getOutputVoltage());
+		SmartDashboard.putNumber("rakerMotor.getOutputCurrent()", URakerSystem.getInstance().rakerMotor.getOutputCurrent());
+		SmartDashboard.putNumber("rakerMotor.getOutputVoltage()", URakerSystem.getInstance().rakerMotor.getOutputVoltage());
 
 		UStateMachine.getInstance().display();
 
