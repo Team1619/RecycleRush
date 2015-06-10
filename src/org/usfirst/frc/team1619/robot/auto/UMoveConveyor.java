@@ -10,43 +10,43 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class UMoveConveyor extends Command {
 
-	private double runSpeed; 
+	private double runSpeed;
 	private double runTime;
 	private Timer runTimer;
-	
-    public UMoveConveyor(double speed, double time) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    	runSpeed = speed;
-    	runTime = time;
-    	runTimer = new Timer();
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	runTimer.stop();
-    	runTimer.reset();
-    	runTimer.start();
-    }
+	public UMoveConveyor(double speed, double time) {
+		// Use requires() here to declare subsystem dependencies
+		// eg. requires(chassis);
+		runSpeed = speed;
+		runTime = time;
+		runTimer = new Timer();
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	UConveyorSystem.getInstance().conveyorMotor.set(runSpeed);
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
+		runTimer.stop();
+		runTimer.reset();
+		runTimer.start();
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return runTimer.get() > runTime;
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		UConveyorSystem.getInstance().conveyorMotor.set(runSpeed);
+	}
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	UConveyorSystem.getInstance().conveyorMotor.set(0.0);
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		return runTimer.get() > runTime;
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    	end();
-    }
+	// Called once after isFinished returns true
+	protected void end() {
+		UConveyorSystem.getInstance().conveyorMotor.set(0.0);
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+		end();
+	}
 }

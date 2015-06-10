@@ -8,125 +8,145 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.InternalButton;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class UOI {
-	
+
 	public final Joystick rightStick;
 	public final Joystick leftStick;
 	public final Joystick tiltStick;
-	
-	
-	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
+
+	private final InternalButton kachigLeft, kachigRight, kachigForward,
+			kachigBackward;
 	public final InternalButton binElevatorUp, binElevatorDown;
-	
-	//rightStick
+
+	// rightStick
 	private final JoystickButton resetDriveEncodersButton;
 	public final JoystickButton liftAbortButton;
 	public final JoystickButton liftResetButton;
-	
+
 	public final JoystickButton startHumanFeedButton;
 	public final JoystickButton stopHumanFeedButton;
-	
+
 	public final JoystickButton toteElevatorUpManualButton;
 	public final JoystickButton toteElevatorDownManualButton;
-	
+
 	public final JoystickButton lowerToteElevatorAndOpenClawButton;
 	public final JoystickButton driverCloseButton;
-	
+
 	public final JoystickButton incrementNumberTotesButton;
 
-	//leftStick
+	// leftStick
 	public final JoystickButton closeClawButton;
 	public final JoystickButton openClawButton;
 	public final JoystickButton rakerDownManualButton;
 	public final JoystickButton rakerUpManualButton;
-		
+
 	public final JoystickButton conveyorForwardButton;
 	public final JoystickButton conveyorBackButton;
-	
+
 	public final JoystickButton guardRailOpenButton;
 	public final JoystickButton guardRailCloseButton;
-	
-	//Creates singleton OI
+
+	// Creates singleton OI
 	private static UOI sOI = new UOI();
-	
+
 	public static UOI getInstance() {
 		return sOI;
 	}
-	
+
 	UOI() {
-		rightStick = new Joystick(URobotMap.rightStickID);
-		leftStick = new Joystick(URobotMap.leftStickID);
+		rightStick = new Joystick(URobotMap.RIGHT_STICK_ID);
+		leftStick = new Joystick(URobotMap.LEFT_STICK_ID);
 		tiltStick = leftStick;
-		
-		//Right stick
+
+		// Right stick
 		kachigLeft = new InternalButton();
 		kachigRight = new InternalButton();
 		kachigForward = new InternalButton();
 		kachigBackward = new InternalButton();
-		
-		resetDriveEncodersButton = new JoystickButton(rightStick, URobotMap.resetDriveEncodersButtonID);
-		
-		liftAbortButton = new JoystickButton(rightStick, URobotMap.liftAbortButtonID);
-		liftResetButton = new JoystickButton(rightStick, URobotMap.liftResetButtonID);
-		
-		startHumanFeedButton = new JoystickButton(rightStick, URobotMap.startHumanFeedButtonID);
-		stopHumanFeedButton = new JoystickButton(rightStick, URobotMap.stopHumanFeedButtonID);
-		
-		incrementNumberTotesButton = new JoystickButton(rightStick, URobotMap.incrementNumberTotesButtonID);
-		
-		toteElevatorUpManualButton = new JoystickButton(rightStick, URobotMap.toteElevatorUpManualButtonID);
-		toteElevatorDownManualButton = new JoystickButton(rightStick, URobotMap.toteElevatorDownManualButtonID);
 
-		lowerToteElevatorAndOpenClawButton = new JoystickButton(rightStick, URobotMap.lowerToteElevatorAndOpenClawButtonID);
-		driverCloseButton = new JoystickButton(rightStick, URobotMap.driverCloseClawButtonID);
-		
-		//Left stick
+		resetDriveEncodersButton = new JoystickButton(rightStick,
+				URobotMap.RESET_DRIVE_ENCODERS_BUTTON_ID);
+
+		liftAbortButton = new JoystickButton(rightStick,
+				URobotMap.LIFT_ABORT_BUTTON_ID);
+		liftResetButton = new JoystickButton(rightStick,
+				URobotMap.LIFT_RESET_BUTTON_ID);
+
+		startHumanFeedButton = new JoystickButton(rightStick,
+				URobotMap.START_HUMAN_FEED_BUTTON_ID);
+		stopHumanFeedButton = new JoystickButton(rightStick,
+				URobotMap.STOP_HUMAN_FEED_BUTTON_ID);
+
+		incrementNumberTotesButton = new JoystickButton(rightStick,
+				URobotMap.INCREMENT_NUMBER_TOTES_BUTTON_ID);
+
+		toteElevatorUpManualButton = new JoystickButton(rightStick,
+				URobotMap.TOTE_ELEVATOR_UP_MANUAL_BUTTON_ID);
+		toteElevatorDownManualButton = new JoystickButton(rightStick,
+				URobotMap.TOTE_ELEVATOR_DOWN_MANUAL_BUTTON_ID);
+
+		lowerToteElevatorAndOpenClawButton = new JoystickButton(rightStick,
+				URobotMap.LOWER_TOTE_ELEVATOR_AND_OPEN_CLAW_BUTTON_ID);
+		driverCloseButton = new JoystickButton(rightStick,
+				URobotMap.DRIVER_CLOSE_CLAW_BUTTON_ID);
+
+		// Left stick
 		binElevatorUp = new InternalButton();
 		binElevatorDown = new InternalButton();
-		
-		closeClawButton = new JoystickButton(leftStick, URobotMap.closeClawButtonID);
-		openClawButton = new JoystickButton(leftStick, URobotMap.openClawButtonID);
 
-		rakerDownManualButton = new JoystickButton(leftStick, URobotMap.rakerDownManualButtonID);
-		rakerUpManualButton = new JoystickButton(leftStick, URobotMap.rakerUpManualButtonID);
-		
-		conveyorForwardButton = new JoystickButton(leftStick, URobotMap.coneyorFowardButtonID);
-		conveyorBackButton = new JoystickButton(leftStick, URobotMap.coneyorBackButtonID);
-		
-		guardRailOpenButton = new JoystickButton(leftStick, URobotMap.guardrailOpenManualButtonID);
-		guardRailCloseButton = new JoystickButton(leftStick, URobotMap.guardrailCloseManualButtonID);
+		closeClawButton = new JoystickButton(leftStick,
+				URobotMap.CLOSE_CLAW_BUTTON_ID);
+		openClawButton = new JoystickButton(leftStick,
+				URobotMap.OPEN_CLAW_BUTTON_ID);
+
+		rakerDownManualButton = new JoystickButton(leftStick,
+				URobotMap.RAKER_DOWN_MANUAL_BUTTON_ID);
+		rakerUpManualButton = new JoystickButton(leftStick,
+				URobotMap.RAKER_UP_MANUAL_BUTTON_ID);
+
+		conveyorForwardButton = new JoystickButton(leftStick,
+				URobotMap.CONEYOR_FOWARD_BUTTON_ID);
+		conveyorBackButton = new JoystickButton(leftStick,
+				URobotMap.CONVEYOR_BACK_BUTTON_ID);
+
+		guardRailOpenButton = new JoystickButton(leftStick,
+				URobotMap.GUARDRAIL_OPEN_MANUAL_BUTTON_ID);
+		guardRailCloseButton = new JoystickButton(leftStick,
+				URobotMap.GUARDRAIL_CLOSE_MANUAL_BUTTON_ID);
 	}
-	
+
 	public void init() {
 		kachigLeft.whenPressed(new UKachigCommand(0, -1, 0.075));
 		kachigRight.whenPressed(new UKachigCommand(0, 1, 0.075));
 		kachigForward.whenPressed(new UKachigCommand(1, 0, 0.05));
 		kachigBackward.whenPressed(new UKachigCommand(-1, 0, 0.05));
-		
+
 		resetDriveEncodersButton.whenPressed(new UResetDriveEncodersCommand());
-		
-		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Start));
-		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Stop));
-				
-		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().abortSignal));
-		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().resetSignal));
+
+		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine
+				.getInstance().humanFeed_Start));
+		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine
+				.getInstance().humanFeed_Stop));
+
+		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine
+				.getInstance().abortSignal));
+		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine
+				.getInstance().resetSignal));
 	}
-	
+
 	public void updatePOV() {
 		int povLeft = rightStick.getPOV();
 		kachigRight.setPressed(povLeft == 90);
 		kachigForward.setPressed(povLeft == 0);
 		kachigLeft.setPressed(povLeft == 270);
 		kachigBackward.setPressed(povLeft == 180);
-		
+
 		int povRight = leftStick.getPOV();
 		binElevatorUp.setPressed(povRight == 0);
 		binElevatorDown.setPressed(povRight == 180);
 	}
 }
-

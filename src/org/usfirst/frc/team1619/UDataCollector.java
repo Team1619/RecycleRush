@@ -20,89 +20,90 @@ import java.util.TimeZone;
 //new ones.
 
 public class UDataCollector {
-	
+
 	private static SimpleDateFormat sDateFormat;
 	private static final String logFolderPath = "/home/lvuser/log/";
 	private static final int maxLogs = 50;
 	private static final ArrayList<UDataCollector> lumberjacks = new ArrayList<UDataCollector>();
-	
+
 	private static String logGroup = getDateString();
-	
+
 	private FileWriter fileWriter;
 	private String logName;
 	private String[] headers;
-	
+
 	static {
 		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
 		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
 	}
-	
-	public UDataCollector(String logName, String ... headers) {
+
+	public UDataCollector(String logName, String... headers) {
 		this.logName = new String(logName);
 		this.headers = new String[headers.length + 1];
 		this.headers[0] = "Timestamp [s]";
-		for(int i = 0; i < headers.length; i++) {
+		for (int i = 0; i < headers.length; i++) {
 			this.headers[i + 1] = headers[i];
 		}
 		lumberjacks.add(this);
 		nextLog();
 	}
-	
-	public void log(String ... values) {
+
+	public void log(String... values) {
 		printCSV(values);
 	}
-	
-	static void deleteFile (File folder) {
+
+	static void deleteFile(File folder) {
 		if (folder.isDirectory()) {
-			 File[] files = folder.listFiles();
-			 for(File file : files) {
-				 deleteFile(file);
-			 }
+			File[] files = folder.listFiles();
+			for (File file : files) {
+				deleteFile(file);
+			}
 		}
 		try {
 			folder.delete();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static void cleanUp() {
 		try {
 			File logFolder = new File(logFolderPath);
 			File[] logPaths = logFolder.listFiles();
 			Arrays.sort(logPaths);
-			for (int i = 0; i < (logPaths.length-maxLogs); i++)
+			for (int i = 0; i < (logPaths.length - maxLogs); i++)
 				deleteFile(logPaths[i]);
-		}
-		catch (Exception e) {
-			
+		} catch (Exception e) {
+
 		}
 	}
-	
+
 	private static String getDateString() {
 		return sDateFormat.format(new Date());
 	}
-	
+
 	private String getTimestamp() {
 		return sDateFormat.format(new Date());
-		//return String.format("%.3f", (double)(System.currentTimeMillis()-start) / 1000);
+		// return String.format("%.3f",
+		// (double)(System.currentTimeMillis()-start) / 1000);
 	}
-	
+
 	public static void changeLogs() {
 		logGroup = getDateString();
 		for (UDataCollector l : lumberjacks)
 			l.nextLog();
 		cleanUp();
 	}
-	
+
 	private void nextLog() {
 		try {
 			if (fileWriter != null)
-					fileWriter.close();
+				fileWriter.close();
 			File logDir = new File(logFolderPath + logGroup);
 			logDir.mkdir();
-			if(logDir.exists()) {
-				fileWriter = new FileWriter(logFolderPath + logGroup + "/" + logName);
+			if (logDir.exists()) {
+				fileWriter = new FileWriter(logFolderPath + logGroup + "/"
+						+ logName);
 				printHeaders(headers);
 			}
 			else {
@@ -113,31 +114,31 @@ public class UDataCollector {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void printCSV(String[] values) {
-		if(fileWriter == null)
+		if (fileWriter == null)
 			return;
 		try {
 			fileWriter.append(getTimestamp());
-			for(String s : values) {
+			for (String s : values) {
 				fileWriter.append(',');
 				fileWriter.append(s);
 			}
 			fileWriter.append('\n');
 			fileWriter.flush();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	private void printHeaders(String[] values) {
-		if(fileWriter == null)
+		if (fileWriter == null)
 			return;
 		try {
 			boolean firstCall = true;
-			for(String s : values) {
-				if(firstCall)
+			for (String s : values) {
+				if (firstCall)
 					firstCall = false;
 				else
 					fileWriter.append(',');
@@ -145,9 +146,9 @@ public class UDataCollector {
 			}
 			fileWriter.append('\n');
 			fileWriter.flush();
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 }

@@ -13,38 +13,38 @@ public class UManualDriveCommand extends Command {
 
 	private UDrivetrain drivetrain;
 	private Joystick joystick;
-	
-    public UManualDriveCommand() {
-        // Use requires() here to declare subsystem dependencies
-    	drivetrain = UDrivetrain.getInstance();
-        requires(drivetrain);
-        
-        this.joystick = UOI.getInstance().rightStick;
-    }
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    	
-    }
+	public UManualDriveCommand() {
+		// Use requires() here to declare subsystem dependencies
+		drivetrain = UDrivetrain.getInstance();
+		requires(drivetrain);
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    	drivetrain.drive(joystick);
-    }
+		this.joystick = UOI.getInstance().rightStick;
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	// Manual joystick drive is the default state!
-        return false;
-    }
+	// Called just before this Command runs the first time
+	protected void initialize() {
 
-    // Called once after isFinished returns true
-    protected void end() {
-    	drivetrain.stop();
-    }
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute() {
+		drivetrain.drive(joystick);
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		// Manual joystick drive is the default state!
+		return false;
+	}
+
+	// Called once after isFinished returns true
+	protected void end() {
+		drivetrain.stop();
+	}
+
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted() {
+	}
 }

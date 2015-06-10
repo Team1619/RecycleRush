@@ -12,9 +12,7 @@ import edu.wpi.first.wpilibj.CANTalon;
  */
 public class URobotMap {
 	/**
-	 * Motor Identification. 
-	 * Includes:
-	 * The CANBus ID associated with the motor,
+	 * Motor Identification. Includes: The CANBus ID associated with the motor,
 	 * Keys to be pressed for individual motor testing (forward and reverse),
 	 * Speeds of motor for each key being pressed.
 	 */
@@ -30,17 +28,16 @@ public class URobotMap {
 		binElevatorMotor(9, UKeyCodes.VK_O, UKeyCodes.VK_L, 0.5, -0.5),
 		binGripMotor(10, UKeyCodes.VK_Z, UKeyCodes.VK_X, 0.5, -0.5),
 		toteElevatorMotor(11, UKeyCodes.VK_C, UKeyCodes.VK_V, 0.5, -0.5),
-		toteElevatorMotorSmall(12, UKeyCodes.VK_B, UKeyCodes.VK_N, 0.5, -0.5)
-		;
-		
+		toteElevatorMotorSmall(12, UKeyCodes.VK_B, UKeyCodes.VK_N, 0.5, -0.5);
+
 		public final int id;
 		public final int forwardKey;
 		public final int reverseKey;
 		public final double forwardKeySpeed;
 		public final double reverseKeySpeed;
-		
+
 		public CANTalon motor = null;
-		
+
 		MotorDefinition(int id, int forwardKey, int reverseKey,
 				double forwardKeySpeed, double reverseKeySpeed) {
 			this.id = id;
@@ -49,71 +46,72 @@ public class URobotMap {
 			this.forwardKeySpeed = forwardKeySpeed;
 			this.reverseKeySpeed = reverseKeySpeed;
 		}
-		
+
 		/**
-		 * Associates an actual motor with the enum based on the CANBus ID provided for each enum
+		 * Associates an actual motor with the enum based on the CANBus ID
+		 * provided for each enum
 		 */
 		public void initMotor() {
-			if(motor != null)
+			if (motor != null)
 				return;
 			motor = new CANTalon(id);
 		}
-		
+
 		/**
 		 * @return the motor associated with the enum
 		 */
 		public CANTalon getMotor() {
 			return motor;
 		}
-		
+
 		/**
 		 * Calls the initMotor() function to associate a motor with each enum
 		 */
 		static void initMotors() {
-			for(MotorDefinition md : values())
+			for (MotorDefinition md : values())
 				md.initMotor();
 		}
 	}
-	
-	//Port for keyboard input to motors
-	public static final int rainbowSTORMPort = 0x666;
-	
-	//Optical sensor IDs
-	public final static int frontConveyorOpticalSensorID = 0;
-	public final static int rearConveyorOpticalSensorID = 1;
 
-	//Joystick IDs
-	public static final int rightStickID = 0;
-	public static final int leftStickID = 1;
+	// Port for keyboard input to motors
+	public static final int RAINBOW_STORM_PORT = 0x666;
 
-	//Button IDs
-	//Right stick
-	public static final int resetDriveEncodersButtonID = 8;
+	// Optical sensor IDs
+	public final static int FRONT_CONVEYOR_OPTICAL_SENSOR_ID = 0;
+	public final static int REAR_CONVEYOR_OPTICAL_SENSOR_ID = 1;
 
-	public static final int liftAbortButtonID = 4;
-	public static final int liftResetButtonID = 3;	
+	// Joystick IDs
+	public static final int RIGHT_STICK_ID = 0;
+	public static final int LEFT_STICK_ID = 1;
 
-	public static final int startHumanFeedButtonID = 1;
-	public static final int stopHumanFeedButtonID = 2;
-	
-	public static final int incrementNumberTotesButtonID = 11;
-	
-	public static final int toteElevatorUpManualButtonID = 7;
-	public static final int toteElevatorDownManualButtonID = 6;
-	
-	public static final int lowerToteElevatorAndOpenClawButtonID = 5;
-	public static final int driverCloseClawButtonID = 10;
+	// Button IDs
+	// Right stick
+	public static final int RESET_DRIVE_ENCODERS_BUTTON_ID = 8;
 
-	//Left Stick
-	public static final int guardrailCloseManualButtonID = 9;
-	public static final int guardrailOpenManualButtonID = 8;
-	
-	public static final int coneyorFowardButtonID = 4;
-	public static final int coneyorBackButtonID = 3;
+	public static final int LIFT_ABORT_BUTTON_ID = 4;
+	public static final int LIFT_RESET_BUTTON_ID = 3;
 
-	public static final int rakerDownManualButtonID = 6;
-	public static final int rakerUpManualButtonID = 7;
+	public static final int START_HUMAN_FEED_BUTTON_ID = 1;
+	public static final int STOP_HUMAN_FEED_BUTTON_ID = 2;
 
-	public static final int closeClawButtonID = 1;
-	public static final int openClawButtonID = 2;
+	public static final int INCREMENT_NUMBER_TOTES_BUTTON_ID = 11;
+
+	public static final int TOTE_ELEVATOR_UP_MANUAL_BUTTON_ID = 7;
+	public static final int TOTE_ELEVATOR_DOWN_MANUAL_BUTTON_ID = 6;
+
+	public static final int LOWER_TOTE_ELEVATOR_AND_OPEN_CLAW_BUTTON_ID = 5;
+	public static final int DRIVER_CLOSE_CLAW_BUTTON_ID = 10;
+
+	// Left Stick
+	public static final int GUARDRAIL_CLOSE_MANUAL_BUTTON_ID = 9;
+	public static final int GUARDRAIL_OPEN_MANUAL_BUTTON_ID = 8;
+
+	public static final int CONEYOR_FOWARD_BUTTON_ID = 4;
+	public static final int CONVEYOR_BACK_BUTTON_ID = 3;
+
+	public static final int RAKER_DOWN_MANUAL_BUTTON_ID = 6;
+	public static final int RAKER_UP_MANUAL_BUTTON_ID = 7;
+
+	public static final int CLOSE_CLAW_BUTTON_ID = 1;
+	public static final int OPEN_CLAW_BUTTON_ID = 2;
 }
