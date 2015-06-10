@@ -1,13 +1,6 @@
 package org.usfirst.frc.team1619;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.TimeZone;
 
 //Lumberjacks are made for logging
 //Use Lumberjacks for logging
@@ -19,113 +12,35 @@ import java.util.TimeZone;
 //lumberjack.changeLog() will close the files and make
 //new ones.
 
-public class UDataCollector {
+public class UDataCollector extends UGenericLogger{
 
-	private static SimpleDateFormat sDateFormat;
-	private static final String logFolderPath = "/home/lvuser/log/";
-	private static final int maxLogs = 50;
-	private static final ArrayList<UDataCollector> lumberjacks = new ArrayList<UDataCollector>();
-
-	private static String logGroup = getDateString();
-
-	private FileWriter fileWriter;
-	private String logName;
 	private String[] headers;
 
-	static {
-		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
-		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
-	}
-
 	public UDataCollector(String logName, String... headers) {
-		this.logName = new String(logName);
+		super(logName);
 		this.headers = new String[headers.length + 1];
 		this.headers[0] = "Timestamp [s]";
 		for (int i = 0; i < headers.length; i++) {
 			this.headers[i + 1] = headers[i];
 		}
-		lumberjacks.add(this);
 		nextLog();
 	}
-
-	public void log(String... values) {
-		printCSV(values);
+	
+	protected void initLog() {
+		printHeaders(headers);
 	}
-
-	static void deleteFile(File folder) {
-		if (folder.isDirectory()) {
-			File[] files = folder.listFiles();
-			for (File file : files) {
-				deleteFile(file);
-			}
-		}
-		try {
-			folder.delete();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static void cleanUp() {
-		try {
-			File logFolder = new File(logFolderPath);
-			File[] logPaths = logFolder.listFiles();
-			Arrays.sort(logPaths);
-			for (int i = 0; i < (logPaths.length - maxLogs); i++)
-				deleteFile(logPaths[i]);
-		} catch (Exception e) {
-
-		}
-	}
-
-	private static String getDateString() {
-		return sDateFormat.format(new Date());
-	}
-
-	private String getTimestamp() {
-		return sDateFormat.format(new Date());
-		// return String.format("%.3f",
-		// (double)(System.currentTimeMillis()-start) / 1000);
-	}
-
-	public static void changeLogs() {
-		logGroup = getDateString();
-		for (UDataCollector l : lumberjacks)
-			l.nextLog();
-		cleanUp();
-	}
-
-	private void nextLog() {
-		try {
-			if (fileWriter != null)
-				fileWriter.close();
-			File logDir = new File(logFolderPath + logGroup);
-			logDir.mkdir();
-			if (logDir.exists()) {
-				fileWriter = new FileWriter(logFolderPath + logGroup + "/"
-						+ logName);
-				printHeaders(headers);
-			}
-			else {
-				System.err.println("Cannot create log folder " + logName);
-				fileWriter = null;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	
 	private void printCSV(String[] values) {
-		if (fileWriter == null)
+		if (getFileWriter() == null)
 			return;
 		try {
-			fileWriter.append(getTimestamp());
+			getFileWriter().append(getTimestamp());
 			for (String s : values) {
-				fileWriter.append(',');
-				fileWriter.append(s);
+				getFileWriter().append(',');
+				getFileWriter().append(s);
 			}
-			fileWriter.append('\n');
-			fileWriter.flush();
+			getFileWriter().append('\n');
+			getFileWriter().flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -133,7 +48,7 @@ public class UDataCollector {
 	}
 
 	private void printHeaders(String[] values) {
-		if (fileWriter == null)
+		if (getFileWriter() == null)
 			return;
 		try {
 			boolean firstCall = true;
@@ -141,14 +56,19 @@ public class UDataCollector {
 				if (firstCall)
 					firstCall = false;
 				else
-					fileWriter.append(',');
-				fileWriter.append(s);
+					getFileWriter().append(',');
+				getFileWriter().append(s);
 			}
-			fileWriter.append('\n');
-			fileWriter.flush();
+			getFileWriter().append('\n');
+			getFileWriter().flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
+	
+	public void log(String... values) {
+		printCSV(values);
+	}
+
 }

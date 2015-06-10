@@ -98,6 +98,7 @@ public class URobot extends IterativeRobot {
 		if (UPreferences.isTestMode()) {
 			UManualKeyboardControl.getInstance().startRainbowSTORMServer();
 		}
+		//TODO move this to network table
 		UPreferences.getPreferences().put("SecondSlowDriveDistance", 0.4);
 	}
 
