@@ -303,7 +303,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 				setToteElevatorPosition(kFeederPosition);
 			}
 			if (Math.abs(getToteElevatorPosition() - kFeederPosition) <= kPositionTolerance) {
-				UStateMachine.getInstance().humanFeed_WaitForTote.raise();
+				UStateMachine.getInstance().fHumanFeed_WaitForTote.raise();
 			}
 			break;
 		case HumanFeed_WaitForTote:
@@ -330,7 +330,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 			}
 
 			if (Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
-				UStateMachine.getInstance().humanFeed_RaiseTote.raise();
+				UStateMachine.getInstance().fHumanFeed_RaiseTote.raise();
 			}
 			break;
 		case Abort:
@@ -340,7 +340,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 		}
 
 		UStateMachine.getInstance();
-		switch (UStateMachine.getInstance().fNumberTotes) {
+		switch (UStateMachine.getInstance().getNumberTotes()) {
 		case 0:
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800,
 					24 / 0.250, 0);

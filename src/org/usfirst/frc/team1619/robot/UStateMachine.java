@@ -12,37 +12,84 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class UStateMachine {
+	
+	public class Signal {
+		private boolean hasRisen;
+		
+		public Signal() {
+			hasRisen = false;
+		}
+		public boolean check() {
+			return /* Our Lord and Savior Jesus */hasRisen; // "Hit home to Jerusalem"
+			// - Daniel
+		}
+		public void clear() {
+			hasRisen = false;
+		}
+		public void raise() {
+			hasRisen = true;
+		}
+	}
+	
+	public class AutoClearSignal extends Signal {
+		public AutoClearSignal() {
+			fAutoClearSignals.add(this);
+		}
+	}
+	
+	//Singleton stateMachine
+	private static UStateMachine sStateMachine = null;
 
 	private State fCurrentState = State.Idle;
 	private boolean fIncrementNumberTotes;
 	private boolean fToStopHumanFeed;
+	private int fNumberTotes;
 	private ArrayList<UStateMachineSystem> fSystems = new ArrayList<>();
+	private ArrayList<Signal> fAutoClearSignals = new ArrayList<>();
 
-	// Creates singleton stateMachine
-	private static UStateMachine sStateMachine = null;
-
-	public int fNumberTotes;
-
-	public static UStateMachine getInstance() {
-		if (sStateMachine == null) {
-			sStateMachine = new UStateMachine();
-			sStateMachine.stateTimer.start();
-		}
-		return sStateMachine;
-	}
-
-	public boolean getToStopHumanFeed() {
-		return fToStopHumanFeed;
-	}
+	public final Signal fAbortSignal = new AutoClearSignal();
+	public final Signal fResetSignal = new AutoClearSignal();
+	public final Signal fHumanFeed_Stop = new AutoClearSignal();
+	public final Signal fHumanFeed_Start = new AutoClearSignal();
+	public final Signal fHumanFeed_RaiseTote = new AutoClearSignal();
+	public final Signal fHumanFeed_WaitForTote = new AutoClearSignal();
+	public final Signal fHumanFeed_ToteOnConveyor = new AutoClearSignal();
+	public final Signal fHumanFeed_ThrottleConveyorBack = new AutoClearSignal();
+	public final Signal fHumanFeed_ThrottleConveyorDescend = new Signal();
+	public final Signal fHumanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
+	
+	private final Timer fStateTimer = new Timer();
 
 	private UStateMachine() {
 		fNumberTotes = 0;
 		fIncrementNumberTotes = false;
 		fToStopHumanFeed = false;
 	}
+	
+	public boolean getToStopHumanFeed() {
+		return fToStopHumanFeed;
+	}
+	public int getNumberTotes() {
+		return fNumberTotes;
+	}
+	public State getState() {
+		return fCurrentState;
+	}
+
+	/**
+	 * Gets stateMachine instance. Creates it at first call.
+	 * @return single stateMachine instance
+	 */
+	public static UStateMachine getInstance() {
+		if (sStateMachine == null) {
+			sStateMachine = new UStateMachine();
+			sStateMachine.fStateTimer.start();
+		}
+		return sStateMachine;
+	}
 
 	public void init() {
-		stateTimer.reset();
+		fStateTimer.reset();
 		fCurrentState = State.Init;
 		fCurrentState.init(this);
 		fNumberTotes = 0;
@@ -53,48 +100,6 @@ public class UStateMachine {
 	public void addSystem(UStateMachineSystem sms) {
 		fSystems.add(sms);
 	}
-
-	public class Signal {
-		private boolean hasRisen;
-
-		public Signal() {
-			hasRisen = false;
-		}
-
-		public boolean check() {
-			return /* Our Lord and Savior Jesus */hasRisen; // "Hit home to Jerusalem"
-																// - Daniel
-		}
-
-		public void clear() {
-			hasRisen = false;
-		}
-
-		public void raise() {
-			hasRisen = true;
-		}
-	}
-
-	private ArrayList<Signal> autoClearSignals = new ArrayList<>();
-
-	public class AutoClearSignal extends Signal {
-		public AutoClearSignal() {
-			autoClearSignals.add(this);
-		}
-	}
-
-	public final Signal abortSignal = new AutoClearSignal();
-	public final Signal resetSignal = new AutoClearSignal();
-	public final Signal humanFeed_Stop = new AutoClearSignal();
-	public final Signal humanFeed_Start = new AutoClearSignal();
-	public final Signal humanFeed_RaiseTote = new AutoClearSignal();
-	public final Signal humanFeed_WaitForTote = new AutoClearSignal();
-	public final Signal humanFeed_ToteOnConveyor = new AutoClearSignal();
-	public final Signal humanFeed_ThrottleConveyorBack = new AutoClearSignal();
-	public final Signal humanFeed_ThrottleConveyorDescend = new Signal();
-	public final Signal humanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
-
-	private final Timer stateTimer = new Timer();
 
 	public enum State {
 		Init {
@@ -116,7 +121,7 @@ public class UStateMachine {
 				}
 				if (finished)
 					return Idle;
-				else if (sm.abortSignal.check() || (sm.stateTimer.get() > 4))
+				else if (sm.fAbortSignal.check() || (sm.fStateTimer.get() > 4))
 					return Abort;
 				else
 					return Init;
@@ -131,16 +136,16 @@ public class UStateMachine {
 
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
-				if (sm.humanFeed_Start.check()) {
+				if (sm.fHumanFeed_Start.check()) {
 					UStateMachine.getInstance().fNumberTotes = 0;
 
 					if (UBinElevatorSystem.getInstance()
 							.getTilterBackLimitSwitch()) {
-						sm.humanFeed_ToteOnConveyor.clear();
-						sm.humanFeed_ThrottleConveyorDescend.clear();
+						sm.fHumanFeed_ToteOnConveyor.clear();
+						sm.fHumanFeed_ThrottleConveyorDescend.clear();
 						return HumanFeed_RaiseTote;
 					}
 					else {
@@ -153,16 +158,16 @@ public class UStateMachine {
 		HumanFeed_RaiseTote {
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
-				if (sm.humanFeed_WaitForTote.check()) {
+				if (sm.fHumanFeed_WaitForTote.check()) {
 					return HumanFeed_WaitForTote;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					sm.fToStopHumanFeed = true;
 				}
-				if (sm.humanFeed_EndCurrentStateAndDescend.check()) {
+				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
@@ -170,7 +175,7 @@ public class UStateMachine {
 
 			@Override
 			protected void init(UStateMachine sm) {
-				sm.humanFeed_ThrottleConveyorDescend.clear();
+				sm.fHumanFeed_ThrottleConveyorDescend.clear();
 			}
 		},
 		HumanFeed_WaitForTote {
@@ -183,18 +188,18 @@ public class UStateMachine {
 				if (sm.fToStopHumanFeed) {
 					return Idle;
 				}
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
 				if (UConveyorSystem.getInstance().getRearSensor()
 						|| UConveyorSystem.getInstance().getFrontSensor()
-						|| sm.humanFeed_ThrottleConveyorDescend.check()) {
+						|| sm.fHumanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ToteOnConveyor;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					sm.fToStopHumanFeed = true;
 				}
-				if (sm.humanFeed_EndCurrentStateAndDescend.check()) {
+				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
@@ -203,19 +208,19 @@ public class UStateMachine {
 		HumanFeed_ToteOnConveyor {
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
-				if (sm.humanFeed_ThrottleConveyorDescend.check()) {
+				if (sm.fHumanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					sm.fToStopHumanFeed = true;
 				}
-				if (sm.humanFeed_EndCurrentStateAndDescend.check()) {
+				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.humanFeed_ThrottleConveyorBack.check()) {
+				if (sm.fHumanFeed_ThrottleConveyorBack.check()) {
 					return HumanFeed_ThrottleConveyorBack;
 				}
 				return this;
@@ -228,16 +233,16 @@ public class UStateMachine {
 		HumanFeed_ThrottleConveyorBack {
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
-				if (sm.humanFeed_ThrottleConveyorDescend.check()) {
+				if (sm.fHumanFeed_ThrottleConveyorDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					sm.fToStopHumanFeed = true;
 				}
-				if (sm.humanFeed_EndCurrentStateAndDescend.check()) {
+				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
@@ -250,19 +255,19 @@ public class UStateMachine {
 		HumanFeed_ThrottleConveyorAndDescend {
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
-				if (sm.humanFeed_RaiseTote.check()) {
+				if (sm.fHumanFeed_RaiseTote.check()) {
 					if (sm.fToStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					sm.fToStopHumanFeed = true;
 				}
-				if (sm.humanFeed_EndCurrentStateAndDescend.check()) {
+				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
@@ -279,7 +284,7 @@ public class UStateMachine {
 		TiltUp {
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Abort;
 				}
 				if (UBinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
@@ -299,16 +304,16 @@ public class UStateMachine {
 
 			@Override
 			public State run(UStateMachine sm) {
-				if (sm.abortSignal.check()) {
+				if (sm.fAbortSignal.check()) {
 					return Idle;
 				}
-				if (sm.resetSignal.check()) {
+				if (sm.fResetSignal.check()) {
 					return Init;
 				}
-				if (sm.humanFeed_Start.check()) {
+				if (sm.fHumanFeed_Start.check()) {
 					return HumanFeed_RaiseTote;
 				}
-				if (sm.humanFeed_Stop.check()) {
+				if (sm.fHumanFeed_Stop.check()) {
 					return Idle;
 				}
 				return Abort;
@@ -326,7 +331,7 @@ public class UStateMachine {
 	}
 
 	public void run() {
-		double elapsed = stateTimer.get();
+		double elapsed = fStateTimer.get();
 		for (UStateMachineSystem sms : fSystems) {
 			sms.superSecretSpecialSatanRun(fCurrentState, elapsed);
 		}
@@ -342,7 +347,7 @@ public class UStateMachine {
 			// " -- Changed State to " + currentState.name());
 
 			fCurrentState.init(this);
-			stateTimer.reset();
+			fStateTimer.reset();
 			for (UStateMachineSystem s : fSystems)
 				s.init(fCurrentState);
 		}
@@ -358,7 +363,7 @@ public class UStateMachine {
 			fIncrementNumberTotes = false;
 		}
 
-		for (Signal sig : autoClearSignals) {
+		for (Signal sig : fAutoClearSignals) {
 			sig.clear();
 		}
 	}
@@ -366,9 +371,5 @@ public class UStateMachine {
 	public void display() {
 		SmartDashboard.putNumber("Number of Totes", fNumberTotes);
 		SmartDashboard.putString("CurrentState", fCurrentState.toString());
-	}
-
-	public State getState() {
-		return fCurrentState;
 	}
 }

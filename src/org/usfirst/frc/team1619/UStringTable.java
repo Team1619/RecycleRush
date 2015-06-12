@@ -6,168 +6,168 @@ import edu.wpi.first.wpilibj.tables.ITableListener;
 import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 
 public class UStringTable implements ITable {
-	protected final NetworkTable table;
+	protected final NetworkTable fTable;
 
 	public UStringTable(String name) {
-		table = NetworkTable.getTable(name);
+		fTable = NetworkTable.getTable(name);
 	}
 
 	@Override
 	public boolean containsKey(String key) {
-		return table.containsKey(key);
+		return fTable.containsKey(key);
 	}
 
 	@Override
 	public Object getValue(String key) throws TableKeyNotDefinedException {
-		return table.getValue(key);
+		return fTable.getValue(key);
 	}
 
 	@Override
 	public void putValue(String key, Object value)
 			throws IllegalArgumentException {
-		table.putString(key, value.toString());
+		fTable.putString(key, value.toString());
 	}
 
 	@Override
 	public void retrieveValue(String key, Object externalValue) {
-		table.retrieveValue(key, externalValue);
+		fTable.retrieveValue(key, externalValue);
 	}
 
 	@Override
 	public void putNumber(String key, double value) {
-		table.putString(key, Double.toString(value));
+		fTable.putString(key, Double.toString(value));
 	}
 
 	@Override
 	public double getNumber(String key) throws TableKeyNotDefinedException {
-		return Double.parseDouble(table.getString(key));
+		return Double.parseDouble(fTable.getString(key));
 	}
 
 	@Override
 	public double getNumber(String key, double defaultValue) {
-		if(table.containsKey(key))
-			return Double.parseDouble(table.getString(key));
+		if(fTable.containsKey(key))
+			return Double.parseDouble(fTable.getString(key));
 		else {
-			table.putString(key, Double.toString(defaultValue));
+			fTable.putString(key, Double.toString(defaultValue));
 			return defaultValue;
 		}
 	}
 
 	@Override
 	public void putString(String key, String value) {
-		table.putString(key, value);
+		fTable.putString(key, value);
 	}
 
 	@Override
 	public String getString(String key) throws TableKeyNotDefinedException {
-		return table.getString(key);
+		return fTable.getString(key);
 	}
 
 	@Override
 	public String getString(String key, String defaultValue) {
-		if(table.containsKey(key))
-			return table.getString(key);
+		if(fTable.containsKey(key))
+			return fTable.getString(key);
 		else {
-			table.putString(key, defaultValue);
+			fTable.putString(key, defaultValue);
 			return defaultValue;
 		}
 	}
 
 	@Override
 	public void putBoolean(String key, boolean value) {
-		table.putString(key, Boolean.toString(value));
+		fTable.putString(key, Boolean.toString(value));
 	}
 
 	@Override
 	public boolean getBoolean(String key) throws TableKeyNotDefinedException {
-		return Boolean.parseBoolean(table.getString(key));
+		return Boolean.parseBoolean(fTable.getString(key));
 	}
 
 	@Override
 	public boolean getBoolean(String key, boolean defaultValue) {
-		if(table.containsKey(key))
-			return Boolean.parseBoolean(table.getString(key));
+		if(fTable.containsKey(key))
+			return Boolean.parseBoolean(fTable.getString(key));
 		else {
-			table.putString(key, Boolean.toString(defaultValue));
+			fTable.putString(key, Boolean.toString(defaultValue));
 			return defaultValue;
 		}
 	}
 
 	@Override
 	public void addTableListener(ITableListener listener) {
-		table.addSubTableListener(listener);
+		fTable.addSubTableListener(listener);
 	}
 
 	@Override
 	public void addTableListener(ITableListener listener,
 			boolean immediateNotify) {
-		table.addTableListener(listener, immediateNotify);
+		fTable.addTableListener(listener, immediateNotify);
 	}
 
 	@Override
 	public void addTableListener(String key, ITableListener listener,
 			boolean immediateNotify) {
-		table.addTableListener(key, listener, immediateNotify);
+		fTable.addTableListener(key, listener, immediateNotify);
 	}
 
 	@Override
 	public void addSubTableListener(ITableListener listener) {
-		table.addSubTableListener(listener);
+		fTable.addSubTableListener(listener);
 	}
 
 	@Override
 	public void removeTableListener(ITableListener listener) {
-		table.removeTableListener(listener);
+		fTable.removeTableListener(listener);
 	}
 
 	@Override
 	public void putInt(String key, int value) {
-		table.putString(key, Integer.toString(value));
+		fTable.putString(key, Integer.toString(value));
 	}
 
 	@Override
 	public int getInt(String key) throws TableKeyNotDefinedException {
-		return Integer.parseInt(table.getString(key));
+		return Integer.parseInt(fTable.getString(key));
 	}
 
 	@Override
 	public int getInt(String key, int defaultValue)
 			throws TableKeyNotDefinedException {
-		if(table.containsKey(key))
-			return Integer.parseInt(table.getString(key));
+		if(fTable.containsKey(key))
+			return Integer.parseInt(fTable.getString(key));
 		else {
-			table.putString(key, Integer.toString(defaultValue));
+			fTable.putString(key, Integer.toString(defaultValue));
 			return defaultValue;
 		}
 	}
 
 	@Override
 	public void putDouble(String key, double value) {
-		table.putString(key, Double.toString(value));
+		fTable.putString(key, Double.toString(value));
 	}
 
 	@Override
 	public double getDouble(String key) throws TableKeyNotDefinedException {
-		return Double.parseDouble(table.getString(key));
+		return Double.parseDouble(fTable.getString(key));
 	}
 
 	@Override
 	public double getDouble(String key, double defaultValue) {
-		if(table.containsKey(key))
-			return Double.parseDouble(table.getString(key));
+		if(fTable.containsKey(key))
+			return Double.parseDouble(fTable.getString(key));
 		else {
-			table.putString(key, Double.toString(defaultValue));
+			fTable.putString(key, Double.toString(defaultValue));
 			return defaultValue;
 		}
 	}
 
 	@Override
 	public boolean containsSubTable(String key) {
-		return table.containsSubTable(key);
+		return fTable.containsSubTable(key);
 	}
 
 	@Override
 	public ITable getSubTable(String key) {
-		return table.getSubTable(key);
+		return fTable.getSubTable(key);
 	}
 }

@@ -46,7 +46,6 @@ public class URobot extends IterativeRobot {
 
 	/**
 	 * Gets robot instance.
-	 * 
 	 * @return the single robot instance
 	 */
 	public static URobot getRobot() {

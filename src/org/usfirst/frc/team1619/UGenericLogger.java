@@ -12,15 +12,16 @@ import java.util.TimeZone;
 
 public abstract class UGenericLogger {
 
+	private static final int MAX_LOGS = 50;
+	private static final String LOG_FOLDER_PATH = "/home/lvuser/log/";
+	
+	private static final List<UGenericLogger> LUMBERJACKS = new ArrayList<>();
+
 	private static SimpleDateFormat sDateFormat;
-	private static final String logFolderPath = "/home/lvuser/log/";
-	private static final int maxLogs = 50;
-	private static final List<UGenericLogger> lumberjacks = new ArrayList<>();
+	private static String sLogGroup = getDateString();
 
-	private static String logGroup = getDateString();
-
-	private FileWriter fileWriter;
-	private String logName;
+	private FileWriter fFileWriter;
+	private String fLogName;
 
 	static {
 		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
@@ -28,8 +29,8 @@ public abstract class UGenericLogger {
 	}
 
 	public UGenericLogger(String logName) {
-		this.logName = new String(logName);
-		lumberjacks.add(this);
+		this.fLogName = new String(logName);
+		LUMBERJACKS.add(this);
 	}
 	
 	protected abstract void initLog();
@@ -50,10 +51,10 @@ public abstract class UGenericLogger {
 
 	private static void cleanUp() {
 		try {
-			File logFolder = new File(logFolderPath);
+			File logFolder = new File(LOG_FOLDER_PATH);
 			File[] logPaths = logFolder.listFiles();
 			Arrays.sort(logPaths);
-			for (int i = 0; i < (logPaths.length - maxLogs); i++)
+			for (int i = 0; i < (logPaths.length - MAX_LOGS); i++)
 				deleteFile(logPaths[i]);
 		} catch (Exception e) {
 
@@ -71,26 +72,26 @@ public abstract class UGenericLogger {
 	}
 
 	public static void changeLogs() {
-		logGroup = getDateString();
-		for (UGenericLogger l : lumberjacks)
+		sLogGroup = getDateString();
+		for (UGenericLogger l : LUMBERJACKS)
 			l.nextLog();
 		cleanUp();
 	}
 
 	protected void nextLog() {
 		try {
-			if (fileWriter != null)
-				fileWriter.close();
-			File logDir = new File(logFolderPath + logGroup);
+			if (fFileWriter != null)
+				fFileWriter.close();
+			File logDir = new File(LOG_FOLDER_PATH + sLogGroup);
 			logDir.mkdir();
 			if (logDir.exists()) {
-				fileWriter = new FileWriter(logFolderPath + logGroup + "/"
-						+ logName);
+				fFileWriter = new FileWriter(LOG_FOLDER_PATH + sLogGroup + "/"
+						+ fLogName);
 				initLog();
 			}
 			else {
-				System.err.println("Cannot create log folder " + logName);
-				fileWriter = null;
+				System.err.println("Cannot create log folder " + fLogName);
+				fFileWriter = null;
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,7 +99,7 @@ public abstract class UGenericLogger {
 	}
 
 	protected FileWriter getFileWriter() {
-		return fileWriter;
+		return fFileWriter;
 	}
 	
 }

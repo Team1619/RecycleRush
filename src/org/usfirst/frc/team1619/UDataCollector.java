@@ -14,20 +14,20 @@ import java.io.IOException;
 
 public class UDataCollector extends UGenericLogger{
 
-	private String[] headers;
+	private String[] fHeaders;
 
 	public UDataCollector(String logName, String... headers) {
 		super(logName);
-		this.headers = new String[headers.length + 1];
-		this.headers[0] = "Timestamp [s]";
+		this.fHeaders = new String[headers.length + 1];
+		this.fHeaders[0] = "Timestamp [s]";
 		for (int i = 0; i < headers.length; i++) {
-			this.headers[i + 1] = headers[i];
+			this.fHeaders[i + 1] = headers[i];
 		}
 		nextLog();
 	}
 	
 	protected void initLog() {
-		printHeaders(headers);
+		printHeaders(fHeaders);
 	}
 	
 	private void printCSV(String[] values) {

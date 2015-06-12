@@ -108,11 +108,11 @@ public class UOI {
 
 		resetDriveEncodersButton.whenPressed(new UResetDriveEncodersCommand());
 
-		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Start));
-		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Stop));
+		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fHumanFeed_Start));
+		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fHumanFeed_Stop));
 
-		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().abortSignal));
-		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fAbortSignal));
+		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fResetSignal));
 	}
 
 	public void updatePOV() {

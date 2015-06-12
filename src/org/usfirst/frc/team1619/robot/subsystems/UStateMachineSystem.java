@@ -14,9 +14,6 @@ public abstract class UStateMachineSystem extends Subsystem {
 		UStateMachine.getInstance().addSystem(this);
 	}
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-
 	public void superSecretSpecialSatanRun(State state, double elapsed) {
 		if (this.getCurrentCommand() == null) {
 			run(state, elapsed);
@@ -33,7 +30,5 @@ public abstract class UStateMachineSystem extends Subsystem {
 	public abstract void run(State state, double elapsed);
 
 	public void initDefaultCommand() {
-		// Set the default command for a subsystem here.
-		// setDefaultCommand(new MySpecialCommand());
 	}
 }

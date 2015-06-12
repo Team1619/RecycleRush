@@ -73,7 +73,7 @@ public class UConveyorSystem extends UStateMachineSystem {
 			if (frontSensor) {
 				frontSensor = !frontSensor;
 				if (!frontSensor) {
-					UStateMachine.getInstance().humanFeed_ThrottleConveyorDescend
+					UStateMachine.getInstance().fHumanFeed_ThrottleConveyorDescend
 							.raise();
 				}
 			}
@@ -82,14 +82,14 @@ public class UConveyorSystem extends UStateMachineSystem {
 			if (!frontSensor) {
 				frontSensor = true;
 				frontSensorDebounceTimer.reset();
-				UStateMachine.getInstance().humanFeed_ThrottleConveyorBack
+				UStateMachine.getInstance().fHumanFeed_ThrottleConveyorBack
 						.raise();
 			}
 		}
 		if (getRearSensorRaw()) {
 			rearSensor = rearSensorDebounceTimer.get() > DEBOUNCE_TIME;
 			if (rearSensor) {
-				UStateMachine.getInstance().humanFeed_ToteOnConveyor.raise();
+				UStateMachine.getInstance().fHumanFeed_ToteOnConveyor.raise();
 			}
 		}
 		else {
