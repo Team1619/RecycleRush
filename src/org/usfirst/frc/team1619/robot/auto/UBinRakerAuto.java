@@ -1,6 +1,6 @@
 package org.usfirst.frc.team1619.robot.auto;
 
-import org.usfirst.frc.team1619.UPreferences;
+import org.usfirst.frc.team1619.UDynamicPreferences;
 import org.usfirst.frc.team1619.robot.commands.ULinearDriveCommand;
 import org.usfirst.frc.team1619.robot.subsystems.UBinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.URakerSystem;
@@ -37,8 +37,7 @@ public class UBinRakerAuto extends CommandGroup {
 		if (mode == BinRakerMode.XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII) {
 			addParallel(new UClawsOpen(UBinElevatorSystem.kBinGripOpenTime));
 			addParallel(new UArmDown());
-			addSequential(new ULinearDriveCommand(UPreferences.getPreferences()
-					.get("SecondSlowDriveDistance", 0.4), 0.5));
+			addSequential(new ULinearDriveCommand(UDynamicPreferences.getNumber("SecondSlowDriveDistance", 0.4), 0.5));
 		}
 		else {
 			addSequential(new ULinearDriveCommand(0.7, 0.5));

@@ -18,8 +18,7 @@ public class UOI {
 	public final Joystick leftStick;
 	public final Joystick tiltStick;
 
-	private final InternalButton kachigLeft, kachigRight, kachigForward,
-			kachigBackward;
+	private final InternalButton kachigLeft, kachigRight, kachigForward, kachigBackward;
 	public final InternalButton binElevatorUp, binElevatorDown;
 
 	// rightStick
@@ -68,55 +67,37 @@ public class UOI {
 		kachigForward = new InternalButton();
 		kachigBackward = new InternalButton();
 
-		resetDriveEncodersButton = new JoystickButton(rightStick,
-				URobotMap.RESET_DRIVE_ENCODERS_BUTTON_ID);
+		resetDriveEncodersButton = new JoystickButton(rightStick, URobotMap.RESET_DRIVE_ENCODERS_BUTTON_ID);
 
-		liftAbortButton = new JoystickButton(rightStick,
-				URobotMap.LIFT_ABORT_BUTTON_ID);
-		liftResetButton = new JoystickButton(rightStick,
-				URobotMap.LIFT_RESET_BUTTON_ID);
+		liftAbortButton = new JoystickButton(rightStick, URobotMap.LIFT_ABORT_BUTTON_ID);
+		liftResetButton = new JoystickButton(rightStick, URobotMap.LIFT_RESET_BUTTON_ID);
 
-		startHumanFeedButton = new JoystickButton(rightStick,
-				URobotMap.START_HUMAN_FEED_BUTTON_ID);
-		stopHumanFeedButton = new JoystickButton(rightStick,
-				URobotMap.STOP_HUMAN_FEED_BUTTON_ID);
+		startHumanFeedButton = new JoystickButton(rightStick, URobotMap.START_HUMAN_FEED_BUTTON_ID);
+		stopHumanFeedButton = new JoystickButton(rightStick, URobotMap.STOP_HUMAN_FEED_BUTTON_ID);
 
-		incrementNumberTotesButton = new JoystickButton(rightStick,
-				URobotMap.INCREMENT_NUMBER_TOTES_BUTTON_ID);
+		incrementNumberTotesButton = new JoystickButton(rightStick, URobotMap.INCREMENT_NUMBER_TOTES_BUTTON_ID);
 
-		toteElevatorUpManualButton = new JoystickButton(rightStick,
-				URobotMap.TOTE_ELEVATOR_UP_MANUAL_BUTTON_ID);
-		toteElevatorDownManualButton = new JoystickButton(rightStick,
-				URobotMap.TOTE_ELEVATOR_DOWN_MANUAL_BUTTON_ID);
+		toteElevatorUpManualButton = new JoystickButton(rightStick, URobotMap.TOTE_ELEVATOR_UP_MANUAL_BUTTON_ID);
+		toteElevatorDownManualButton = new JoystickButton(rightStick, URobotMap.TOTE_ELEVATOR_DOWN_MANUAL_BUTTON_ID);
 
-		lowerToteElevatorAndOpenClawButton = new JoystickButton(rightStick,
-				URobotMap.LOWER_TOTE_ELEVATOR_AND_OPEN_CLAW_BUTTON_ID);
-		driverCloseButton = new JoystickButton(rightStick,
-				URobotMap.DRIVER_CLOSE_CLAW_BUTTON_ID);
+		lowerToteElevatorAndOpenClawButton = new JoystickButton(rightStick, URobotMap.LOWER_TOTE_ELEVATOR_AND_OPEN_CLAW_BUTTON_ID);
+		driverCloseButton = new JoystickButton(rightStick, URobotMap.DRIVER_CLOSE_CLAW_BUTTON_ID);
 
 		// Left stick
 		binElevatorUp = new InternalButton();
 		binElevatorDown = new InternalButton();
 
-		closeClawButton = new JoystickButton(leftStick,
-				URobotMap.CLOSE_CLAW_BUTTON_ID);
-		openClawButton = new JoystickButton(leftStick,
-				URobotMap.OPEN_CLAW_BUTTON_ID);
+		closeClawButton = new JoystickButton(leftStick, URobotMap.CLOSE_CLAW_BUTTON_ID);
+		openClawButton = new JoystickButton(leftStick, URobotMap.OPEN_CLAW_BUTTON_ID);
 
-		rakerDownManualButton = new JoystickButton(leftStick,
-				URobotMap.RAKER_DOWN_MANUAL_BUTTON_ID);
-		rakerUpManualButton = new JoystickButton(leftStick,
-				URobotMap.RAKER_UP_MANUAL_BUTTON_ID);
+		rakerDownManualButton = new JoystickButton(leftStick, URobotMap.RAKER_DOWN_MANUAL_BUTTON_ID);
+		rakerUpManualButton = new JoystickButton(leftStick, URobotMap.RAKER_UP_MANUAL_BUTTON_ID);
 
-		conveyorForwardButton = new JoystickButton(leftStick,
-				URobotMap.CONEYOR_FOWARD_BUTTON_ID);
-		conveyorBackButton = new JoystickButton(leftStick,
-				URobotMap.CONVEYOR_BACK_BUTTON_ID);
+		conveyorForwardButton = new JoystickButton(leftStick, URobotMap.CONEYOR_FOWARD_BUTTON_ID);
+		conveyorBackButton = new JoystickButton(leftStick, URobotMap.CONVEYOR_BACK_BUTTON_ID);
 
-		guardRailOpenButton = new JoystickButton(leftStick,
-				URobotMap.GUARDRAIL_OPEN_MANUAL_BUTTON_ID);
-		guardRailCloseButton = new JoystickButton(leftStick,
-				URobotMap.GUARDRAIL_CLOSE_MANUAL_BUTTON_ID);
+		guardRailOpenButton = new JoystickButton(leftStick, URobotMap.GUARDRAIL_OPEN_MANUAL_BUTTON_ID);
+		guardRailCloseButton = new JoystickButton(leftStick, URobotMap.GUARDRAIL_CLOSE_MANUAL_BUTTON_ID);
 	}
 
 	public void init() {
@@ -127,26 +108,22 @@ public class UOI {
 
 		resetDriveEncodersButton.whenPressed(new UResetDriveEncodersCommand());
 
-		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine
-				.getInstance().humanFeed_Start));
-		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine
-				.getInstance().humanFeed_Stop));
+		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Start));
+		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().humanFeed_Stop));
 
-		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine
-				.getInstance().abortSignal));
-		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine
-				.getInstance().resetSignal));
+		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().abortSignal));
+		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().resetSignal));
 	}
 
 	public void updatePOV() {
-		int povLeft = rightStick.getPOV();
-		kachigRight.setPressed(povLeft == 90);
-		kachigForward.setPressed(povLeft == 0);
-		kachigLeft.setPressed(povLeft == 270);
-		kachigBackward.setPressed(povLeft == 180);
+		int povRight = rightStick.getPOV();
+		kachigRight.setPressed(povRight == 90);
+		kachigForward.setPressed(povRight == 0);
+		kachigLeft.setPressed(povRight == 270);
+		kachigBackward.setPressed(povRight == 180);
 
-		int povRight = leftStick.getPOV();
-		binElevatorUp.setPressed(povRight == 0);
-		binElevatorDown.setPressed(povRight == 180);
+		int povLeft = leftStick.getPOV();
+		binElevatorUp.setPressed(povLeft == 0);
+		binElevatorDown.setPressed(povLeft == 180);
 	}
 }

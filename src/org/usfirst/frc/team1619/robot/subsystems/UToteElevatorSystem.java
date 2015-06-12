@@ -93,9 +93,9 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 				.set(URobotMap.MotorDefinition.toteElevatorMotor.id);
 		toteElevatorMotorSmall.reverseOutput(true);
 
-		// Preferences.putNumber("Current_RateOffsetConstant_Value",
+		// UDynamicPreferences.putNumber("Current_RateOffsetConstant_Value",
 		// kRateOffsetConstant);
-		// Preferences.putNumber("Current_RateOffset_Value", kRateOffset);
+		// UDynamicPreferences.putNumber("Current_RateOffset_Value", kRateOffset);
 
 		safeToRaiseToteTimer.start();
 	}
@@ -195,10 +195,10 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 			if (wasManual) {
 				double rateOffset = getToteElevatorRate() * kRateOffset;
 				// double rateOffset = getToteElevatorRate() *
-				// Preferences.getNumber("Current_RateOffset_Value",
+				// UDynamicPreferences.getNumber("Current_RateOffset_Value",
 				// kRateOffset);
 				// double rateOffsetConstant =
-				// Preferences.getNumber("Current_RateOffsetConstant_Value",
+				// UDynamicPreferences.getNumber("Current_RateOffsetConstant_Value",
 				// kRateOffsetConstant) * (up ? 1.0 : -1.0);
 				double rateOffsetConstant = kRateOffsetConstant
 						* (up ? 1.0 : -1.0);
@@ -319,7 +319,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 		case HumanFeed_ThrottleConveyorAndDescend:
 			if (useStatePosition) {
 				// double slowdownDis1tance =
-				// Preferences.getNumber("slowdownDistance", kSlowdownDistance);
+				// UDynamicPreferences.getNumber("slowdownDistance", kSlowdownDistance);
 				if (getToteElevatorPosition() > kSlowdownDistance
 						+ kPositionTolerance) {
 					setToteElevatorPosition(kSlowdownDistance);

@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1619.robot;
 
-import org.usfirst.frc.team1619.UPreferences;
+import org.usfirst.frc.team1619.UDynamicPreferences;
+import org.usfirst.frc.team1619.UProperties;
 import org.usfirst.frc.team1619.robot.auto.UBinGrabReverseAuto;
 import org.usfirst.frc.team1619.robot.auto.UBinGrabWithLitterAuto;
 import org.usfirst.frc.team1619.robot.auto.UBinRakerAuto;
@@ -86,11 +87,10 @@ public class URobot extends IterativeRobot {
 
 		SmartDashboard.putData("Auto Mode", fAutoChooser);
 
-		if (UPreferences.isTestMode()) {
+		if (UProperties.isTestMode()) {
 			UManualKeyboardControl.getInstance().startRainbowSTORMServer();
 		}
-		// TODO move this to network table
-		UPreferences.getPreferences().put("SecondSlowDriveDistance", 0.4);
+		UDynamicPreferences.putNumber("SecondSlowDriveDistance", 0.4);
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class URobot extends IterativeRobot {
 	 */
 	public void testPeriodic() {
 		// LiveWindow.run();
-		if (UPreferences.isTestMode()) {
+		if (UProperties.isTestMode()) {
 			UManualKeyboardControl.getInstance().runRainbowSTORM();
 		}
 		sharedPeriodic();
