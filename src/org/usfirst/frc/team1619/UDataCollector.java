@@ -18,7 +18,6 @@ public class UDataCollector extends UGenericLogger{
 
 	private String[] fHeaders;
 	private static final List<UDataCollector> sDataLoggers = new ArrayList<>();
-	private static String sLogGroup = getDateString();
 	
 	public UDataCollector(String logName, String... headers) {
 		super(logName);
@@ -35,26 +34,9 @@ public class UDataCollector extends UGenericLogger{
 	protected void initLog() {
 		printHeaders(fHeaders);
 	}
-	
-	private void printCSV(String[] values) {
-		if (getFileWriter() == null)
-			return;
-		try {
-			getFileWriter().append(getDateString());
-			for (String s : values) {
-				getFileWriter().append(',');
-				getFileWriter().append(s);
-			}
-			getFileWriter().append('\n');
-			getFileWriter().flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	private void printHeaders(String[] values) {
-		if (getFileWriter() == null)
+		if (fFileWriter == null)
 			return;
 		try {
 			boolean firstCall = true;
@@ -62,27 +44,41 @@ public class UDataCollector extends UGenericLogger{
 				if (firstCall)
 					firstCall = false;
 				else
-					getFileWriter().append(',');
-				getFileWriter().append(s);
+					fFileWriter.append(',');
+				fFileWriter.append(s);
 			}
-			getFileWriter().append('\n');
-			getFileWriter().flush();
+			fFileWriter.append('\n');
+			fFileWriter.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	
 	public static void changeLogs() {
-		sLogGroup = getDateString();
-		for (UGenericLogger l : sDataLoggers)
+		sLogFolder = getDateString();
+		for (UDataCollector l : sDataLoggers)
 			l.nextLog();
 		cleanUp();
 	}
 
+	@Override
 	public void log(String... values) {
 		printCSV(values);
 	}
-
-
+	
+	private void printCSV(String[] values) {
+		if (fFileWriter == null)
+			return;
+		try {
+			fFileWriter.append(getDateString());
+			for (String s : values) {
+				fFileWriter.append(',');
+				fFileWriter.append(s);
+			}
+			fFileWriter.append('\n');
+			fFileWriter.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

@@ -4,27 +4,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 public abstract class UGenericLogger {
 
 	private static final int MAX_LOGS = 50;
-	private static final String LOG_FOLDER_PATH = "/home/lvuser/log/";
+	protected static final String LOG_FOLDER_PATH = "/home/lvuser/log/";
 	private static SimpleDateFormat sDateFormat;
+	protected static String sLogFolder = getDateString(); 
 
-	private FileWriter fFileWriter;
+	protected FileWriter fFileWriter;
 	private String fLogName;
 
 	static {
 		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
 		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
 	}
-
-	protected abstract void initLog();
 
 	public UGenericLogger(String logName) {
 		this.fLogName = new String(logName);
@@ -64,11 +61,10 @@ public abstract class UGenericLogger {
 		try {
 			if (fFileWriter != null)
 				fFileWriter.close();
-			File logDir = new File(LOG_FOLDER_PATH + sLogGroup);
+			File logDir = new File(LOG_FOLDER_PATH + sLogFolder);
 			logDir.mkdir();
 			if (logDir.exists()) {
-				fFileWriter = new FileWriter(LOG_FOLDER_PATH + sLogGroup + "/"
-						+ fLogName);
+				fFileWriter = new FileWriter(LOG_FOLDER_PATH + sLogFolder + "/" + fLogName);
 				initLog();
 			}
 			else {
@@ -79,8 +75,8 @@ public abstract class UGenericLogger {
 			e.printStackTrace();
 		}
 	}
-
-	protected FileWriter getFileWriter() {
-		return fFileWriter;
-	}
+	
+	protected abstract void log(String... values);
+	
+	protected abstract void initLog();
 }
