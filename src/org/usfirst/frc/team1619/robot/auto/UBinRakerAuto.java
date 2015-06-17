@@ -17,7 +17,7 @@ public class UBinRakerAuto extends CommandGroup {
 	private static final double kBackConveyorSpeed = 1.0;
 
 	public enum BinRakerMode {
-		NO_DRIVE, CARPET_SIDE, PLATFORM_SIDE, XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII,
+		NO_DRIVE, CARPET_SIDE, PLATFORM_SIDE, XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII
 	}
 
 	public UBinRakerAuto(BinRakerMode mode) {

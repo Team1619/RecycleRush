@@ -8,10 +8,11 @@ public class UProperties extends Properties {
 	 */
 	private static final long serialVersionUID = -660698254584286808L;
 	private static final UProperties sProperties = new UProperties();
-
+	
 	private UProperties() {
 		put("TEST_MODE", Boolean.FALSE);
 		put("COMPETITION_MODE", Boolean.FALSE);
+		put("LOGGING_LEVEL", LoggingLevels.ERROR);
 	}
 
 	public static UProperties getProperties() {
@@ -31,5 +32,9 @@ public class UProperties extends Properties {
 
 	public static boolean isTestMode() {
 		return sProperties.get("TEST_MODE", Boolean.class);
+	}
+	
+	public static LoggingLevels getLoggingLevel() {
+		return sProperties.get("LOGGING_LEVEL", LoggingLevels.class);
 	}
 }

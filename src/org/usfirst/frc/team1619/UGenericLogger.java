@@ -14,11 +14,7 @@ public abstract class UGenericLogger {
 
 	private static final int MAX_LOGS = 50;
 	private static final String LOG_FOLDER_PATH = "/home/lvuser/log/";
-	
-	private static final List<UGenericLogger> LUMBERJACKS = new ArrayList<>();
-
 	private static SimpleDateFormat sDateFormat;
-	private static String sLogGroup = getDateString();
 
 	private FileWriter fFileWriter;
 	private String fLogName;
@@ -28,13 +24,12 @@ public abstract class UGenericLogger {
 		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
 	}
 
-	public UGenericLogger(String logName) {
-		this.fLogName = new String(logName);
-		LUMBERJACKS.add(this);
-	}
-	
 	protected abstract void initLog();
 
+	public UGenericLogger(String logName) {
+		this.fLogName = new String(logName);
+	}
+	
 	static void deleteFile(File folder) {
 		if (folder.isDirectory()) {
 			File[] files = folder.listFiles();
@@ -49,7 +44,7 @@ public abstract class UGenericLogger {
 		}
 	}
 
-	private static void cleanUp() {
+	protected static void cleanUp() {
 		try {
 			File logFolder = new File(LOG_FOLDER_PATH);
 			File[] logPaths = logFolder.listFiles();
@@ -57,25 +52,12 @@ public abstract class UGenericLogger {
 			for (int i = 0; i < (logPaths.length - MAX_LOGS); i++)
 				deleteFile(logPaths[i]);
 		} catch (Exception e) {
-
+			e.printStackTrace();
 		}
 	}
 
-	private static String getDateString() {
+	protected static String getDateString() {
 		return sDateFormat.format(new Date());
-	}
-
-	protected String getTimestamp() {
-		return sDateFormat.format(new Date());
-		// return String.format("%.3f",
-		// (double)(System.currentTimeMillis()-start) / 1000);
-	}
-
-	public static void changeLogs() {
-		sLogGroup = getDateString();
-		for (UGenericLogger l : LUMBERJACKS)
-			l.nextLog();
-		cleanUp();
 	}
 
 	protected void nextLog() {
@@ -101,5 +83,4 @@ public abstract class UGenericLogger {
 	protected FileWriter getFileWriter() {
 		return fFileWriter;
 	}
-	
 }

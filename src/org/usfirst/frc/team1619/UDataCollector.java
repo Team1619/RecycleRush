@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1619;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 //Lumberjacks are made for logging
 //Use Lumberjacks for logging
@@ -15,7 +17,9 @@ import java.io.IOException;
 public class UDataCollector extends UGenericLogger{
 
 	private String[] fHeaders;
-
+	private static final List<UDataCollector> sDataLoggers = new ArrayList<>();
+	private static String sLogGroup = getDateString();
+	
 	public UDataCollector(String logName, String... headers) {
 		super(logName);
 		this.fHeaders = new String[headers.length + 1];
@@ -23,6 +27,8 @@ public class UDataCollector extends UGenericLogger{
 		for (int i = 0; i < headers.length; i++) {
 			this.fHeaders[i + 1] = headers[i];
 		}
+		sDataLoggers.add(this);
+
 		nextLog();
 	}
 	
@@ -34,7 +40,7 @@ public class UDataCollector extends UGenericLogger{
 		if (getFileWriter() == null)
 			return;
 		try {
-			getFileWriter().append(getTimestamp());
+			getFileWriter().append(getDateString());
 			for (String s : values) {
 				getFileWriter().append(',');
 				getFileWriter().append(s);
@@ -67,8 +73,16 @@ public class UDataCollector extends UGenericLogger{
 
 	}
 	
+	public static void changeLogs() {
+		sLogGroup = getDateString();
+		for (UGenericLogger l : sDataLoggers)
+			l.nextLog();
+		cleanUp();
+	}
+
 	public void log(String... values) {
 		printCSV(values);
 	}
+
 
 }
