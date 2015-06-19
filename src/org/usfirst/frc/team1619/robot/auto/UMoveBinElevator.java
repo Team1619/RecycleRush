@@ -46,11 +46,11 @@ public class UMoveBinElevator extends Command {
 		}
 		else {
 			if (up) {
-				return UBinElevatorSystem.getInstance().binElevatorMotor
+				return UBinElevatorSystem.getInstance().fBinElevatorMotor
 						.isRevLimitSwitchClosed();
 			}
 			else {
-				return UBinElevatorSystem.getInstance().binElevatorMotor
+				return UBinElevatorSystem.getInstance().fBinElevatorMotor
 						.isFwdLimitSwitchClosed();
 			}
 		}

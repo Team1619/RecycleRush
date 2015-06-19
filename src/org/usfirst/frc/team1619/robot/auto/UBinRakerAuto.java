@@ -33,9 +33,9 @@ public class UBinRakerAuto extends CommandGroup {
 		addSequential(new ULinearDriveCommand(1.0, 1));
 
 		addParallel(new UMoveBinElevator(false,
-				UBinElevatorSystem.kBinElevatorUpSpeed));
+				UBinElevatorSystem.BIN_ELEVATOR_UP_SPEED));
 		if (mode == BinRakerMode.XTR3M3BinRakerN0Sc0pe3MuchSweg5UByMountainDewMkII) {
-			addParallel(new UClawsOpen(UBinElevatorSystem.kBinGripOpenTime));
+			addParallel(new UClawsOpen(UBinElevatorSystem.BIN_GRIP_OPEN_TIME));
 			addParallel(new UArmDown());
 			addSequential(new ULinearDriveCommand(UDynamicPreferences.getNumber("SecondSlowDriveDistance", 0.4), 0.5));
 		}

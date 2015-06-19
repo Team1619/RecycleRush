@@ -12,7 +12,7 @@ public class UGetOutTheWayAuto extends CommandGroup {
 
 	public UGetOutTheWayAuto() {
 		addParallel(new UMoveBinElevator(false,
-				UBinElevatorSystem.kBinElevatorUpSpeed));
+				UBinElevatorSystem.BIN_ELEVATOR_UP_SPEED));
 		addSequential(new ULinearDriveCommand(2.0, 0.5));
 		// Add Commands here:
 		// e.g. addSequential(new Command1());
