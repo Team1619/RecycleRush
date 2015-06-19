@@ -24,7 +24,7 @@ public class UBinGrabReverseAuto extends CommandGroup {
 
 		// drive 1 previous
 		// drive 1 previous speed = 1.0
-		addParallel(new UClawsOpen(UBinElevatorSystem.kBinGripOpenTime));
+		addParallel(new UClawsOpen(UBinElevatorSystem.BIN_GRIP_OPEN_TIME));
 		addSequential(new UMoveBinElevator(true, -0.6));
 		addSequential(new ULinearDriveCommand(0.1, 1.0));
 		addSequential(new UArmDown());

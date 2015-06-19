@@ -12,8 +12,8 @@ public class UBinGrabWithLitterAuto extends CommandGroup {
 
 	public UBinGrabWithLitterAuto() {
 		addParallel(new UMoveBinElevator(false,
-				UBinElevatorSystem.kBinElevatorUpSpeed));
-		addParallel(new UClawsOpen(UBinElevatorSystem.kBinGripOpenTime));
+				UBinElevatorSystem.BIN_ELEVATOR_UP_SPEED));
+		addParallel(new UClawsOpen(UBinElevatorSystem.BIN_GRIP_OPEN_TIME));
 		addSequential(new ULinearDriveCommand(0.8, 0.5));
 		addSequential(new UClawsClose(0.5, 2));
 		// addParallel(new LinearDriveCommand(0.5, 0.5));

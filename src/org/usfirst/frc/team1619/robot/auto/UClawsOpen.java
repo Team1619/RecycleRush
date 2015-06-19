@@ -28,7 +28,7 @@ public class UClawsOpen extends Command {
 	// Called repeatedly when this Command is scheduled to run
 	protected void execute() {
 		UBinElevatorSystem.getInstance().setBinGrip(
-				UBinElevatorSystem.kBinGripOpenSpeed);
+				UBinElevatorSystem.BIN_GRIP_OPEN_SPEED);
 	}
 
 	// Make this return true when this Command no longer needs to run execute()

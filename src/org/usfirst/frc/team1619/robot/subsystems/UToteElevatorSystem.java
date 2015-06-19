@@ -244,9 +244,9 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 		}
 		else {
 			toteElevatorMotor.changeControlMode(ControlMode.PercentVbus);
-			if (finalSetValue > UBinElevatorSystem.kToteElevatorSafetyForTilt) {
+			if (finalSetValue > UBinElevatorSystem.TOTE_ELEVATOR_SAFETY_FOR_TILT) {
 				toteElevatorMotor
-						.set(UBinElevatorSystem.kToteElevatorSafetyForTilt);
+						.set(UBinElevatorSystem.TOTE_ELEVATOR_SAFETY_FOR_TILT);
 			}
 			else {
 				toteElevatorMotor.set(finalSetValue);

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class UClawsClose extends Command {
 
-	private static final double kSpeed = UBinElevatorSystem.kBinGripCloseSpeed;
+	private static final double kSpeed = UBinElevatorSystem.BIN_GRIP_CLOSE_SPEED;
 	private static final double kTime = 2;
 
 	private Timer closeTimer = new Timer();

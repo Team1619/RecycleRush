@@ -56,6 +56,10 @@ public class UOI {
 		return sOI;
 	}
 
+	/**
+	 * Assigns to all of the joystick and buttons, 
+	 * defining the stick and ID that each button belongs to
+	 */
 	UOI() {
 		rightStick = new Joystick(URobotMap.RIGHT_STICK_ID);
 		leftStick = new Joystick(URobotMap.LEFT_STICK_ID);
@@ -100,6 +104,10 @@ public class UOI {
 		guardRailCloseButton = new JoystickButton(leftStick, URobotMap.GUARDRAIL_CLOSE_MANUAL_BUTTON_ID);
 	}
 
+	/**
+	 * Defines command based behaviors for the buttons that require it. 
+	 * Includes commands to be called when pressed or held.
+	 */
 	public void init() {
 		kachigLeft.whenPressed(new UKachigCommand(0, -1, 0.075));
 		kachigRight.whenPressed(new UKachigCommand(0, 1, 0.075));
@@ -115,6 +123,13 @@ public class UOI {
 		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fResetSignal));
 	}
 
+	/**
+	 * To be called in the main periodic loop of the robot. 
+	 * Defines the POV buttons to be pressed or not based on the 
+	 * position of the POV button for each joystick
+	 * (right, left, up or down are each assigned an angle value in degrees:
+	 * 90, 270, 0, and 180 respetively)
+	 */
 	public void updatePOV() {
 		int povRight = rightStick.getPOV();
 		kachigRight.setPressed(povRight == 90);
