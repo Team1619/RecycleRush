@@ -50,7 +50,7 @@ public class ULogger extends UGenericLogger {
 	}
 
 	/**
-	 * Does LITERALLY nothing
+	 * Does LITERALLY nothing in this implementation of UGenericLogger
 	 */
 	@Override
 	protected void initLog() {
@@ -59,6 +59,7 @@ public class ULogger extends UGenericLogger {
 
 	/**
 	 * Writes to the log file.
+	 * 
 	 * @param values The string(s) to be written to the log file. Only one string should be passed for this class.
 	 */
 	@Override

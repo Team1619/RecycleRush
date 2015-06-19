@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1619;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 //Lumberjacks are made for logging
 //Use Lumberjacks for logging
@@ -17,8 +15,11 @@ import java.util.List;
 public class UDataCollector extends UGenericLogger{
 
 	private String[] fHeaders;
-	private static final List<UDataCollector> sDataLoggers = new ArrayList<>();
 	
+	/**
+	 * @param logName is the name of the file that the data will be written to
+	 * @param headers are printed at the top of each column of data
+	 */
 	public UDataCollector(String logName, String... headers) {
 		super(logName);
 		this.fHeaders = new String[headers.length + 1];
@@ -26,15 +27,23 @@ public class UDataCollector extends UGenericLogger{
 		for (int i = 0; i < headers.length; i++) {
 			this.fHeaders[i + 1] = headers[i];
 		}
-		sDataLoggers.add(this);
 
 		nextLog();
 	}
 	
+	/**
+	 * Prints the headers at the top of each column
+	 */
 	protected void initLog() {
 		printHeaders(fHeaders);
 	}
 
+	/**
+	 * Prints the series of headers separated by columns to head 
+	 * each column in the comma separated values.
+	 * 
+	 * @param values the set of headers
+	 */
 	private void printHeaders(String[] values) {
 		if (fFileWriter == null)
 			return;
@@ -53,19 +62,18 @@ public class UDataCollector extends UGenericLogger{
 			e.printStackTrace();
 		}
 	}
-	
-	public static void changeLogs() {
-		sLogFolder = getDateString();
-		for (UDataCollector l : sDataLoggers)
-			l.nextLog();
-		cleanUp();
-	}
 
+	/**
+	 * Prints the specified values separated by commas into the columns under each header.
+	 */
 	@Override
 	public void log(String... values) {
 		printCSV(values);
 	}
 	
+	/**
+	 * @param values are printed to the file with a comma between each one
+	 */
 	private void printCSV(String[] values) {
 		if (fFileWriter == null)
 			return;
