@@ -13,24 +13,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class UStateMachine {
 	
+	/**
+	 * A boolean flag.
+	 */
 	public class Signal {
 		private boolean hasRisen;
 		
 		public Signal() {
 			hasRisen = false;
 		}
+		
+		/**
+		 * Returns the state of the signal.
+		 * @return The boolean state of the signal.
+		 */
 		public boolean check() {
 			return /* Our Lord and Savior Jesus */hasRisen; // "Hit home to Jerusalem"
 			// - Daniel
 		}
+		
+		/**
+		 * Sets the state of the signal to false.
+		 */
 		public void clear() {
 			hasRisen = false;
 		}
+		
+		/**
+		 * Sets the state of the signal to true.
+		 */
 		public void raise() {
 			hasRisen = true;
 		}
 	}
 	
+	/**
+	 * A class for all auto-clearing signals. 
+	 * Whenever the constructor is called the class instance is added to a list of AutoClearSignals.
+	 */
 	public class AutoClearSignal extends Signal {
 		public AutoClearSignal() {
 			fAutoClearSignals.add(this);
@@ -66,12 +86,26 @@ public class UStateMachine {
 		fToStopHumanFeed = false;
 	}
 	
+	/**
+	 * Gets the fToStopHumanFeed variable.
+	 * @return If human feed should be stopped.
+	 */
 	public boolean getToStopHumanFeed() {
 		return fToStopHumanFeed;
 	}
+	
+	/**
+	 * Gets the current number of totes in the stacker.
+	 * @return The current number of totes
+	 */
 	public int getNumberTotes() {
 		return fNumberTotes;
 	}
+	
+	/**
+	 * Gets the current state of the state machine.
+	 * @return The current state of the state machine
+	 */
 	public State getState() {
 		return fCurrentState;
 	}
@@ -88,6 +122,10 @@ public class UStateMachine {
 		return sStateMachine;
 	}
 
+	/**
+	 * Initializes the state machine. Resets the state timer, sets the current state to Init,
+	 * sets tote count to zero, and calls the init functions of all of the subsystems.
+	 */
 	public void init() {
 		fStateTimer.reset();
 		fCurrentState = State.Init;
@@ -97,11 +135,18 @@ public class UStateMachine {
 			system.init(fCurrentState);
 	}
 
+	/**
+	 * Adds a subsystem to an array of subsystems.
+	 * @param sms The state machine system
+	 */
 	public void addSystem(UStateMachineSystem sms) {
 		fSystems.add(sms);
 	}
 
 	public enum State {
+		/**
+		 * The state in which all initialization occurs. Should be called first.
+		 */
 		Init {
 			@Override
 			protected void init(UStateMachine sm) {
@@ -127,6 +172,10 @@ public class UStateMachine {
 					return Init;
 			}
 		},
+		
+		/**
+		 *  The robot is not actively performing any actions. The default state.
+		 */
 		Idle {
 			@Override
 			protected void init(UStateMachine sm) {
@@ -155,6 +204,10 @@ public class UStateMachine {
 				return this;
 			}
 		},
+		
+		/**
+		 * Raise the tote elevator.
+		 */
 		HumanFeed_RaiseTote {
 			@Override
 			public State run(UStateMachine sm) {
@@ -178,6 +231,11 @@ public class UStateMachine {
 				sm.fHumanFeed_ThrottleConveyorDescend.clear();
 			}
 		},
+		
+		/**
+		 * Tote feeding state. Opens the guardrails, throttles the conveyor forward,
+		 * and raises the tote elevator.
+		 */
 		HumanFeed_WaitForTote {
 			@Override
 			protected void init(UStateMachine sm) {
@@ -205,6 +263,10 @@ public class UStateMachine {
 				return this;
 			}
 		},
+		
+		/**
+		 * A tote is on the conveyor belt. Closes the guardrail and throttles the conveyor forward.
+		 */
 		HumanFeed_ToteOnConveyor {
 			@Override
 			public State run(UStateMachine sm) {
@@ -230,6 +292,10 @@ public class UStateMachine {
 			protected void init(UStateMachine sm) {
 			}
 		},
+		
+		/**
+		 * Throttles the conveyor back. Occurs immediately after the falling edge of the front sensor.
+		 */
 		HumanFeed_ThrottleConveyorBack {
 			@Override
 			public State run(UStateMachine sm) {
@@ -252,6 +318,10 @@ public class UStateMachine {
 			protected void init(UStateMachine sm) {
 			}
 		},
+		
+		/**
+		 * Throttles the conveyor forward and lowers the tote elevator.
+		 */
 		HumanFeed_ThrottleConveyorAndDescend {
 			@Override
 			public State run(UStateMachine sm) {
@@ -281,6 +351,10 @@ public class UStateMachine {
 				}
 			}
 		},
+		
+		/**
+		 * Tilts the bin elevator up if transitioning from idle to human feed.
+		 */
 		TiltUp {
 			@Override
 			public State run(UStateMachine sm) {
@@ -297,6 +371,10 @@ public class UStateMachine {
 			protected void init(UStateMachine sm) {
 			}
 		},
+		
+		/**
+		 * Stops all state machine movement. Manual movement is still allowed.
+		 */
 		Abort {
 			@Override
 			protected void init(UStateMachine sm) {
@@ -322,6 +400,9 @@ public class UStateMachine {
 
 		public abstract State run(UStateMachine sm);
 
+		/**
+		 * Returns a string representation of the state.
+		 */
 		@Override
 		public String toString() {
 			return this.name();
@@ -330,6 +411,9 @@ public class UStateMachine {
 		protected abstract void init(UStateMachine sm);
 	}
 
+	/**
+	 * Runs the state machine.
+	 */
 	public void run() {
 		double elapsed = fStateTimer.get();
 		for (UStateMachineSystem sms : fSystems) {
@@ -368,6 +452,9 @@ public class UStateMachine {
 		}
 	}
 
+	/**
+	 * Displays the number of totes and the current state on the smartdashboard.
+	 */
 	public void display() {
 		SmartDashboard.putNumber("Number of Totes", fNumberTotes);
 		SmartDashboard.putString("CurrentState", fCurrentState.toString());

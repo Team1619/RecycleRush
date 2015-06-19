@@ -55,7 +55,7 @@ public class UProperties extends Properties {
 	}
 	
 	/**
-	 * Gets the current logging level
+	 * Gets the current logging level.
 	 * @return The logging level
 	 */
 	public static ULoggingLevels getLoggingLevel() {
