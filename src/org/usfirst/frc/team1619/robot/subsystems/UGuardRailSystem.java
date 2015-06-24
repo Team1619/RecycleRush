@@ -116,7 +116,7 @@ public class UGuardRailSystem extends UStateMachineSystem {
 			}
 			break;
 		case HumanFeed_ThrottleConveyorAndDescend:
-			if (UStateMachine.getInstance().getToStopHumanFeed()) {
+			if (UStateMachine.getToStopHumanFeed()) {
 				guardRailSpeed = 0.0;
 			}
 			else {

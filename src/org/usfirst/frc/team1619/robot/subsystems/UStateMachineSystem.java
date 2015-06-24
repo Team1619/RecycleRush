@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public abstract class UStateMachineSystem extends Subsystem {
 
 	public UStateMachineSystem() {
-		UStateMachine.getInstance().addSystem(this);
+		UStateMachine.addSystem(this);
 	}
 
 	public void superSecretSpecialSatanRun(State state, double elapsed) {

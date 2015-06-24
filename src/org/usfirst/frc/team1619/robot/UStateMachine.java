@@ -1,6 +1,8 @@
 package org.usfirst.frc.team1619.robot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.usfirst.frc.team1619.robot.subsystems.UBinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.UConveyorSystem;
@@ -10,17 +12,17 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class UStateMachine {
-	
+
 	/**
 	 * A boolean flag.
 	 */
-	public class Signal {
+	public static class Signal {
 		private boolean hasRisen;
-		
+
 		public Signal() {
 			hasRisen = false;
 		}
-		
+
 		/**
 		 * Returns the state of the signal.
 		 * 
@@ -30,14 +32,14 @@ public class UStateMachine {
 			return /* Our Lord and Savior Jesus */hasRisen; // "Hit home to Jerusalem"
 			// - Daniel
 		}
-		
+
 		/**
 		 * Sets the state of the signal to false.
 		 */
 		public void clear() {
 			hasRisen = false;
 		}
-		
+
 		/**
 		 * Sets the state of the signal to true.
 		 */
@@ -45,19 +47,23 @@ public class UStateMachine {
 			hasRisen = true;
 		}
 	}
-	
+
 	/**
-	 * A class for all auto-clearing signals.
-	 * Whenever the constructor is called the class instance is added to a list of AutoClearSignals.
+	 * A class for all auto-clearing signals. Whenever the constructor is called
+	 * the class instance is added to a list of AutoClearSignals.
 	 */
-	public class AutoClearSignal extends Signal {
+	public static class AutoClearSignal extends Signal {
 		public AutoClearSignal() {
-			fAutoClearSignals.add(this);
+			sStateMachine.fAutoClearSignals.add(this);
 		}
 	}
+
+	public enum SignalName {
+		ABORT, RESET, HUMAN_FEED_STOP, HUMAN_FEED_START, HUMAN_FEED_RAISE_TOTE, HUMAN_FEED_WAIT_FOR_TOTE, HUMAN_FEED_TOTE_ON_CONVEYOR, HUMAN_FEED_THROTTLE_CONVEYOR_BACK, HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND, HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND
+	}
 	
-	//Singleton stateMachine
-	private static UStateMachine sStateMachine = null;
+	// Singleton stateMachine
+	private static UStateMachine sStateMachine = new UStateMachine();
 
 	private State fCurrentState = State.Idle;
 	private boolean fIncrementNumberTotes;
@@ -65,77 +71,63 @@ public class UStateMachine {
 	private int fNumberTotes;
 	private ArrayList<UStateMachineSystem> fSystems = new ArrayList<>();
 	private ArrayList<Signal> fAutoClearSignals = new ArrayList<>();
+	private Map<SignalName, Signal> fSignalMap = new HashMap<>();
 
-	public final Signal fAbortSignal = new AutoClearSignal();
-	public final Signal fResetSignal = new AutoClearSignal();
-	public final Signal fHumanFeed_Stop = new AutoClearSignal();
-	public final Signal fHumanFeed_Start = new AutoClearSignal();
-	public final Signal fHumanFeed_RaiseTote = new AutoClearSignal();
-	public final Signal fHumanFeed_WaitForTote = new AutoClearSignal();
-	public final Signal fHumanFeed_ToteOnConveyor = new AutoClearSignal();
-	public final Signal fHumanFeed_ThrottleConveyorBack = new AutoClearSignal();
-	public final Signal fHumanFeed_ThrottleConveyorDescend = new Signal();
-	public final Signal fHumanFeed_EndCurrentStateAndDescend = new AutoClearSignal();
-	
 	private final Timer fStateTimer = new Timer();
 
 	private UStateMachine() {
 		fNumberTotes = 0;
 		fIncrementNumberTotes = false;
 		fToStopHumanFeed = false;
+		for (SignalName name : SignalName.values()) {
+			fSignalMap.put(name, new AutoClearSignal());
+		}
+		fSignalMap.put(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND, new Signal());
 	}
-	
+
 	/**
 	 * Gets the fToStopHumanFeed variable.
 	 * 
 	 * @return If human feed should be stopped.
 	 */
-	public boolean getToStopHumanFeed() {
-		return fToStopHumanFeed;
+	public static boolean getToStopHumanFeed() {
+		return sStateMachine.fToStopHumanFeed;
 	}
 	
+	public static Signal getSignal(SignalName name) {
+		return sStateMachine.fSignalMap.get(name);
+	}
+
 	/**
 	 * Gets the current number of totes in the stacker.
 	 * 
 	 * @return The current number of totes
 	 */
-	public int getNumberTotes() {
-		return fNumberTotes;
+	public static int getNumberTotes() {
+		return sStateMachine.fNumberTotes;
 	}
-	
+
 	/**
 	 * Gets the current state of the state machine.
 	 * 
 	 * @return The current state of the state machine
 	 */
-	public State getState() {
-		return fCurrentState;
+	public static State getState() {
+		return sStateMachine.fCurrentState;
 	}
 
 	/**
-	 * Gets stateMachine instance. Creates it at first call.
-	 * 
-	 * @return single stateMachine instance
+	 * Initializes the state machine. Resets the state timer, sets the current
+	 * state to INIT, sets tote count to zero, and calls the init functions of
+	 * all of the subsystems.
 	 */
-	public static UStateMachine getInstance() {
-		if (sStateMachine == null) {
-			sStateMachine = new UStateMachine();
-			sStateMachine.fStateTimer.start();
-		}
-		return sStateMachine;
-	}
-
-	/**
-	 * Initializes the state machine. Resets the state timer, sets the current state to INIT,
-	 * sets tote count to zero, and calls the init functions of all of the subsystems.
-	 */
-	public void init() {
-		fStateTimer.reset();
-		fCurrentState = State.Init;
-		fCurrentState.init(this);
-		fNumberTotes = 0;
-		for (UStateMachineSystem system : fSystems)
-			system.init(fCurrentState);
+	public static void init() {
+		sStateMachine.fStateTimer.reset();
+		sStateMachine.fCurrentState = State.Init;
+		sStateMachine.fCurrentState.init();
+		sStateMachine.fNumberTotes = 0;
+		for (UStateMachineSystem system : sStateMachine.fSystems)
+			system.init(sStateMachine.fCurrentState);
 	}
 
 	/**
@@ -143,24 +135,24 @@ public class UStateMachine {
 	 * 
 	 * @param sms The state machine system
 	 */
-	public void addSystem(UStateMachineSystem sms) {
-		fSystems.add(sms);
+	public static void addSystem(UStateMachineSystem sms) {
+		sStateMachine.fSystems.add(sms);
 	}
 
-	public enum State {
+	public static enum State {
 		/**
 		 * The state in which all initialization occurs. Should be called first.
 		 */
 		Init {
 			@Override
-			protected void init(UStateMachine sm) {
-				sm.fNumberTotes = 0;
+			protected void init() {
+				sStateMachine.fNumberTotes = 0;
 			}
 
 			@Override
-			public State run(UStateMachine sm) {
+			public State run() {
 				boolean finished = true;
-				for (UStateMachineSystem s : sm.fSystems) {
+				for (UStateMachineSystem s : sStateMachine.fSystems) {
 					if (s.initFinished())
 						continue;
 					else {
@@ -170,35 +162,34 @@ public class UStateMachine {
 				}
 				if (finished)
 					return Idle;
-				else if (sm.fAbortSignal.check() || (sm.fStateTimer.get() > 4))
+				else if (getSignal(SignalName.ABORT).check() || (sStateMachine.fStateTimer.get() > 4))
 					return Abort;
 				else
 					return Init;
 			}
 		},
-		
+
 		/**
-		 *  The robot is not actively performing any actions. The default state.
+		 * The robot is not actively performing any actions. The default state.
 		 */
 		Idle {
 			@Override
-			protected void init(UStateMachine sm) {
-				sm.fToStopHumanFeed = false;
-				sm.fNumberTotes = 0;
+			protected void init() {
+				sStateMachine.fToStopHumanFeed = false;
+				sStateMachine.fNumberTotes = 0;
 			}
 
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (sm.fHumanFeed_Start.check()) {
-					UStateMachine.getInstance().fNumberTotes = 0;
+				if (getSignal(SignalName.HUMAN_FEED_START).check()) {
+					sStateMachine.fNumberTotes = 0;
 
-					if (UBinElevatorSystem.getInstance()
-							.getTilterBackLimitSwitch()) {
-						sm.fHumanFeed_ToteOnConveyor.clear();
-						sm.fHumanFeed_ThrottleConveyorDescend.clear();
+					if (UBinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
+						getSignal(SignalName.HUMAN_FEED_TOTE_ON_CONVEYOR).clear();
+						getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).clear();
 						return HumanFeed_RaiseTote;
 					}
 					else {
@@ -208,161 +199,161 @@ public class UStateMachine {
 				return this;
 			}
 		},
-		
+
 		/**
 		 * Raise the tote elevator.
 		 */
 		HumanFeed_RaiseTote {
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (sm.fHumanFeed_WaitForTote.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_WAIT_FOR_TOTE).check()) {
 					return HumanFeed_WaitForTote;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
-					sm.fToStopHumanFeed = true;
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
-				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
 
 			@Override
-			protected void init(UStateMachine sm) {
-				sm.fHumanFeed_ThrottleConveyorDescend.clear();
+			protected void init() {
+				getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).clear();
 			}
 		},
-		
+
 		/**
-		 * Tote feeding state. Opens the guardrails, throttles the conveyor forward,
-		 * and raises the tote elevator.
+		 * Tote feeding state. Opens the guardrails, throttles the conveyor
+		 * forward, and raises the tote elevator.
 		 */
 		HumanFeed_WaitForTote {
 			@Override
-			protected void init(UStateMachine sm) {
+			protected void init() {
 			}
 
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fToStopHumanFeed) {
+			public State run() {
+				if (sStateMachine.fToStopHumanFeed) {
 					return Idle;
 				}
-				if (sm.fAbortSignal.check()) {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (UConveyorSystem.getInstance().getRearSensor()
-						|| UConveyorSystem.getInstance().getFrontSensor()
-						|| sm.fHumanFeed_ThrottleConveyorDescend.check()) {
+				if (UConveyorSystem.getInstance().getRearSensor() || UConveyorSystem.getInstance().getFrontSensor() || getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).check()) {
 					return HumanFeed_ToteOnConveyor;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
-					sm.fToStopHumanFeed = true;
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
-				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
 		},
-		
+
 		/**
-		 * A tote is on the conveyor belt. Closes the guardrail and throttles the conveyor forward.
+		 * A tote is on the conveyor belt. Closes the guardrail and throttles
+		 * the conveyor forward.
 		 */
 		HumanFeed_ToteOnConveyor {
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (sm.fHumanFeed_ThrottleConveyorDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
-					sm.fToStopHumanFeed = true;
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
-				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.fHumanFeed_ThrottleConveyorBack.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_BACK).check()) {
 					return HumanFeed_ThrottleConveyorBack;
 				}
 				return this;
 			}
 
 			@Override
-			protected void init(UStateMachine sm) {
+			protected void init() {
 			}
 		},
-		
+
 		/**
-		 * Throttles the conveyor back. Occurs immediately after the falling edge of the front sensor.
+		 * Throttles the conveyor back. Occurs immediately after the falling
+		 * edge of the front sensor.
 		 */
 		HumanFeed_ThrottleConveyorBack {
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (sm.fHumanFeed_ThrottleConveyorDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
-					sm.fToStopHumanFeed = true;
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
-				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
 
 			@Override
-			protected void init(UStateMachine sm) {
+			protected void init() {
 			}
 		},
-		
+
 		/**
 		 * Throttles the conveyor forward and lowers the tote elevator.
 		 */
 		HumanFeed_ThrottleConveyorAndDescend {
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
-				if (sm.fHumanFeed_RaiseTote.check()) {
-					if (sm.fToStopHumanFeed) {
+				if (getSignal(SignalName.HUMAN_FEED_RAISE_TOTE).check()) {
+					if (sStateMachine.fToStopHumanFeed) {
 						return Idle;
 					}
 					return HumanFeed_RaiseTote;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
-					sm.fToStopHumanFeed = true;
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
-				if (sm.fHumanFeed_EndCurrentStateAndDescend.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_END_CURRENT_STATE_AND_DESCEND).check()) {
 					return HumanFeed_ThrottleConveyorAndDescend;
 				}
 				return this;
 			}
 
 			@Override
-			protected void init(UStateMachine sm) {
-				UStateMachine.getInstance().fNumberTotes++;
-				if (UStateMachine.getInstance().fNumberTotes == 6) {
-					sm.fToStopHumanFeed = true;
+			protected void init() {
+				sStateMachine.fNumberTotes++;
+				if (sStateMachine.fNumberTotes == 6) {
+					sStateMachine.fToStopHumanFeed = true;
 				}
 			}
 		},
-		
+
 		/**
 		 * Tilts the bin elevator up if transitioning from idle to human feed.
 		 */
 		TiltUp {
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Abort;
 				}
 				if (UBinElevatorSystem.getInstance().getTilterBackLimitSwitch()) {
@@ -372,37 +363,37 @@ public class UStateMachine {
 			}
 
 			@Override
-			protected void init(UStateMachine sm) {
+			protected void init() {
 			}
 		},
-		
+
 		/**
 		 * Stops all state machine movement. Manual movement is still allowed.
 		 */
 		Abort {
 			@Override
-			protected void init(UStateMachine sm) {
+			protected void init() {
 			}
 
 			@Override
-			public State run(UStateMachine sm) {
-				if (sm.fAbortSignal.check()) {
+			public State run() {
+				if (getSignal(SignalName.ABORT).check()) {
 					return Idle;
 				}
-				if (sm.fResetSignal.check()) {
+				if (getSignal(SignalName.RESET).check()) {
 					return Init;
 				}
-				if (sm.fHumanFeed_Start.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_START).check()) {
 					return HumanFeed_RaiseTote;
 				}
-				if (sm.fHumanFeed_Stop.check()) {
+				if (getSignal(SignalName.HUMAN_FEED_STOP).check()) {
 					return Idle;
 				}
 				return Abort;
 			}
 		};
 
-		public abstract State run(UStateMachine sm);
+		public abstract State run();
 
 		/**
 		 * Returns a string representation of the state.
@@ -412,39 +403,39 @@ public class UStateMachine {
 			return this.name();
 		}
 
-		protected abstract void init(UStateMachine sm);
+		protected abstract void init();
 	}
 
 	/**
 	 * Runs the state machine.
 	 */
-	public void run() {
-		double elapsed = fStateTimer.get();
-		for (UStateMachineSystem sms : fSystems) {
-			sms.superSecretSpecialSatanRun(fCurrentState, elapsed);
+	public static void run() {
+		double elapsed = sStateMachine.fStateTimer.get();
+		for (UStateMachineSystem sms : sStateMachine.fSystems) {
+			sms.superSecretSpecialSatanRun(sStateMachine.fCurrentState, elapsed);
 		}
 
-		State nextState = fCurrentState.run(this);
-		if (fCurrentState != nextState) {
-			fCurrentState = nextState;
-			fCurrentState.init(this);
-			fStateTimer.reset();
-			for (UStateMachineSystem s : fSystems)
-				s.init(fCurrentState);
+		State nextState = sStateMachine.fCurrentState.run();
+		if (sStateMachine.fCurrentState != nextState) {
+			sStateMachine.fCurrentState = nextState;
+			sStateMachine.fCurrentState.init();
+			sStateMachine.fStateTimer.reset();
+			for (UStateMachineSystem s : sStateMachine.fSystems)
+				s.init(sStateMachine.fCurrentState);
 		}
 
 		if (UOI.getInstance().incrementNumberTotesButton.get()) {
-			if (!fIncrementNumberTotes) {
-				fNumberTotes = fNumberTotes--;
-				fNumberTotes = fNumberTotes < 0 ? 0 : fNumberTotes;
-				fIncrementNumberTotes = true;
+			if (!sStateMachine.fIncrementNumberTotes) {
+				sStateMachine.fNumberTotes = sStateMachine.fNumberTotes--;
+				sStateMachine.fNumberTotes = sStateMachine.fNumberTotes < 0 ? 0 : sStateMachine.fNumberTotes;
+				sStateMachine.fIncrementNumberTotes = true;
 			}
 		}
 		else {
-			fIncrementNumberTotes = false;
+			sStateMachine.fIncrementNumberTotes = false;
 		}
 
-		for (Signal sig : fAutoClearSignals) {
+		for (Signal sig : sStateMachine.fAutoClearSignals) {
 			sig.clear();
 		}
 	}
@@ -452,8 +443,8 @@ public class UStateMachine {
 	/**
 	 * Displays the number of totes and the current state on the smartdashboard.
 	 */
-	public void display() {
-		SmartDashboard.putNumber("Number of Totes", fNumberTotes);
-		SmartDashboard.putString("CurrentState", fCurrentState.toString());
+	public static void display() {
+		SmartDashboard.putNumber("Number of Totes", sStateMachine.fNumberTotes);
+		SmartDashboard.putString("CurrentState", sStateMachine.fCurrentState.toString());
 	}
 }

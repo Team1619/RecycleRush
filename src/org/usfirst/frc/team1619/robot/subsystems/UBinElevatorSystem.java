@@ -106,18 +106,8 @@ public class UBinElevatorSystem extends UStateMachineSystem {
 	}
 
 	public boolean isSafeToTilt() {
-		if (UToteElevatorSystem.getInstance().getToteElevatorPosition() <= TOTE_ELEVATOR_SAFETY_FOR_TILT) {
-			switch (UStateMachine.getInstance().getState()) {
-			case Init:
-			case Idle:
-				return true;
-			default:
-				return false;
-			}
-		}
-		else {
-			return false;
-		}
+		return UToteElevatorSystem.getInstance().getToteElevatorPosition() <= TOTE_ELEVATOR_SAFETY_FOR_TILT &&
+			(UStateMachine.getState() == State.Idle || UStateMachine.getState() == State.Init);
 	}
 
 	public boolean getTilterBackLimitSwitch() {
@@ -143,8 +133,8 @@ public class UBinElevatorSystem extends UStateMachineSystem {
 			fBinGripMotor.set(BIN_GRIP_CLOSE_SPEED);
 		}
 		else if (UOI.getInstance().lowerToteElevatorAndOpenClawButton.get()
-				&& (UStateMachine.getInstance().getState() == UStateMachine.State.Idle || UStateMachine
-						.getInstance().getState() == UStateMachine.State.Abort)) {
+				&& (UStateMachine.getState() == UStateMachine.State.Idle || UStateMachine
+						.getState() == UStateMachine.State.Abort)) {
 			fBinGripMotor.set(BIN_GRIP_OPEN_SPEED);
 		}
 		else {

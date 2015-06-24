@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.subsystems;
 import org.usfirst.frc.team1619.robot.UOI;
 import org.usfirst.frc.team1619.robot.URobotMap;
 import org.usfirst.frc.team1619.robot.UStateMachine;
+import org.usfirst.frc.team1619.robot.UStateMachine.SignalName;
 import org.usfirst.frc.team1619.robot.UStateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -20,25 +21,25 @@ public class UConveyorSystem extends UStateMachineSystem {
 	private static final double MANUAL_FORWARD_CONVEYOR_SPEED = -1.0;
 	private static final double MANUAL_BACK_CONVEYOR_SPEED = 1.0;
 	private static final double CONVEYOR_DELAY_TIME = 0.4;
+	private final double DEBOUNCE_TIME = 0.0;
 
 	// Practice Bot
 	// private static final double kForwardConveyorSpeed = -0.7;
 	// private static final double kManualForwardConveyorSpeed = -0.7;
 	// private static final double kManualBackConveyorSpeed = 0.7;
 
-	// Put methods for controlling this subsystem
-	// here. Call these from Commands.
-	public final CANTalon conveyorMotor; // multiple speeds based on optical
-											// sensor configuration
+	public final CANTalon conveyorMotor; 
+
 	private DigitalInput frontConveyorOpticalSensor;
 	private DigitalInput rearConveyorOpticalSensor;
 
 	private boolean frontSensor = false;
 	private boolean rearSensor = false;
 
+	private double conveyorSpeed = 0.0;
+
 	private Timer frontSensorDebounceTimer = new Timer();
 	private Timer rearSensorDebounceTimer = new Timer();
-	private final double DEBOUNCE_TIME = 0.0;
 
 	public double getForwardSpeed() {
 		return FORWARD_CONVEYOR_SPEED;
@@ -71,25 +72,21 @@ public class UConveyorSystem extends UStateMachineSystem {
 
 		if (!getFrontSensorRaw()) {
 			if (frontSensor) {
-				frontSensor = !frontSensor;
-				if (!frontSensor) {
-					UStateMachine.getInstance().fHumanFeed_ThrottleConveyorDescend
-							.raise();
-				}
+				frontSensor = false;
+				UStateMachine.getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_DESCEND).raise();
 			}
 		}
 		else {
 			if (!frontSensor) {
 				frontSensor = true;
 				frontSensorDebounceTimer.reset();
-				UStateMachine.getInstance().fHumanFeed_ThrottleConveyorBack
-						.raise();
+				UStateMachine.getSignal(SignalName.HUMAN_FEED_THROTTLE_CONVEYOR_BACK).raise();
 			}
 		}
 		if (getRearSensorRaw()) {
 			rearSensor = rearSensorDebounceTimer.get() > DEBOUNCE_TIME;
 			if (rearSensor) {
-				UStateMachine.getInstance().fHumanFeed_ToteOnConveyor.raise();
+				UStateMachine.getSignal(SignalName.HUMAN_FEED_TOTE_ON_CONVEYOR).raise();
 			}
 		}
 		else {
@@ -98,7 +95,6 @@ public class UConveyorSystem extends UStateMachineSystem {
 		}
 	}
 
-	private double conveyorSpeed = 0.0;
 
 	public void initDefaultCommand() {
 		// Set the default command for a subsystem here.

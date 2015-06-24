@@ -121,7 +121,7 @@ public class URobot extends IterativeRobot {
 		SmartDashboard.putNumber("rakerMotor.getOutputCurrent()", URakerSystem.getInstance().rakerMotor.getOutputCurrent());
 		SmartDashboard.putNumber("rakerMotor.getOutputVoltage()", URakerSystem.getInstance().rakerMotor.getOutputVoltage());
 
-		UStateMachine.getInstance().display();
+		UStateMachine.display();
 
 		UOI.getInstance().updatePOV();
 
@@ -266,7 +266,7 @@ public class URobot extends IterativeRobot {
 		// Lumberjack.changeLogs();
 		// }
 		// StateMachine.getInstance().abortSignal.raise();
-		UStateMachine.getInstance().init();
+		UStateMachine.init();
 		UDrivetrain.getInstance().teleopMode();
 	}
 
@@ -276,7 +276,7 @@ public class URobot extends IterativeRobot {
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 		sharedPeriodic();
-		UStateMachine.getInstance().run();
+		UStateMachine.run();
 	}
 
 	/**

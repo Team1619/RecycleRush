@@ -1,5 +1,6 @@
 package org.usfirst.frc.team1619.robot;
 
+import org.usfirst.frc.team1619.robot.UStateMachine.SignalName;
 import org.usfirst.frc.team1619.robot.commands.UKachigCommand;
 import org.usfirst.frc.team1619.robot.commands.URaiseSignalCommand;
 import org.usfirst.frc.team1619.robot.commands.UResetDriveEncodersCommand;
@@ -116,11 +117,11 @@ public class UOI {
 
 		resetDriveEncodersButton.whenPressed(new UResetDriveEncodersCommand());
 
-		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fHumanFeed_Start));
-		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fHumanFeed_Stop));
+		startHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getSignal(SignalName.HUMAN_FEED_START)));
+		stopHumanFeedButton.whenPressed(new URaiseSignalCommand(UStateMachine.getSignal(SignalName.HUMAN_FEED_STOP)));
 
-		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fAbortSignal));
-		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getInstance().fResetSignal));
+		liftAbortButton.whenPressed(new URaiseSignalCommand(UStateMachine.getSignal(SignalName.ABORT)));
+		liftResetButton.whenPressed(new URaiseSignalCommand(UStateMachine.getSignal(SignalName.RESET)));
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class UOI {
 	 * Defines the POV buttons to be pressed or not based on the 
 	 * position of the POV button for each joystick
 	 * (right, left, up or down are each assigned an angle value in degrees:
-	 * 90, 270, 0, and 180 respetively)
+	 * 90, 270, 0, and 180 respectively)
 	 */
 	public void updatePOV() {
 		int povRight = rightStick.getPOV();

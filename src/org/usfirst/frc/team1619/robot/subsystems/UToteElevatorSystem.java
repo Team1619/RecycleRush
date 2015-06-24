@@ -3,6 +3,7 @@ package org.usfirst.frc.team1619.robot.subsystems;
 import org.usfirst.frc.team1619.robot.UOI;
 import org.usfirst.frc.team1619.robot.URobotMap;
 import org.usfirst.frc.team1619.robot.UStateMachine;
+import org.usfirst.frc.team1619.robot.UStateMachine.SignalName;
 import org.usfirst.frc.team1619.robot.UStateMachine.State;
 
 import edu.wpi.first.wpilibj.CANTalon;
@@ -171,8 +172,8 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 		}
 
 		if (UOI.getInstance().lowerToteElevatorAndOpenClawButton.get()
-				&& (UStateMachine.getInstance().getState() == UStateMachine.State.Idle || UStateMachine
-						.getInstance().getState() == UStateMachine.State.Abort)) {
+				&& (UStateMachine.getState() == UStateMachine.State.Idle || UStateMachine
+						.getState() == UStateMachine.State.Abort)) {
 			setToteElevatorPosition(0);
 			useStatePosition = false;
 		}
@@ -303,7 +304,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 				setToteElevatorPosition(kFeederPosition);
 			}
 			if (Math.abs(getToteElevatorPosition() - kFeederPosition) <= kPositionTolerance) {
-				UStateMachine.getInstance().fHumanFeed_WaitForTote.raise();
+				UStateMachine.getSignal(SignalName.HUMAN_FEED_WAIT_FOR_TOTE).raise();
 			}
 			break;
 		case HumanFeed_WaitForTote:
@@ -330,7 +331,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 			}
 
 			if (Math.abs(getToteElevatorPosition() - kPickUpPosition) <= kPositionTolerance) {
-				UStateMachine.getInstance().fHumanFeed_RaiseTote.raise();
+				UStateMachine.getSignal(SignalName.HUMAN_FEED_RAISE_TOTE).raise();
 			}
 			break;
 		case Abort:
@@ -339,8 +340,7 @@ public class UToteElevatorSystem extends UStateMachineSystem {
 			break;
 		}
 
-		UStateMachine.getInstance();
-		switch (UStateMachine.getInstance().getNumberTotes()) {
+		switch (UStateMachine.getNumberTotes()) {
 		case 0:
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800,
 					24 / 0.250, 0);
