@@ -1,8 +1,6 @@
 package org.usfirst.frc.team1619.robot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.TimeZone;
 
 import org.usfirst.frc.team1619.robot.subsystems.UBinElevatorSystem;
 import org.usfirst.frc.team1619.robot.subsystems.UConveyorSystem;
@@ -25,6 +23,7 @@ public class UStateMachine {
 		
 		/**
 		 * Returns the state of the signal.
+		 * 
 		 * @return The boolean state of the signal.
 		 */
 		public boolean check() {
@@ -48,7 +47,7 @@ public class UStateMachine {
 	}
 	
 	/**
-	 * A class for all auto-clearing signals. 
+	 * A class for all auto-clearing signals.
 	 * Whenever the constructor is called the class instance is added to a list of AutoClearSignals.
 	 */
 	public class AutoClearSignal extends Signal {
@@ -88,6 +87,7 @@ public class UStateMachine {
 	
 	/**
 	 * Gets the fToStopHumanFeed variable.
+	 * 
 	 * @return If human feed should be stopped.
 	 */
 	public boolean getToStopHumanFeed() {
@@ -96,6 +96,7 @@ public class UStateMachine {
 	
 	/**
 	 * Gets the current number of totes in the stacker.
+	 * 
 	 * @return The current number of totes
 	 */
 	public int getNumberTotes() {
@@ -104,6 +105,7 @@ public class UStateMachine {
 	
 	/**
 	 * Gets the current state of the state machine.
+	 * 
 	 * @return The current state of the state machine
 	 */
 	public State getState() {
@@ -112,6 +114,7 @@ public class UStateMachine {
 
 	/**
 	 * Gets stateMachine instance. Creates it at first call.
+	 * 
 	 * @return single stateMachine instance
 	 */
 	public static UStateMachine getInstance() {
@@ -123,7 +126,7 @@ public class UStateMachine {
 	}
 
 	/**
-	 * Initializes the state machine. Resets the state timer, sets the current state to Init,
+	 * Initializes the state machine. Resets the state timer, sets the current state to INIT,
 	 * sets tote count to zero, and calls the init functions of all of the subsystems.
 	 */
 	public void init() {
@@ -137,6 +140,7 @@ public class UStateMachine {
 
 	/**
 	 * Adds a subsystem to an array of subsystems.
+	 * 
 	 * @param sms The state machine system
 	 */
 	public void addSystem(UStateMachineSystem sms) {
@@ -423,13 +427,6 @@ public class UStateMachine {
 		State nextState = fCurrentState.run(this);
 		if (fCurrentState != nextState) {
 			fCurrentState = nextState;
-
-			SimpleDateFormat date = new SimpleDateFormat(
-					"yyyy-MM-dd'T'HH:mm:ss:SSS'Z'");
-			date.setTimeZone(TimeZone.getTimeZone("UTC"));
-			// System.out.println(date.format(new Date()) +
-			// " -- Changed State to " + currentState.name());
-
 			fCurrentState.init(this);
 			fStateTimer.reset();
 			for (UStateMachineSystem s : fSystems)

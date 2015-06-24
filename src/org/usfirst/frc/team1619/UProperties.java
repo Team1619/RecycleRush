@@ -13,18 +13,23 @@ public class UProperties extends Properties {
 		put("TEST_MODE", Boolean.FALSE);
 		put("COMPETITION_MODE", Boolean.FALSE);
 		put("LOGGING_LEVEL", ULoggingLevels.ERROR);
-	}
-
-	/**
-	 * Returns the instance of the properties.
-	 * @return The final and static instance of the UProperties class
-	 */
-	public static UProperties getProperties() {
-		return sProperties;
+		put("LOGGING_FOLDER", "/home/lvuser/log/");
 	}
 
 	/**
 	 * Gets a value from the hash table.
+	 * 
+	 * @param key The String the value is being mapped to.
+	 * @param type The data type of the desired value.
+	 * @return
+	 */
+	public static <T> T getProperty(String key, Class<T> type) {
+		return (T) sProperties.get(key, type);
+	}
+	
+	/**
+	 * Gets a value from the hash table.
+	 * 
 	 * @param key The String the value is being mapped to.
 	 * @param type The data type of the desired value.
 	 * @return
@@ -36,6 +41,7 @@ public class UProperties extends Properties {
 
 	/**
 	 * Gets a value from the hash table. If no value is set it is set to defaultValue.
+	 * 
 	 * @param key The String the value is being mapped to.
 	 * @param defaultValue If no value is assigned to the key, sets the value to this.
 	 * @return
@@ -48,6 +54,7 @@ public class UProperties extends Properties {
 
 	/**
 	 * Checks to see if in TEST_MODE.
+	 * 
 	 * @return Whether or not is in TEST_MODE.
 	 */
 	public static boolean isTestMode() {
@@ -56,6 +63,7 @@ public class UProperties extends Properties {
 	
 	/**
 	 * Gets the current logging level.
+	 * 
 	 * @return The logging level
 	 */
 	public static ULoggingLevels getLoggingLevel() {

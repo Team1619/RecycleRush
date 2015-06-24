@@ -5,25 +5,25 @@ import java.io.IOException;
 public class ULogger extends UGenericLogger {
 	
 	public ULogger() {
-		super("UACRRobot" + UProperties.getLoggingLevel().toString() + "Log");
+		super("UACRRobot" + UProperties.getLoggingLevel() + "Log");
 		nextLog();
 	}
 	
 	/**
 	 * Logs an error message to the log file. The logging level must be greater than OFF.
+	 * 
 	 * @param error The error message
 	 */
-	public void Error(String error) {
-		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.OFF) > 0) {
-			log(error);
-		}
+	public void error(String error) {
+		log(error);
 	}
 	
 	/**
 	 * Logs a warning to the log file. The logging level must be greater than ERROR.
+	 * 
 	 * @param warning The warning message
 	 */
-	public void Warning(String warning) {
+	public void warning(String warning) {
 		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.ERROR) > 0) {
 			log(warning);
 		}
@@ -31,9 +31,10 @@ public class ULogger extends UGenericLogger {
 	
 	/**
 	 * Logs the info message to the log file. The logging level must be greater than WARNING.
+	 * 
 	 * @param info The info message
 	 */
-	public void Info(String info) {
+	public void info(String info) {
 		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.WARNING) > 0) {
 			log(info);
 		}
@@ -41,9 +42,10 @@ public class ULogger extends UGenericLogger {
 	
 	/**
 	 * Logs the debug message to the log file. The logging level must be greater than INFO.
+	 * 
 	 * @param debug The debug message
 	 */
-	public void Debug(String debug) {
+	public void debug(String debug) {
 		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.INFO) > 0) {
 			log(debug);
 		}
@@ -54,7 +56,6 @@ public class ULogger extends UGenericLogger {
 	 */
 	@Override
 	protected void initLog() {
-		return;
 	}
 
 	/**

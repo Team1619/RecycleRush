@@ -13,7 +13,7 @@ import java.util.TimeZone;
 public abstract class UGenericLogger {
 
 	private static final int MAX_LOGS = 50;
-	protected static final String LOG_FOLDER_PATH = "/home/lvuser/log/";
+	protected static final String LOG_FOLDER_PATH = UProperties.getProperty("LOGGING_FOLDER", String.class);
 	private static SimpleDateFormat sDateFormat;
 	protected static String sLogFolder = getDateString(); 
 	protected static final List<UGenericLogger> sLoggers = new ArrayList<>();
@@ -23,7 +23,7 @@ public abstract class UGenericLogger {
 	private String fLogName;
 
 	/*
-	 * Specifies the format for the date and assigns it a time zone
+	 * Specifies the format for the date and assigns it a time zone.
 	 */
 	static {
 		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
@@ -31,14 +31,14 @@ public abstract class UGenericLogger {
 	}
 
 	public UGenericLogger(String logName) {
-		this.fLogName = new String(logName);
+		fLogName = logName;
 		sLoggers.add(this);
 	}
 	
 	/**
 	 * Recursive delete that deletes either the file argument, 
 	 * or all the files in the directory argument, plus the 
-	 * diretory itself
+	 * directory itself.
 	 * 
 	 * @param folder (can either be a single file, or a directory)
 	 */
@@ -71,7 +71,7 @@ public abstract class UGenericLogger {
 	/**
 	 * Accesses all of the directories stored under the LOG_FOLDER_PATH
 	 * directory, and sorts them by date, then deletes the oldest ones 
-	 * until only the newest 50 remain. 
+	 * until only the newest 50 remain.
 	 */
 	protected static void cleanUp() {
 		try {
@@ -86,8 +86,7 @@ public abstract class UGenericLogger {
 	}
 
 	/**
-	 * @return String form of the current date formatted as 
-	 * specified in sDateFormat.
+	 * @return String form of the current date formatted as specified in sDateFormat.
 	 * "yyyy-MM-dd-HH-mm-ss-SSSZ"
 	 */
 	protected static String getDateString() {
@@ -116,11 +115,13 @@ public abstract class UGenericLogger {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 	
 	/**
 	 * Prints the specified values to a file
+	 * 
 	 * @param values
 	 */
 	protected abstract void log(String... values);

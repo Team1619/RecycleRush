@@ -15,7 +15,7 @@ public abstract class UStateMachineSystem extends Subsystem {
 	}
 
 	public void superSecretSpecialSatanRun(State state, double elapsed) {
-		if (this.getCurrentCommand() == null) {
+		if (getCurrentCommand() == null) {
 			run(state, elapsed);
 		}
 	}
