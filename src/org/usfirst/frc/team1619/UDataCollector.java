@@ -22,6 +22,7 @@ public class UDataCollector extends UGenericLogger{
 	 */
 	public UDataCollector(String logName, String... headers) {
 		super(logName);
+		
 		this.fHeaders = new String[headers.length + 1];
 		this.fHeaders[0] = "Timestamp [s]";
 		for (int i = 0; i < headers.length; i++) {
@@ -66,7 +67,6 @@ public class UDataCollector extends UGenericLogger{
 	/**
 	 * Prints the specified values separated by commas into the columns under each header.
 	 */
-	@Override
 	public void log(String... values) {
 		printCSV(values);
 	}

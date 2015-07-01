@@ -133,8 +133,8 @@ public class UBinElevatorSystem extends UStateMachineSystem {
 			fBinGripMotor.set(BIN_GRIP_CLOSE_SPEED);
 		}
 		else if (UOI.getInstance().lowerToteElevatorAndOpenClawButton.get()
-				&& (UStateMachine.getState() == UStateMachine.State.Idle || UStateMachine
-						.getState() == UStateMachine.State.Abort)) {
+				&& (UStateMachine.getState() == UStateMachine.State.Idle || 
+				UStateMachine.getState() == UStateMachine.State.Abort)) {
 			fBinGripMotor.set(BIN_GRIP_OPEN_SPEED);
 		}
 		else {

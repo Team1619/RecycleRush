@@ -18,7 +18,6 @@ public abstract class UGenericLogger {
 	protected static String sLogFolder = getDateString(); 
 	protected static final List<UGenericLogger> sLoggers = new ArrayList<>();
 
-
 	protected FileWriter fFileWriter;
 	private String fLogName;
 
@@ -26,7 +25,7 @@ public abstract class UGenericLogger {
 	 * Specifies the format for the date and assigns it a time zone.
 	 */
 	static {
-		sDateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss-SSSZ");
+		sDateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss.SSSZ");
 		sDateFormat.setTimeZone(TimeZone.getTimeZone("America/Denver"));
 	}
 
@@ -71,7 +70,7 @@ public abstract class UGenericLogger {
 	/**
 	 * Accesses all of the directories stored under the LOG_FOLDER_PATH
 	 * directory, and sorts them by date, then deletes the oldest ones 
-	 * until only the newest 50 remain.
+	 * until only the newest MAX_LOGS remain.
 	 */
 	protected static void cleanUp() {
 		try {
@@ -87,7 +86,7 @@ public abstract class UGenericLogger {
 
 	/**
 	 * @return String form of the current date formatted as specified in sDateFormat.
-	 * "yyyy-MM-dd-HH-mm-ss-SSSZ"
+	 * "yyyy-MM-dd_HH-mm-ss.SSSZ"
 	 */
 	protected static String getDateString() {
 		return sDateFormat.format(new Date());
@@ -120,14 +119,9 @@ public abstract class UGenericLogger {
 	}
 	
 	/**
-	 * Prints the specified values to a file
-	 * 
-	 * @param values
-	 */
-	protected abstract void log(String... values);
-	
-	/**
 	 *Makes the initial print in the log file
 	 */
-	protected abstract void initLog();
+	protected void initLog() {
+		
+	}
 }

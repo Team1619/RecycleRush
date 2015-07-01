@@ -29,8 +29,7 @@ public class UStateMachine {
 		 * @return The boolean state of the signal.
 		 */
 		public boolean check() {
-			return /* Our Lord and Savior Jesus */hasRisen; // "Hit home to Jerusalem"
-			// - Daniel
+			return hasRisen;
 		}
 
 		/**

@@ -10,67 +10,62 @@ public class ULogger extends UGenericLogger {
 	}
 	
 	/**
-	 * Logs an error message to the log file. The logging level must be greater than OFF.
+	 * Logs an error message to the log file.
 	 * 
-	 * @param error The error message
+	 * @param message The error message
 	 */
-	public void error(String error) {
-		log(error);
+	public void error(String message) {
+		log("ERROR", message);
 	}
 	
 	/**
-	 * Logs a warning to the log file. The logging level must be greater than ERROR.
+	 * Logs a warning to the log file. The logging level must be greater than or equal to WARNING
 	 * 
-	 * @param warning The warning message
+	 * @param message The warning message
 	 */
-	public void warning(String warning) {
-		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.ERROR) > 0) {
-			log(warning);
+	public void warning(String message) {
+		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.WARNING) >= 0) {
+			log("WARNING", message);
 		}
 	}
 	
 	/**
-	 * Logs the info message to the log file. The logging level must be greater than WARNING.
+	 * Logs the info message to the log file. The logging level must be greater than or equal to INFO
 	 * 
-	 * @param info The info message
+	 * @param message The info message
 	 */
-	public void info(String info) {
-		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.WARNING) > 0) {
-			log(info);
+	public void info(String message) {
+		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.INFO) >= 0) {
+			log("INFO", message);
 		}
 	}
 	
 	/**
-	 * Logs the debug message to the log file. The logging level must be greater than INFO.
+	 * Logs the debug message to the log file. The logging level must be greater than or equal to DEBUG
 	 * 
-	 * @param debug The debug message
+	 * @param message The debug message
 	 */
-	public void debug(String debug) {
-		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.INFO) > 0) {
-			log(debug);
+	public void debug(String message) {
+		if (UProperties.getLoggingLevel().compareTo(ULoggingLevels.DEBUG) >= 0) {
+			log("DEBUG", message);
 		}
-	}
-
-	/**
-	 * Does LITERALLY nothing in this implementation of UGenericLogger
-	 */
-	@Override
-	protected void initLog() {
 	}
 
 	/**
 	 * Writes to the log file.
 	 * 
-	 * @param values The string(s) to be written to the log file. Only one string should be passed for this class.
+	 * @param level The text version of the logging level
+	 * @param message The log message
 	 */
-	@Override
-	protected void log(String... values) {
-		if (fFileWriter == null || values.length != 1)
+	protected void log(String level, String message) {
+		if (fFileWriter == null)
 			return;
 		try {
-			String s = values[0];
-//			fFileWriter.append(getDateString());
-			fFileWriter.append(s);
+			fFileWriter.append(getDateString());
+			fFileWriter.append(' ');
+			fFileWriter.append(level);
+			fFileWriter.append(' ');
+			fFileWriter.append(message);
 			fFileWriter.append('\n');
 			fFileWriter.flush();
 		} catch (IOException e) {
