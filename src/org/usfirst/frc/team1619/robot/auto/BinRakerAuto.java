@@ -30,7 +30,8 @@ public class BinRakerAuto extends CommandGroup {
     		return;
     	}
     	
-    	addSequential(new LinearDriveCommand(1.0, 1));
+    	//Drive forward
+    	addSequential(new LinearDriveCommand(1.5, 1));
     	
 //    	addParallel(new ToteElevatorMove(1.0, 0.5));
     	addParallel(new MoveBinElevator(false, BinElevatorSystem.kBinElevatorUpSpeed));
@@ -46,11 +47,12 @@ public class BinRakerAuto extends CommandGroup {
     	
     	addParallel(new RakerMove(RakerSystem.kRakerUpSpeed, 6.0));
     	
+    	//Drive backward
     	if(mode == BinRakerMode.PLATFORM_SIDE) {
     		addSequential(new LinearDriveCommand(-1.0, 0.6));
     	}
     	else if(mode == BinRakerMode.CARPET_SIDE) {
-    		addSequential(new LinearDriveCommand(-1.5, 0.6));
+    		addSequential(new LinearDriveCommand(-1.0, 0.6));
     	}
     	
     	
