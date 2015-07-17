@@ -50,7 +50,7 @@ public class BinRakerAuto extends CommandGroup {
     		addSequential(new LinearDriveCommand(-1.0, 0.6));
     	}
     	else if(mode == BinRakerMode.CARPET_SIDE) {
-    		addSequential(new LinearDriveCommand(-0.5, 0.6));
+    		addSequential(new LinearDriveCommand(-1.5, 0.6));
     	}
     	
     	
