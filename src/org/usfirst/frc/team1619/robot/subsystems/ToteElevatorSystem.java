@@ -4,6 +4,7 @@ import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
+import org.usfirst.frc.team1619.Preferences;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
@@ -30,6 +31,14 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	
 	public static final double kDebounceTime = 1.0;
 	
+	//With Two miniCIM
+	public static double k0ToteP = 0.0, k0ToteI = 0.0, k0ToteD = 0;
+	public static double k1ToteP = 0.0, k1ToteI = 0.0, k1ToteD = 0;
+	public static double k2ToteP = 0.0, k2ToteI = 0.0, k2ToteD = 0;
+	public static double k3ToteP = 0.0, k3ToteI = 0.0, k3ToteD = 0;
+	public static double k4ToteP = 0.0, k4ToteI = 0.0, k4ToteD = 0;
+	public static double k5ToteP = 0.0, k5ToteI = 0.0, k5ToteD = 0;
+	
 	//With CIM and miniCIM
 //	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
 //	public static final double k1ToteP = 0.60, k1ToteI = 0.003, k1ToteD = 0;
@@ -39,12 +48,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 //	public static final double k5ToteP = 0.85, k5ToteI = 0.003, k5ToteD = 0;
 	
 	//With two 775s
-	public static final double k0ToteP = 0.70, k0ToteI = 0.002, k0ToteD = 0;
-	public static final double k1ToteP = 0.70, k1ToteI = 0.002, k1ToteD = 0;
-	public static final double k2ToteP = 0.85, k2ToteI = 0.002, k2ToteD = 0;
-	public static final double k3ToteP = 0.90, k3ToteI = 0.002, k3ToteD = 0;
-	public static final double k4ToteP = 1.0, k4ToteI = 0.003, k4ToteD = 0;
-	public static final double k5ToteP = 1.1, k5ToteI = 0.004, k5ToteD = 0;
+//	public static final double k0ToteP = 0.70, k0ToteI = 0.002, k0ToteD = 0;
+//	public static final double k1ToteP = 0.70, k1ToteI = 0.002, k1ToteD = 0;
+//	public static final double k2ToteP = 0.85, k2ToteI = 0.002, k2ToteD = 0;
+//	public static final double k3ToteP = 0.90, k3ToteI = 0.002, k3ToteD = 0;
+//	public static final double k4ToteP = 1.0, k4ToteI = 0.003, k4ToteD = 0;
+//	public static final double k5ToteP = 1.1, k5ToteI = 0.004, k5ToteD = 0;
 	
 //	public static final double k0TotePosition = 1.0, k1TotePosition = 2.0, k2TotePosition = 3.0, k3TotePosition = 4.0, k4TotePosition = 5.0, k5TotePosition = 6.0;
 	
@@ -253,6 +262,20 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		
 		switch(state) {
 		case Init:
+			
+			k0ToteP = Preferences.getNumber("k0ToteP", k0ToteP);
+			k0ToteI = Preferences.getNumber("k0ToteI", k0ToteI);
+			k1ToteP = Preferences.getNumber("k1ToteP", k1ToteP);
+			k1ToteI = Preferences.getNumber("k1ToteI", k1ToteI);
+			k2ToteP = Preferences.getNumber("k2ToteP", k2ToteP);
+			k2ToteI = Preferences.getNumber("k2ToteI", k2ToteI);
+			k3ToteP = Preferences.getNumber("k3ToteP", k3ToteP);
+			k3ToteI = Preferences.getNumber("k3ToteI", k3ToteI);
+			k4ToteP = Preferences.getNumber("k4ToteP", k4ToteP);
+			k4ToteI = Preferences.getNumber("k4ToteI", k4ToteI);
+			k5ToteP = Preferences.getNumber("k5ToteP", k5ToteP);
+			k5ToteI = Preferences.getNumber("k5ToteI", k5ToteI);
+			
 			bInitFinished = false;
 			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
