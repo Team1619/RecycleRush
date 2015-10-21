@@ -32,12 +32,12 @@ public class ToteElevatorSystem extends StateMachineSystem {
 	public static final double kDebounceTime = 1.0;
 	
 	//With Two miniCIM
-	public static double k0ToteP = 0.0, k0ToteI = 0.0, k0ToteD = 0;
-	public static double k1ToteP = 0.0, k1ToteI = 0.0, k1ToteD = 0;
-	public static double k2ToteP = 0.0, k2ToteI = 0.0, k2ToteD = 0;
-	public static double k3ToteP = 0.0, k3ToteI = 0.0, k3ToteD = 0;
-	public static double k4ToteP = 0.0, k4ToteI = 0.0, k4ToteD = 0;
-	public static double k5ToteP = 0.0, k5ToteI = 0.0, k5ToteD = 0;
+	public static double k0TotePUp = 0.720, k0TotePDown = 0.72, k0ToteI = 0.005, k0ToteD = 0;
+	public static double k1TotePUp = 0.810, k1TotePDown = 0.78, k1ToteI = 0.006, k1ToteD = 0;
+	public static double k2TotePUp = 0.855, k2TotePDown = 0.82, k2ToteI = 0.007, k2ToteD = 0;
+	public static double k3TotePUp = 0.945, k3TotePDown = 0.75, k3ToteI = 0.008, k3ToteD = 0;
+	public static double k4TotePUp = 1.035, k4TotePDown = 0.60, k4ToteI = 0.009, k4ToteD = 0;
+	public static double k5TotePUp = 1.260, k5TotePDown = 0.55, k5ToteI = 0.011, k5ToteD = 0;
 	
 	//With CIM and miniCIM
 //	public static final double k0ToteP = 0.60, k0ToteI = 0.003, k0ToteD = 0;
@@ -88,7 +88,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		toteElevatorMotor.reverseOutput(false);
 		toteElevatorMotor.setFeedbackDevice(FeedbackDevice.QuadEncoder);
 		//PID values default to this
-		toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+		toteElevatorMotor.setPID(k0TotePUp, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 		
 		toteElevatorMotorSmall = RobotMap.MotorDefinition.toteElevatorMotorSmall.getMotor();
 		toteElevatorMotorSmall.enableLimitSwitch(false, false);
@@ -263,21 +263,28 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		switch(state) {
 		case Init:
 			
-			k0ToteP = Preferences.getNumber("k0ToteP", k0ToteP);
+			k0TotePUp = Preferences.getNumber("k0TotePUp", k0TotePUp);
 			k0ToteI = Preferences.getNumber("k0ToteI", k0ToteI);
-			k1ToteP = Preferences.getNumber("k1ToteP", k1ToteP);
+			k1TotePUp = Preferences.getNumber("k1TotePUp", k1TotePUp);
 			k1ToteI = Preferences.getNumber("k1ToteI", k1ToteI);
-			k2ToteP = Preferences.getNumber("k2ToteP", k2ToteP);
+			k2TotePUp = Preferences.getNumber("k2TotePUp", k2TotePUp);
 			k2ToteI = Preferences.getNumber("k2ToteI", k2ToteI);
-			k3ToteP = Preferences.getNumber("k3ToteP", k3ToteP);
+			k3TotePUp = Preferences.getNumber("k3TotePUp", k3TotePUp);
 			k3ToteI = Preferences.getNumber("k3ToteI", k3ToteI);
-			k4ToteP = Preferences.getNumber("k4ToteP", k4ToteP);
+			k4TotePUp = Preferences.getNumber("k4TotePUp", k4TotePUp);
 			k4ToteI = Preferences.getNumber("k4ToteI", k4ToteI);
-			k5ToteP = Preferences.getNumber("k5ToteP", k5ToteP);
+			k5TotePUp = Preferences.getNumber("k5TotePUp", k5TotePUp);
 			k5ToteI = Preferences.getNumber("k5ToteI", k5ToteI);
 			
+			k0TotePDown = Preferences.getNumber("k0TotePDown", k0TotePDown);
+			k1TotePDown = Preferences.getNumber("k1TotePDown", k1TotePDown);
+			k2TotePDown = Preferences.getNumber("k2TotePDown", k2TotePDown);
+			k3TotePDown = Preferences.getNumber("k3TotePDown", k3TotePDown);
+			k4TotePDown = Preferences.getNumber("k4TotePDown", k4TotePDown);
+			k5TotePDown = Preferences.getNumber("k5TotePDown", k5TotePDown);
+			
 			bInitFinished = false;
-			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+			toteElevatorMotor.setPID(k0TotePUp, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
 			break;
 		case Idle:
 			break;
@@ -288,6 +295,7 @@ public class ToteElevatorSystem extends StateMachineSystem {
 
 	@Override
 	public void run(State state, double elapsed) {
+		
 		switch(state) {
 		case Init:
 			//should be bottom limit switch
@@ -345,29 +353,62 @@ public class ToteElevatorSystem extends StateMachineSystem {
 		}
 
 		StateMachine.getInstance();
-		switch (StateMachine.getInstance().numberTotes) {
-		case 0:
-			toteElevatorMotor.setPID(k0ToteP, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 1:
-			toteElevatorMotor.setPID(k1ToteP, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 2: 
-			toteElevatorMotor.setPID(k2ToteP, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 3:
-			toteElevatorMotor.setPID(k3ToteP, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 4:
-			toteElevatorMotor.setPID(k4ToteP, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 5:
-			toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
-			break;
-		case 6:
-			toteElevatorMotor.setPID(k5ToteP, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+		
+		// set PID values based on number of totes currently in robot, and direction of toteElevator movement
+		switch(state) {
+		case HumanFeed_ThrottleConveyorAndDescend:
+			switch (StateMachine.getInstance().numberTotes) {
+			case 0:
+				toteElevatorMotor.setPID(k0TotePDown, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 1:
+				toteElevatorMotor.setPID(k1TotePDown, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 2: 
+				toteElevatorMotor.setPID(k2TotePDown, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 3:
+				toteElevatorMotor.setPID(k3TotePDown, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 4:
+				toteElevatorMotor.setPID(k4TotePDown, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 5:
+				toteElevatorMotor.setPID(k5TotePDown, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 6:
+				toteElevatorMotor.setPID(k5TotePDown, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			default:
+				break;
+			}
 			break;
 		default:
+			switch (StateMachine.getInstance().numberTotes) {
+			case 0:
+				toteElevatorMotor.setPID(k0TotePUp, k0ToteI, k0ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 1:
+				toteElevatorMotor.setPID(k1TotePUp, k1ToteI, k1ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 2: 
+				toteElevatorMotor.setPID(k2TotePUp, k2ToteI, k2ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 3:
+				toteElevatorMotor.setPID(k3TotePUp, k3ToteI, k3ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 4:
+				toteElevatorMotor.setPID(k4TotePUp, k4ToteI, k4ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 5:
+				toteElevatorMotor.setPID(k5TotePUp, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			case 6:
+				toteElevatorMotor.setPID(k5TotePUp, k5ToteI, k5ToteD, 0.0001, 800, 24/0.250, 0);
+				break;
+			default:
+				break;
+			}
 			break;
 		}
 
