@@ -4,6 +4,7 @@ import org.usfirst.frc.team1619.robot.OI;
 import org.usfirst.frc.team1619.robot.RobotMap;
 import org.usfirst.frc.team1619.robot.StateMachine;
 import org.usfirst.frc.team1619.robot.StateMachine.State;
+import org.usfirst.frc.team1619.Preferences;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.CANTalon.ControlMode;
@@ -15,8 +16,8 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class ConveyorSystem extends StateMachineSystem {
 	//Competition Bot
-	public static final double kForwardConveyorSpeed = -0.55; 
-	public static final double kSlowForwardConveyorSpeed = -0.55;
+	public static double kForwardConveyorSpeed = -0.55; 
+	public static double kSlowForwardConveyorSpeed = -0.55;
 	public static final double kManualForwardConveyorSpeed = -1.0; 
 	public static final double kManualBackConveyorSpeed = 1.0;
 	private static final double kConveyorDelayTime = 0.4;
@@ -128,6 +129,9 @@ public class ConveyorSystem extends StateMachineSystem {
     @Override
     public void init(State state) {
     	switch (state) {
+    	case Init:
+    		kForwardConveyorSpeed = Preferences.getNumber("Forward Conveyor Speed", kForwardConveyorSpeed);
+    		kSlowForwardConveyorSpeed = kForwardConveyorSpeed;
     	default:
     		break;
     	}
