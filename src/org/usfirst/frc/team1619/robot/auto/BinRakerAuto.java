@@ -21,9 +21,9 @@ public class BinRakerAuto extends CommandGroup {
 	}
 	
     public  BinRakerAuto(BinRakerMode mode) {
-    	addParallel(new RakerMove(RakerSystem.kRakerDownSpeed, 1.25));
+    	addParallel(new RakerMove(RakerSystem.kRakerDownSpeed, 1.75));
     	addParallel(new MoveConveyor(ConveyorSystem.kManualForwardConveyorSpeed, 0.5));
-    	addSequential(new WaitCommand(0.75));
+    	addSequential(new WaitCommand(1.5));
     	addParallel(new MoveConveyor(ConveyorSystem.kManualBackConveyorSpeed, 0.5));
 
     	if(mode == BinRakerMode.NO_DRIVE) {
